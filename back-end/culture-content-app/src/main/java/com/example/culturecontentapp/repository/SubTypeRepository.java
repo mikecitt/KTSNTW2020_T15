@@ -17,4 +17,5 @@ public interface SubTypeRepository extends JpaRepository<SubType, Long> {
     SubType findByIdAndTypeId(Long id, Long typeId);
 
     SubType findByName(String name);
+
 }

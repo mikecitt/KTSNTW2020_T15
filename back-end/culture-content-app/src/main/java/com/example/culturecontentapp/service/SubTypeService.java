@@ -59,6 +59,13 @@ public class SubTypeService {
     return convertToDTO(repository.save(subType));
   }
 
+  public void delete(Long typeId, Long id){
+    SubType subType = repository.findByIdAndTypeId(id, typeId);
+    if(subType == null)
+      throw new SubTypeNotFoundException("Sub type with given id doesn't exist");
+    repository.delete(subType);
+  }
+
   private List<SubTypeResponse> toTypeDto(List<SubType> types){
     return types.stream()
             .map(this::convertToDTO)

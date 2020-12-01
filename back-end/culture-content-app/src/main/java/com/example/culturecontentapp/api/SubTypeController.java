@@ -37,4 +37,10 @@ public class SubTypeController {
     return new ResponseEntity<>(service.create(typeRequest, typeId), HttpStatus.CREATED);
   }
 
+  @DeleteMapping(value = "{typeId}/sub-types/{id}")
+  public ResponseEntity<Void> deleteSubType(@PathVariable Long typeId, @PathVariable Long id){
+    service.delete(typeId,id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
 }
