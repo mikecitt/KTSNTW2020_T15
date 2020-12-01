@@ -36,4 +36,10 @@ public class TypeController {
   public ResponseEntity<TypeResponse> createCulturalOfferType(@RequestBody TypeRequest typeRequestDto) {
     return new ResponseEntity<>(service.create(typeRequestDto), HttpStatus.CREATED);
   }
+
+  @DeleteMapping(value = "/{id}")
+  public ResponseEntity<Void> deleteCulturalOfferType(@PathVariable Long id){
+    service.delete(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

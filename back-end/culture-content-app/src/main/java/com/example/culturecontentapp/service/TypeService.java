@@ -50,6 +50,13 @@ public class TypeService {
     return convertToDTO(repository.save(type));
   }
 
+  public void delete(Long id){
+    Optional<Type> type = repository.findById(id);
+    if(type.isEmpty())
+      throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
+    repository.delete(type.get());
+  }
+
   private List<TypeResponse> toTypeDto(Page<Type> types){
     return types.stream()
                 .map(this::convertToDTO)
