@@ -50,6 +50,18 @@ public class TypeService {
     return convertToDTO(repository.save(type));
   }
 
+  public TypeResponse update(TypeRequest newEntity, Long id){
+    Type existingType = repository.findById(id).orElse(null);
+    if(existingType == null)
+      throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
+
+    existingType.setName(newEntity.getName());
+    if(repository.findByNameAndIdNot(newEntity.getName(), id) != null)
+      throw new TypeAlreadyExistsException("Cultural offer type with given name already exists");
+
+    return convertToDTO(repository.save(existingType));
+  }
+
   public void delete(Long id){
     Optional<Type> type = repository.findById(id);
     if(type.isEmpty())
