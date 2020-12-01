@@ -66,6 +66,17 @@ public class SubTypeService {
     repository.delete(subType);
   }
 
+  public SubTypeResponse update(SubTypeRequest subTypeRequest, Long typeId, Long id){
+    SubType existingSubType = repository.findByIdAndTypeId(id, typeId);
+    if(existingSubType == null)
+      throw new SubTypeNotFoundException("Sub type with given id doesn't exist");
+    if(repository.findByNameAndIdNot(subTypeRequest.getName(),id) != null)
+      throw new SubTypeAlreadyExistsException("Subtype with given name already exists");
+
+    existingSubType.setName(subTypeRequest.getName());
+    return convertToDTO(repository.save(existingSubType));
+  }
+
   private List<SubTypeResponse> toTypeDto(List<SubType> types){
     return types.stream()
             .map(this::convertToDTO)

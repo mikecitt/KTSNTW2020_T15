@@ -43,4 +43,11 @@ public class SubTypeController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  @PutMapping(value = "{typeId}/sub-types/{id}")
+  public ResponseEntity<SubTypeResponse> updateSubType(@RequestBody SubTypeRequest subTypeRequest,
+                                                       @PathVariable Long typeId,
+                                                       @PathVariable Long id){
+    return new ResponseEntity<>(service.update(subTypeRequest, typeId, id), HttpStatus.OK);
+  }
+
 }
