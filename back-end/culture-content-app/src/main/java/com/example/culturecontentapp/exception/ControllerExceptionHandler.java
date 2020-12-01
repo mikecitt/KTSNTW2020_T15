@@ -25,6 +25,20 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler
+  protected ResponseEntity<Object> handleTypeNotFoundException(TypeNotFoundException ex,
+       WebRequest request){
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler
+  protected ResponseEntity<Object> handleTypeAlreadyExistsException(TypeAlreadyExistsException ex,
+                                                                    WebRequest request){
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
       HttpStatus status, WebRequest request) {
