@@ -1,5 +1,7 @@
 package com.example.culturecontentapp.exception;
 
+import com.example.culturecontentapp.storage.StorageException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleAccountNotFoundException(AccountNotFoundException ex, WebRequest request) {
 
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(StorageException.class)
+  protected ResponseEntity<Object> handleStorageException(StorageException ex, WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override
