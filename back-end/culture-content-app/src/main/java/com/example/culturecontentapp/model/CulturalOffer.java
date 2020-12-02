@@ -108,7 +108,7 @@ public class CulturalOffer extends Model {
     this.subType = subType;
   }
 
-  public void addNews(News news){
+  public void addNews(News news) {
     this.news.add(news);
   }
 }
