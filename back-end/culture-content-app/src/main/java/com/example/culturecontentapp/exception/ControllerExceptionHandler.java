@@ -27,6 +27,32 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
+
+  @ExceptionHandler
+  protected ResponseEntity<Object> handleTypeNotFoundException(TypeNotFoundException ex,
+       WebRequest request){
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler
+  protected ResponseEntity<Object> handleTypeAlreadyExistsException(TypeAlreadyExistsException ex,
+                                                                    WebRequest request){
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler
+  protected ResponseEntity<Object> handleSubTypeNotFoundException(SubTypeNotFoundException ex,
+                                                                  WebRequest request){
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler
+  protected ResponseEntity<Object> handleSubTypeAlreadyExistsException(SubTypeAlreadyExistsException ex,
+                                                                       WebRequest request){
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+  
   @ExceptionHandler(StorageException.class)
   protected ResponseEntity<Object> handleStorageException(StorageException ex, WebRequest request) {
 
