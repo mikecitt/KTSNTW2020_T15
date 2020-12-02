@@ -37,6 +37,14 @@ public class NewsService {
     
   }
 
+  public NewsResponse update(NewsRequest newsRequest, Long id){
+    News news = repository.findById(id).orElseThrow(()-> new NewsNotFoundException("The news you want to update doesn't exist."));
+    news.setDate(newsRequest.getDate());
+    news.setText(newsRequest.getText());
+    news.setImages(newsRequest.getImages());
+    return convertToNewsResponse(repository.save(news));
+  }
+
   public void deleteNews(Long id) {
     News news = repository.findById(id).orElseThrow(()-> new NewsNotFoundException("The news you want to delete doesn't exist."));
     repository.delete(news);
