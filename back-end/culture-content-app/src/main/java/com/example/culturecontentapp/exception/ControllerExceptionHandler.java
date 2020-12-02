@@ -55,8 +55,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   
   @ExceptionHandler(StorageException.class)
   protected ResponseEntity<Object> handleStorageException(StorageException ex, WebRequest request) {
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+  @ExceptionHandler(NewsNotFoundException.class)
+  protected ResponseEntity<Object> handleNewsNotFoundException(NewsNotFoundException ex, WebRequest request) {
 
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
   @Override
@@ -64,5 +68,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
       HttpStatus status, WebRequest request) {
 
     return new ResponseEntity<>(ex.getBindingResult().getAllErrors(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(CulturalOfferNotFoundException.class)
+  protected ResponseEntity<Object> handleCulturalOfferNotFoundException(CulturalOfferNotFoundException ex, WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 }
