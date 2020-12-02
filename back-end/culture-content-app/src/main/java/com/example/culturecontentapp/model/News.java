@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class News extends Model {
 
   @NotBlank(message = "Text cannot be blank")
-  @Size(min = 10, max = 256, message = "Description must be between 10 and 256 characters")
+  @Size(min = 10, max = 256, message = "Text must be between 10 and 256 characters")
   @Column(nullable = false)
   private String text;
 
@@ -56,5 +56,9 @@ public class News extends Model {
 
   public Set<String> getImages() {
     return this.images;
+  }
+
+  public void setImages(Set<String> images){
+    this.images = images;
   }
 }
