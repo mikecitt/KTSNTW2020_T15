@@ -4,11 +4,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,9 +23,10 @@ public class News extends Model {
   @NotNull(message = "Date cannot be null")
   private LocalDateTime date;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "news_id")
-  private Set<Image> images;
+  @ElementCollection
+  @CollectionTable(name = "news_images")
+  @Column(name = "image", nullable = false, length = 64)
+  private Set<String> images;
 
   public News() {
     images = new HashSet<>();
@@ -54,7 +54,7 @@ public class News extends Model {
     this.date = date;
   }
 
-  public Set<Image> getImages() {
+  public Set<String> getImages() {
     return this.images;
   }
 }
