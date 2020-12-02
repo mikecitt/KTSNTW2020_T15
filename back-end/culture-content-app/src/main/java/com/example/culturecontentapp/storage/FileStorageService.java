@@ -25,7 +25,7 @@ public class FileStorageService implements StorageService {
       String originalFilename = file.getOriginalFilename();
       if (originalFilename != null) {
         originalFilename = java.util.UUID.randomUUID()
-            + originalFilename.substring(originalFilename.lastIndexOf("\\.") + 1);
+            + originalFilename.substring(originalFilename.lastIndexOf("."));
       }
       Path destinationFile = this.root.resolve(Paths.get(originalFilename)).normalize().toAbsolutePath();
       if (!destinationFile.getParent().equals(this.root.toAbsolutePath())) {

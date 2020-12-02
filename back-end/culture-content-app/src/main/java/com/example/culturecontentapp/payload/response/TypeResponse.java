@@ -2,7 +2,9 @@ package com.example.culturecontentapp.payload.response;
 import com.example.culturecontentapp.model.Model;
 import com.example.culturecontentapp.model.SubType;
 
-public class TypeResponse extends Model {
+public class TypeResponse {
+
+    private Long id;
 
     private String name;
 
@@ -20,4 +22,11 @@ public class TypeResponse extends Model {
         this.name = name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
