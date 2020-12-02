@@ -14,6 +14,8 @@ import com.example.culturecontentapp.repository.TypeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,10 +36,12 @@ public class SubTypeService {
     this.typeRepository = typeRepository;
   }
 
-  public List<SubTypeResponse> findAll(Long typeId){
-    List<SubType> subTypes = repository.findByTypeId(typeId);
-    return toTypeDto(subTypes);
+  public Page<SubTypeResponse> findAll(Long typeId, Pageable pageable){
+    List<SubType> subTypes = repository.findAllByTypeId(typeId,pageable);
+//    List<SubType> subTypes = repository.findByTypeId(typeId);
+    return new PageImpl<>(toTypeDto(subTypes));
   }
+
 
   public SubTypeResponse findOne(Long typeId, Long id){
     SubType subType = repository.findByIdAndTypeId(id, typeId);
