@@ -42,8 +42,8 @@ public class ReviewService {
     this.modelMapper = modelMapper;
   }
 
-  public ResponseEntity<Page<ReviewResponse>> get(Long id, Pageable pageable) {
-    Page<Review> reviews = repository.findByCulturalOffer(id, pageable);
+  public ResponseEntity<Page<ReviewResponse>> get(Long culturalOfferId, Pageable pageable) {
+    Page<Review> reviews = repository.findByCulturalOffer(culturalOfferId, pageable);
 
     return new ResponseEntity<>(reviews.map(review -> modelMapper.map(review, ReviewResponse.class)), HttpStatus.OK);
   }

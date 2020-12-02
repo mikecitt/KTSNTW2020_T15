@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT r FROM Review as r WHERE culturaloffer_id = :id")
-    Page<Review> findByCulturalOffer(@Param("id") Long id, Pageable pageable);
+    @Query("SELECT r FROM Review as r WHERE culturaloffer_id = :culturalOfferId")
+    Page<Review> findByCulturalOffer(@Param("culturalOfferId") Long culturalOfferId, Pageable pageable);
 }
