@@ -3,6 +3,7 @@ package com.example.culturecontentapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,7 +33,7 @@ public class CulturalOffer extends Model {
   @Column(nullable = false)
   private String location;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "culturaloffer_id")
   private Set<Review> reviews;
 
@@ -108,7 +109,11 @@ public class CulturalOffer extends Model {
     this.subType = subType;
   }
 
-  public void addNews(News news){
+  public void addNews(News news) {
     this.news.add(news);
+  }
+
+  public void addReview(Review review) {
+    this.reviews.add(review);
   }
 }
