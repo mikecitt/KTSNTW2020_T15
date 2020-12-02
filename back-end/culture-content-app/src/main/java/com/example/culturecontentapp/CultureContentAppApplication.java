@@ -1,6 +1,6 @@
 package com.example.culturecontentapp;
 
-import com.example.culturecontentapp.storage.StorageService;
+// import com.example.culturecontentapp.storage.StorageService;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,11 +14,11 @@ public class CultureContentAppApplication {
 		SpringApplication.run(CultureContentAppApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner init(StorageService storageService) {
-		return args -> {
-			storageService.deleteAll();
-			storageService.init();
-		};
-	}
+	// @Bean
+	// CommandLineRunner init(StorageService storageService) {
+	// 	return args -> {
+	// 		storageService.deleteAll();
+	// 		storageService.init();
+	// 	};
+	// }
 }

@@ -45,4 +45,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     return new ResponseEntity<>(ex.getBindingResult().getAllErrors(), HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(CulturalOfferNotFoundException.class)
+  protected ResponseEntity<Object> handleCulturalOfferNotFoundException(CulturalOfferNotFoundException ex, WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
 }

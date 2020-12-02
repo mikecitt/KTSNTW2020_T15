@@ -107,4 +107,8 @@ public class CulturalOffer extends Model {
   public void setSubType(SubType subType) {
     this.subType = subType;
   }
+
+  public void addNews(News news){
+    this.news.add(news);
+  }
 }
