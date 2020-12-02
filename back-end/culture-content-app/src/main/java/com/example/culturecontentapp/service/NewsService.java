@@ -1,5 +1,8 @@
 package com.example.culturecontentapp.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.exception.NewsNotFoundException;
 import com.example.culturecontentapp.model.CulturalOffer;
@@ -53,5 +56,18 @@ public class NewsService {
 
   private NewsResponse convertToNewsResponse(News news){
     return mapper.map(news, NewsResponse.class);
+  }
+
+  public List<NewsResponse> getOffersNews(Long offerId) {
+    offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
+    List<News> news = repository.findByCulturalOffer(offerId);
+    return news.stream()
+            .map(this::convertToNewsResponse)
+            .collect(Collectors.toList());
+  }
+
+  public NewsResponse find(Long id){
+    News news = repository.findById(id).orElseThrow(()-> new NewsNotFoundException("The news doesn't exist."));
+    return convertToNewsResponse(news);
   }
 }

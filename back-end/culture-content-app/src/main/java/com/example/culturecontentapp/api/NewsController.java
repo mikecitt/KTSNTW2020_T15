@@ -1,5 +1,7 @@
 package com.example.culturecontentapp.api;
 
+import java.util.List;
+
 import com.example.culturecontentapp.payload.request.NewsRequest;
 import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.service.NewsService;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,8 +39,18 @@ public class NewsController {
     return new ResponseEntity<>(service.update(newsRequest, id), HttpStatus.OK);
   }
 
+  @GetMapping("/culturalOffer/{offerId}")
+  public ResponseEntity<List<NewsResponse>> getOffersNews(@PathVariable Long offerId){
+    return new ResponseEntity<>(service.getOffersNews(offerId), HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<NewsResponse> find(@PathVariable Long id){
+    return new ResponseEntity<>(service.find(id), HttpStatus.OK);
+  }
+
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteNews(@PathVariable Long id){
+  public ResponseEntity<Void> deleteNews(@PathVariable Long id){
     service.deleteNews(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
