@@ -3,7 +3,9 @@ package com.example.culturecontentapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -34,9 +36,10 @@ public class CulturalOffer extends Model {
   @JoinColumn(name = "culturaloffer_id")
   private Set<Review> reviews;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "culturaloffer_id")
-  private Set<Image> images;
+  @ElementCollection
+  @CollectionTable(name = "culturaloffer_images")
+  @Column(name = "image", nullable = false, length = 64)
+  private Set<String> images;
 
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "culturaloffer_id")
@@ -89,7 +92,7 @@ public class CulturalOffer extends Model {
     return this.reviews;
   }
 
-  public Set<Image> getImages() {
+  public Set<String> getImages() {
     return this.images;
   }
 
