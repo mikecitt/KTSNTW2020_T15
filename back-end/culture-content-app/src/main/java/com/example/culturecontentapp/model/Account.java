@@ -2,6 +2,7 @@ package com.example.culturecontentapp.model;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Role")
+@DiscriminatorValue("Administrator")
 public class Account extends Model {
 
   @Email(message = "Email is not valid")
