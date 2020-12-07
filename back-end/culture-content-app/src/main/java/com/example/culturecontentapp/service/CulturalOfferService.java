@@ -14,12 +14,15 @@ import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
 import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
 import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
+import com.example.culturecontentapp.payload.response.SelectCulturalOfferResponse;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
 import com.example.culturecontentapp.repository.SubTypeRepository;
 import com.example.culturecontentapp.storage.StorageService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CulturalOfferService {
+
+  private static String notFoundResponseMessage = "Cultural offer with the given name already exists";
 
   private final CulturalOfferRepository repository;
   private final SubTypeRepository subTypeRepository;
@@ -76,7 +81,7 @@ public class CulturalOfferService {
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
 
     if (!culturalOfferEntity.isPresent()) {
-      throw new CulturalOfferNotFoundException("Cultural offer with the given id not found");
+      throw new CulturalOfferNotFoundException(notFoundResponseMessage);
     }
 
     CulturalOffer culturalOffer = culturalOfferEntity.get();
@@ -100,11 +105,31 @@ public class CulturalOfferService {
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
 
     if (!culturalOfferEntity.isPresent()) {
-      throw new CulturalOfferNotFoundException("Cultural offer with the given id not found");
+      throw new CulturalOfferNotFoundException(notFoundResponseMessage);
     }
 
     repository.delete(culturalOfferEntity.get());
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+  public ResponseEntity<Page<SelectCulturalOfferResponse>> select(Pageable pageable) {
+
+    Page<CulturalOffer> culturalOffers = repository.findAll(pageable);
+
+    return new ResponseEntity<>(
+        culturalOffers.map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class)),
+        HttpStatus.OK);
+  }
+
+  public ResponseEntity<SelectCulturalOfferResponse> selectById(Long id) {
+
+    Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
+
+    if (!culturalOfferEntity.isPresent()) {
+      throw new CulturalOfferNotFoundException(notFoundResponseMessage);
+    }
+    return new ResponseEntity<>(modelMapper.map(culturalOfferEntity.get(), SelectCulturalOfferResponse.class),
+        HttpStatus.OK);
   }
 }
