@@ -8,6 +8,8 @@ public class AccountRegisterResponse {
 
     private String username;
 
+    private String token;
+
     public AccountRegisterResponse() {
     }
 
@@ -27,6 +29,14 @@ public class AccountRegisterResponse {
 
     public String getUsername() {
         return this.username;
+    }
+
+    public String getToken() {
+        return this.token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }
