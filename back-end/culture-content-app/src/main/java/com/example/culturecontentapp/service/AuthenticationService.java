@@ -1,10 +1,16 @@
 package com.example.culturecontentapp.service;
 
+import static com.example.culturecontentapp.security.jwt.Constants.EXPIRATION_TIME;
+import static com.example.culturecontentapp.security.jwt.Constants.PROVIDER;
+import static com.example.culturecontentapp.security.jwt.Constants.SECREY_KEY;
+
+import java.util.Date;
 import java.util.Optional;
 
 import com.example.culturecontentapp.exception.AccountAlreadyExistsException;
 import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.model.User;
+import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.AccountRegisterRequest;
 import com.example.culturecontentapp.payload.response.AccountRegisterResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
@@ -13,18 +19,28 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class AuthenticationService {
 
   private final AccountRepository repository;
+  private final AuthenticationManager authenticationManager;
   private final ModelMapper modelMapper;
 
   @Autowired
-  public AuthenticationService(AccountRepository repository, ModelMapper modelMapper) {
+  public AuthenticationService(AccountRepository repository, AuthenticationManager authenticationManager,
+      ModelMapper modelMapper) {
     this.repository = repository;
     this.modelMapper = modelMapper;
+    this.authenticationManager = authenticationManager;
   }
 
   public ResponseEntity<AccountRegisterResponse> register(AccountRegisterRequest request) {
@@ -46,5 +62,18 @@ public class AuthenticationService {
     AccountRegisterResponse response = modelMapper.map(account, AccountRegisterResponse.class);
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
+  }
+
+  public ResponseEntity<String> login(AccountLoginRequest request) {
+    Authentication authentication = authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    String token = Jwts.builder().setIssuer(PROVIDER).setSubject(request.getEmail()).setIssuedAt(new Date())
+        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .signWith(SignatureAlgorithm.HS512, SECREY_KEY).compact();
+
+    return new ResponseEntity<>(token, HttpStatus.OK);
   }
 }
