@@ -10,7 +10,6 @@ import java.util.Optional;
 import com.example.culturecontentapp.exception.AccountAlreadyExistsException;
 import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.model.User;
-import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.AccountRegisterRequest;
 import com.example.culturecontentapp.payload.response.AccountRegisterResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
@@ -23,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -34,13 +34,15 @@ public class AuthenticationService {
   private final AccountRepository repository;
   private final AuthenticationManager authenticationManager;
   private final ModelMapper modelMapper;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  public AuthenticationService(AccountRepository repository, AuthenticationManager authenticationManager,
-      ModelMapper modelMapper) {
+  public AuthenticationService(AccountRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder,
+      AuthenticationManager authenticationManager, ModelMapper modelMapper) {
     this.repository = repository;
     this.modelMapper = modelMapper;
     this.authenticationManager = authenticationManager;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   public ResponseEntity<AccountRegisterResponse> register(AccountRegisterRequest request) {
@@ -57,9 +59,20 @@ public class AuthenticationService {
     }
 
     Account account = modelMapper.map(request, User.class);
+    account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
     repository.save(account);
 
+    Authentication authentication = authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    String token = Jwts.builder().setIssuer(PROVIDER).setSubject(account.getEmail()).setIssuedAt(new Date())
+        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .signWith(SignatureAlgorithm.HS512, SECREY_KEY).compact();
+
     AccountRegisterResponse response = modelMapper.map(account, AccountRegisterResponse.class);
+    response.setToken(token);
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
@@ -76,4 +89,5 @@ public class AuthenticationService {
 
     return new ResponseEntity<>(token, HttpStatus.OK);
   }
+
 }
