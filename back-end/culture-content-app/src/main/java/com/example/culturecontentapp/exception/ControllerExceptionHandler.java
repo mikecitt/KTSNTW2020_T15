@@ -22,6 +22,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
+  @ExceptionHandler(AccountAlreadyActiveException.class)
+  protected ResponseEntity<Object> handleAccountAlreadyActiveException(AccountAlreadyActiveException ex,
+      WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
   @ExceptionHandler(AccountNotFoundException.class)
   protected ResponseEntity<Object> handleAccountNotFoundException(AccountNotFoundException ex, WebRequest request) {
 
@@ -60,6 +67,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleStorageException(StorageException ex, WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
+
   @ExceptionHandler(NewsNotFoundException.class)
   protected ResponseEntity<Object> handleNewsNotFoundException(NewsNotFoundException ex, WebRequest request) {
 
@@ -79,9 +87,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
-  
+
   @ExceptionHandler(CulturalOfferNotFoundException.class)
-  protected ResponseEntity<Object> handleCulturalOfferNotFoundException(CulturalOfferNotFoundException ex, WebRequest request) {
+  protected ResponseEntity<Object> handleCulturalOfferNotFoundException(CulturalOfferNotFoundException ex,
+      WebRequest request) {
 
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
