@@ -39,6 +39,6 @@ public class AccountDetailsService implements UserDetailsService {
     List<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("ROLE_" + (account instanceof Account ? "ADMIN" : "USER")));
 
-    return new User(account.getEmail(), account.getPassword(), authorities);
+    return new User(account.getEmail(), account.getPassword(), account.isActive(), true, true, true, authorities);
   }
 }
