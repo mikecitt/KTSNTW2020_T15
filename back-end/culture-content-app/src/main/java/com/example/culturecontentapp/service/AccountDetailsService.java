@@ -37,7 +37,7 @@ public class AccountDetailsService implements UserDetailsService {
     Account account = entity.get();
 
     List<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("ROLE_" + (account instanceof Account ? "ADMIN" : "USER")));
+    authorities.add(new SimpleGrantedAuthority("ROLE_" + (account.getClass() == Account.class ? "ADMIN" : "USER")));
 
     return new User(account.getEmail(), account.getPassword(), account.isActive(), true, true, true, authorities);
   }
