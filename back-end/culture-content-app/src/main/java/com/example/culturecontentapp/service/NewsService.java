@@ -14,6 +14,9 @@ import com.example.culturecontentapp.repository.NewsRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,12 +61,12 @@ public class NewsService {
     return mapper.map(news, NewsResponse.class);
   }
 
-  public List<NewsResponse> getOffersNews(Long offerId) {
+  public Page<NewsResponse> getOffersNews(Long offerId, Pageable pageable) {
     offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
-    List<News> news = repository.findByCulturalOffer(offerId);
-    return news.stream()
+    List<News> news = repository.findByCulturalOffer(offerId, pageable);
+    return new PageImpl<>(news.stream()
             .map(this::convertToNewsResponse)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
   }
 
   public NewsResponse find(Long id){
