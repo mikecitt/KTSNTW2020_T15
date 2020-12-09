@@ -1,12 +1,13 @@
 package com.example.culturecontentapp.api;
 
-import java.util.List;
 
 import com.example.culturecontentapp.payload.request.NewsRequest;
 import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.service.NewsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,8 +41,8 @@ public class NewsController {
   }
 
   @GetMapping("/culturalOffer/{offerId}")
-  public ResponseEntity<List<NewsResponse>> getOffersNews(@PathVariable Long offerId){
-    return new ResponseEntity<>(service.getOffersNews(offerId), HttpStatus.OK);
+  public ResponseEntity<Page<NewsResponse>> getOffersNews(@PathVariable Long offerId, Pageable pageable){
+    return new ResponseEntity<>(service.getOffersNews(offerId, pageable), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
