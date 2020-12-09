@@ -7,6 +7,8 @@ import com.example.culturecontentapp.model.Account;
 import org.springframework.context.ApplicationEvent;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
+
+    private static final long serialVersionUID = 1L;
     private String appUrl;
     private Locale locale;
     private Account account;

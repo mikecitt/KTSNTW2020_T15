@@ -3,7 +3,6 @@ package com.example.culturecontentapp.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.example.culturecontentapp.model.VerificationToken;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.AccountRegisterRequest;
 import com.example.culturecontentapp.payload.response.AccountRegisterResponse;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
   private final AuthenticationService service;
