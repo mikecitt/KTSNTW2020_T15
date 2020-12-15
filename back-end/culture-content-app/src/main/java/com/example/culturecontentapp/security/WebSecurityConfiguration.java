@@ -38,8 +38,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
         .antMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/auth/activate", "/api/auth/resend", "/api/review").permitAll().anyRequest()
-        .authenticated().and()
+        .antMatchers(HttpMethod.GET, "/api/auth/activate", "/api/auth/resend", "/api/review", "/api/cultural-offer/",
+            "/api/cultural-offer/**", "/api/news/**", "/api/news/culturalOffer/**", "/api/review", "/api/sub-types",
+            "/api/sub-types/**", "/api/types", "/api/types/**")
+        .permitAll().anyRequest().authenticated().and()
         .addFilterBefore(new TokenAuthenticationFilter(accountDetailsService), BasicAuthenticationFilter.class).cors()
         .and().csrf().disable();
   }

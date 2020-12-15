@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,18 +35,21 @@ public class CulturalOfferController {
     this.service = service;
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
   public ResponseEntity<NewCulturalOfferResponse> insert(@RequestParam Long subTypeId,
       @RequestPart("request") @Valid NewCulturalOfferRequest request, @RequestPart("files") MultipartFile[] files) {
     return service.insert(subTypeId, request, files);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{id}")
   public ResponseEntity<EditCulturalOfferResponse> update(@PathVariable Long id,
       @RequestPart("request") @Valid NewCulturalOfferRequest request, @RequestPart("files") MultipartFile[] files) {
     return service.update(id, request, files);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable Long id) {
     return service.delete(id);
