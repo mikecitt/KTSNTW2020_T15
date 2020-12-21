@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class NewsService {
@@ -34,6 +35,7 @@ public class NewsService {
     this.mapper = mapper;
   }
 
+  @Transactional
   public NewsResponse create(NewsRequest newsRequest, Long offerId){
     CulturalOffer offer = offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
     News news = mapper.map(newsRequest, News.class);
