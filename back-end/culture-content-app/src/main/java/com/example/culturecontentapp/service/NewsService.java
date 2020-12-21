@@ -35,7 +35,6 @@ public class NewsService {
     this.mapper = mapper;
   }
 
-  @Transactional
   public NewsResponse create(NewsRequest newsRequest, Long offerId){
     CulturalOffer offer = offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
     News news = mapper.map(newsRequest, News.class);

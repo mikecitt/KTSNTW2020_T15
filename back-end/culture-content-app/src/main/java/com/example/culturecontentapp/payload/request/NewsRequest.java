@@ -1,6 +1,7 @@
 package com.example.culturecontentapp.payload.request;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,10 @@ public class NewsRequest {
   private LocalDateTime date;
 
   private Set<String> images;
+
+  public NewsRequest(){
+    images = new HashSet<>();
+  }  
 
   public String getText() {
     return this.text;

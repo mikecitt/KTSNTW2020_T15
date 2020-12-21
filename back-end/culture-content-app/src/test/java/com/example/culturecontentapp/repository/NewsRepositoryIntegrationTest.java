@@ -1,6 +1,6 @@
 package com.example.culturecontentapp.repository;
 
-import static com.example.culturecontentapp.constants.NewsConstants.CATEGORY_ID;
+import static com.example.culturecontentapp.constants.NewsConstants.OFFER_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.DB_NEWS_SIZE;
 import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_PAGE;
 import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_SIZE;
@@ -30,7 +30,7 @@ public class NewsRepositoryIntegrationTest {
     @Test
     public void testFindByCulturalOffer() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
-        List<News> found = newsRepository.findByCulturalOffer(CATEGORY_ID,pageable);
+        List<News> found = newsRepository.findByCulturalOffer(OFFER_ID,pageable);
         assertEquals(DB_NEWS_SIZE, found.size());
     }
     
