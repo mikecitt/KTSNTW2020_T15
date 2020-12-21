@@ -1,7 +1,9 @@
 package com.example.culturecontentapp.service;
 
+import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.TypeRequest;
 import com.example.culturecontentapp.payload.response.TypeResponse;
+import com.example.culturecontentapp.repository.TypeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Optional;
 
 import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static org.junit.Assert.assertEquals;
@@ -22,6 +26,9 @@ public class TypeServiceIntegrationTest {
 
     @Autowired
     private TypeService typeService;
+
+    @Autowired
+    private TypeRepository typeRepository;
 
     @Test
     public void testFindAll(){
@@ -42,6 +49,24 @@ public class TypeServiceIntegrationTest {
         TypeResponse createdType = typeService.create(newType);
 
         assertEquals(NEW_TYPE, createdType.getName());
+
+        //obrisemo dodati
+        Optional<Type> type = typeRepository.findById(createdType.getId());
+        typeRepository.delete(type.get());
     }
 
+    @Test
+    public void testUpdate(){
+        TypeRequest newType = new TypeRequest(NEW_TYPE);
+        TypeResponse updatedType = typeService.update(newType, DB_TYPE_ID);
+
+        assertEquals(NEW_TYPE, updatedType.getName());
+    }
+
+    @Test
+    public void testDelete(){
+        long BEFORE_DELETING = typeRepository.count();
+        typeService.delete(DB_TYPE_WITHOUT_SUBTYPE_ID);
+        assertEquals(BEFORE_DELETING - 1, typeRepository.count());
+    }
 }

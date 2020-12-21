@@ -30,4 +30,6 @@ public class TypeRepositoryIntegrationTest {
         Type culturalOfferType = typeRepository.findByNameAndIdNot(DB_TYPE, DB_TYPE_ID);
         assertNull(culturalOfferType);
     }
+
+
 }

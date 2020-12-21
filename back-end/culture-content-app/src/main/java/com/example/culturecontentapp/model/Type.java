@@ -3,10 +3,7 @@ package com.example.culturecontentapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -20,6 +17,10 @@ public class Type extends Model {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
   private Set<SubType> subTypes;
+
+  public void update(String newName){
+    this.name = name;
+  }
 
   public Type() {
     this.subTypes = new HashSet<>();
