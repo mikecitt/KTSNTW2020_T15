@@ -13,6 +13,7 @@ public class NewsConstants {
 
     public static final long DB_NEWS_SIZE = 1;
 
+    public static final String DB_NEWS = "Najnovija vest o festivalu";
     public static final String NEWS = "blablablabla";
     public static final LocalDateTime NEWS_TIME = LocalDateTime.of(2017, 1, 14, 10, 34);
 

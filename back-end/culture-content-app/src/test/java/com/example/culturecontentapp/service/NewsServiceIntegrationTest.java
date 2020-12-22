@@ -30,9 +30,7 @@ public class NewsServiceIntegrationTest {
     @Test   
     @Transactional
     public void testCreate(){
-        NewsRequest newsRequest = new NewsRequest();
-        newsRequest.setText(NEWS);
-        newsRequest.setDate(NEWS_TIME);
+        NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
         NewsResponse created = newsService.create(newsRequest, OFFER_ID);
         assertEquals(newsRequest.getText(), created.getText());
     }
@@ -40,9 +38,7 @@ public class NewsServiceIntegrationTest {
     @Test
     @Transactional
     public void testUpdate(){
-        NewsRequest newsRequest = new NewsRequest();
-        newsRequest.setText(NEWS);
-        newsRequest.setDate(NEWS_TIME);
+        NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
         NewsResponse created = newsService.update(newsRequest, NEWS_ID);
         assertEquals(NEWS, created.getText());
     }

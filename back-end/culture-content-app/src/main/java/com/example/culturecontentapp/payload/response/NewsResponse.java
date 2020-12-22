@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class NewsResponse {
+
+    private Long id;
     
     @NotBlank(message = "Text cannot be blank")
     @Size(min = 10, max = 256, message = "Description must be between 10 and 256 characters")
@@ -21,6 +23,10 @@ public class NewsResponse {
 
     public NewsResponse(){
       images = new HashSet<>();
+    }
+
+    public Long getId(){
+      return this.id;
     }
   
     public String getText() {
