@@ -206,4 +206,36 @@ public class NewsControllerIntegrationTest {
         assertEquals("Cultural offer doesn't exist", responseEntity.getBody());
         
     }
+
+    @Test
+    @Transactional
+    public void testFindNews(){
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        ResponseEntity<NewsResponse> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
+                                        HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){}, NEWS_ID);
+        assertEquals(NEWS_ID, responseEntity.getBody().getId());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+    }
+
+    @Test
+    @Transactional
+    public void testFindNewsDoesntExist(){
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
+                                        HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){}, BAD_NEWS_ID);
+        assertEquals("The news doesn't exist.", responseEntity.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+
+    }
 }
