@@ -7,6 +7,9 @@ public class NewsConstants {
     public static final Long NEWS_ID = 1l;
     public static final Long OFFER_ID = 1l;
 
+    public static final Long BAD_OFFER_ID = -1l;
+    public static final Long BAD_NEWS_ID = -1l;
+
     public static final Integer PAGEABLE_PAGE = 0;
     public static final Integer PAGEABLE_SIZE = 10;
     public static final Integer PAGEABLE_TOTAL_ELEMENTS = 10;

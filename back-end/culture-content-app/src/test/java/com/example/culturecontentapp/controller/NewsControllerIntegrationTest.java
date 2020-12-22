@@ -5,6 +5,8 @@ import static com.example.culturecontentapp.constants.NewsConstants.NEWS_TIME;
 import static com.example.culturecontentapp.constants.NewsConstants.NEWS_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.DB_NEWS;
 import static com.example.culturecontentapp.constants.NewsConstants.OFFER_ID;
+import static com.example.culturecontentapp.constants.NewsConstants.BAD_OFFER_ID;
+import static com.example.culturecontentapp.constants.NewsConstants.BAD_NEWS_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_PAGE;
 import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_SIZE;
 import static com.example.culturecontentapp.constants.NewsConstants.DB_ADMIN_EMAIL;
@@ -78,7 +80,8 @@ public class NewsControllerIntegrationTest {
 
         HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
         
-        ResponseEntity<NewsResponse> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{offer_id}", HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){}, 1);
+        ResponseEntity<NewsResponse> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{offer_id}",
+                                                    HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){}, OFFER_ID);
 
         NewsResponse newsResponse = responseEntity.getBody();
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -96,6 +99,27 @@ public class NewsControllerIntegrationTest {
     @Test
     @Transactional
     @Rollback(true)
+    public void testCreateNewsCulturalOfferDoesntExist(){        
+        
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
+
+        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{offer_id}",
+                                                    HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){}, BAD_OFFER_ID);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals("Cultural offer doesn't exist", responseEntity.getBody());
+        
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
     public void testUpdateNews(){
 
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
@@ -105,7 +129,8 @@ public class NewsControllerIntegrationTest {
         NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
 
         HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
-        ResponseEntity<NewsResponse> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}", HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>(){}, 1);
+        ResponseEntity<NewsResponse> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
+                                            HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>(){}, 1);
 
         NewsResponse newsResponse = responseEntity.getBody();
 
@@ -114,13 +139,31 @@ public class NewsControllerIntegrationTest {
         assertEquals(NEWS, newsResponse.getText());
         assertEquals(NEWS_ID, newsResponse.getId());
 
-        // NewsResponse dbNewsResponse = newsService.find(NEWS_ID);
         assertEquals(NEWS_ID, newsResponse.getId());
         assertEquals(NEWS, newsResponse.getText());
 
-        // dbNewsResponse.setText(DB_NEWS);
         newsRequest.setText(DB_NEWS);
         newsService.update(newsRequest, NEWS_ID);
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testUpdateNewsDoesntExist(){
+
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
+
+        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
+                                        HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>(){}, BAD_NEWS_ID);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals("The news you want to update doesn't exist.", responseEntity.getBody());
 
     }
 }
