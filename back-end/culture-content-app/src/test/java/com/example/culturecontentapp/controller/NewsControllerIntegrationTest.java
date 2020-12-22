@@ -21,6 +21,7 @@ import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.NewsRequest;
 import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.service.NewsService;
+import com.example.culturecontentapp.util.RestPageImpl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
@@ -165,5 +167,43 @@ public class NewsControllerIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertEquals("The news you want to update doesn't exist.", responseEntity.getBody());
 
+    }
+
+    @Test
+    @Transactional
+    public void testGetOffersNews(){
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
+        ParameterizedTypeReference<RestPageImpl<NewsResponse>> responseType = new ParameterizedTypeReference<RestPageImpl<NewsResponse>>() { };
+
+        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        ResponseEntity<RestPageImpl<NewsResponse>> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/culturalOffer/{offer_id}",
+                                        HttpMethod.GET, httpEntity, responseType, OFFER_ID);
+        
+        List<NewsResponse> news = responseEntity.getBody().getContent();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(DB_NEWS, news.get(0).getText());
+        
+    }
+
+    @Test
+    @Transactional
+    public void testGetOffersNewsOfferDoesntExist(){
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/culturalOffer/{offer_id}",
+                                        HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){}, BAD_OFFER_ID);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals("Cultural offer doesn't exist", responseEntity.getBody());
+        
     }
 }
