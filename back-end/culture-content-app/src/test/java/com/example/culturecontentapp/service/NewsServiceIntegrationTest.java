@@ -2,6 +2,7 @@ package com.example.culturecontentapp.service;
 
 import static com.example.culturecontentapp.constants.NewsConstants.OFFER_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.NEWS;
+import static com.example.culturecontentapp.constants.NewsConstants.NEWS_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.NEWS_TIME;
 import static org.junit.Assert.assertEquals;
 
@@ -31,7 +32,18 @@ public class NewsServiceIntegrationTest {
     public void testCreate(){
         NewsRequest newsRequest = new NewsRequest();
         newsRequest.setText(NEWS);
+        newsRequest.setDate(NEWS_TIME);
         NewsResponse created = newsService.create(newsRequest, OFFER_ID);
         assertEquals(newsRequest.getText(), created.getText());
+    }
+
+    @Test
+    @Transactional
+    public void testUpdate(){
+        NewsRequest newsRequest = new NewsRequest();
+        newsRequest.setText(NEWS);
+        newsRequest.setDate(NEWS_TIME);
+        NewsResponse created = newsService.update(newsRequest, NEWS_ID);
+        assertEquals(NEWS, created.getText());
     }
 }
