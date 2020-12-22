@@ -176,10 +176,9 @@ public class NewsControllerIntegrationTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
-        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
         ParameterizedTypeReference<RestPageImpl<NewsResponse>> responseType = new ParameterizedTypeReference<RestPageImpl<NewsResponse>>() { };
 
-        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
         ResponseEntity<RestPageImpl<NewsResponse>> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/culturalOffer/{offer_id}",
                                         HttpMethod.GET, httpEntity, responseType, OFFER_ID);
         
@@ -197,8 +196,7 @@ public class NewsControllerIntegrationTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
-        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
-        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/culturalOffer/{offer_id}",
                                         HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){}, BAD_OFFER_ID);
 
@@ -214,8 +212,7 @@ public class NewsControllerIntegrationTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
-        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
-        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
         ResponseEntity<NewsResponse> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
                                         HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){}, NEWS_ID);
         assertEquals(NEWS_ID, responseEntity.getBody().getId());
@@ -230,12 +227,54 @@ public class NewsControllerIntegrationTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
-        NewsRequest newsRequest = new NewsRequest(NEWS_ID, NEWS, NEWS_TIME);
-        HttpEntity<Object> httpEntity = new HttpEntity<>(newsRequest, headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
                                         HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){}, BAD_NEWS_ID);
         assertEquals("The news doesn't exist.", responseEntity.getBody());
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testDeleteNews(){
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        NewsResponse created = newsService.create(new NewsRequest(NEWS, NEWS_TIME), OFFER_ID);
+
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
+        int size = newsService.getOffersNews(OFFER_ID, pageable).getContent().size();
+
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
+                                        HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>(){}, NEWS_ID + 2);
+
+        int sizeAfter = newsService.getOffersNews(OFFER_ID, pageable).getContent().size();
+        
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(size - 1, sizeAfter);
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testDeleteNewsDoesntExist(){
+        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+
+        HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://localhost:8080/api/news/{id}",
+                                        HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>(){}, BAD_NEWS_ID);
+
+        
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals("The news you want to delete doesn't exist.", responseEntity.getBody());
 
     }
 }
