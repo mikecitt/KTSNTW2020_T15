@@ -2,12 +2,14 @@ package com.example.culturecontentapp.service;
 
 import static com.example.culturecontentapp.constants.NewsConstants.OFFER_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.BAD_OFFER_ID;
+import static com.example.culturecontentapp.constants.NewsConstants.BAD_NEWS_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.NEWS;
 import static com.example.culturecontentapp.constants.NewsConstants.NEWS_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.NEWS_TIME;
 import static org.junit.Assert.assertEquals;
 
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
+import com.example.culturecontentapp.exception.NewsNotFoundException;
 import com.example.culturecontentapp.payload.request.NewsRequest;
 import com.example.culturecontentapp.payload.response.NewsResponse;
 
@@ -49,5 +51,11 @@ public class NewsServiceIntegrationTest {
         NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
         NewsResponse created = newsService.update(newsRequest, NEWS_ID);
         assertEquals(NEWS, created.getText());
+    }
+
+    @Test(expected = NewsNotFoundException.class)
+    @Transactional
+    public void testUpdateNewsDoesntExist(){
+        newsService.update(new NewsRequest(NEWS, NEWS_TIME), BAD_NEWS_ID);
     }
 }
