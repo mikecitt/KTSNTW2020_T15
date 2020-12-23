@@ -18,6 +18,10 @@ public class TypeRequest {
     public TypeRequest(String name) {
         this.name = name;
     }
+    public TypeRequest(Long id, String name){
+        this.id = id;
+        this.name = name;
+    }
 
     public String getName() {
         return this.name;

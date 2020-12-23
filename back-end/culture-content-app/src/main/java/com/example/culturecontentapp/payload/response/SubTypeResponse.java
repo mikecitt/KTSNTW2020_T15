@@ -7,6 +7,8 @@ public class SubTypeResponse {
 
     private String name;
 
+    private Long typeId;
+
     public SubTypeResponse() {
     }
 
@@ -29,4 +31,6 @@ public class SubTypeResponse {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Long getTypeId(){return typeId;}
 }

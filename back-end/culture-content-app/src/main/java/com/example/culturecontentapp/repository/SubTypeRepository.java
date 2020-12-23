@@ -5,6 +5,7 @@ import com.example.culturecontentapp.model.SubType;
 import com.fasterxml.jackson.databind.jsontype.SubtypeResolver;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Set;
 
 @Repository
 public interface SubTypeRepository extends JpaRepository<SubType, Long> {
+
+    Long countAllByTypeId(Long id);
 
     List<SubType> findAllByTypeId(Long id, Pageable pageable);
 
@@ -21,4 +24,6 @@ public interface SubTypeRepository extends JpaRepository<SubType, Long> {
 
     SubType findByNameAndIdNot(String name, Long id);
 
+    @Query("SELECT s.name FROM SubType s WHERE s.id=:id and s.type.id=:typeId")
+    String findNameByIdAndTypeId(Long id, Long typeId);
 }

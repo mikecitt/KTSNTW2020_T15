@@ -16,6 +16,11 @@ public class SubTypeRequest {
         this.name = name;
     }
 
+    public SubTypeRequest(Long dbSubtypeId, String newSubtypeName) {
+        this.id = dbSubtypeId;
+        this.name = newSubtypeName;
+    }
+
     public String getName() {
         return this.name;
     }

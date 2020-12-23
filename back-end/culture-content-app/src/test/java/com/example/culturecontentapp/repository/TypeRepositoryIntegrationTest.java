@@ -9,6 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,4 +24,12 @@ public class TypeRepositoryIntegrationTest {
         Type culturalContentType = typeRepository.findByName(DB_TYPE);
         assertEquals(DB_TYPE, culturalContentType.getName());
     }
+
+    @Test
+    public void testFindByNameAndIdNot(){
+        Type culturalOfferType = typeRepository.findByNameAndIdNot(DB_TYPE, DB_TYPE_ID);
+        assertNull(culturalOfferType);
+    }
+
+
 }

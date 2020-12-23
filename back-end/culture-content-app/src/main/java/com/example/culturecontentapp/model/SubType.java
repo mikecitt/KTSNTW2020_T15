@@ -1,10 +1,10 @@
 package com.example.culturecontentapp.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.databind.jsontype.SubtypeResolver;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -16,12 +16,16 @@ public class SubType extends Model {
   @Column(nullable = false, unique = true)
   private String name;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "type_id")
   private Type type;
 
   public SubType() {
 
+  }
+
+  public void update(String newName){
+    this.name = name;
   }
 
   public SubType(String name) {
