@@ -1,13 +1,13 @@
 package com.example.culturecontentapp.controller;
-
+import com.example.culturecontentapp.exception.SubTypeAlreadyExistsException;
+import com.example.culturecontentapp.exception.SubTypeHasCulturalOffersException;
 import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.SubTypeRequest;
-import com.example.culturecontentapp.payload.request.TypeRequest;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
-import com.example.culturecontentapp.payload.response.TypeResponse;
 import com.example.culturecontentapp.repository.SubTypeRepository;
 import com.example.culturecontentapp.service.SubTypeService;
+import com.example.culturecontentapp.util.RestPageImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import static com.example.culturecontentapp.constants.SubTypeConstants.*;
-import static com.example.culturecontentapp.constants.TypeConstants.DB_TYPE_ID;
+import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static com.example.culturecontentapp.constants.UserConstants.DB_ADMIN_EMAIL;
 import static org.junit.Assert.*;
 
@@ -45,9 +44,23 @@ public class SubTypeControllerIntegrationTest {
     }
 
     @Test
-    public void whenValidIdThenSubTypeShouldBeFound(){
+    public void testGetAllCulturalOfferTypes(){
+
+        ResponseEntity<RestPageImpl<SubTypeResponse>> responseEntity =
+                restTemplate.exchange("/api/sub-types?typeId=1&page=0&size=2", HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>(){});
+
+        RestPageImpl<SubTypeResponse> types = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, types.getContent().size());
+        assertEquals(DB_SUBTYPE_NAME, types.getContent().get(0).getName());
+    }
+
+    @Test
+    public void getById_validRequest_willReturnSucceed(){
         ResponseEntity<SubTypeResponse> responseEntity =
-                restTemplate.exchange("/api/sub-types?typeId=1", HttpMethod.GET,
+                restTemplate.exchange("/api/sub-types/1?typeId=1", HttpMethod.GET,
                         null,new ParameterizedTypeReference<>() {});
 
         SubTypeResponse response = responseEntity.getBody();
@@ -57,9 +70,19 @@ public class SubTypeControllerIntegrationTest {
     }
 
     @Test
-    @Transactional
-    @Rollback
-    public void whenValidRequestThenSubTypeShouldBeCreatedsuccessfully(){
+    public void getById_idDoesntExist_willReturnNotFound(){
+        long TRASH_ID = 111L;
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange(String.format("/api/sub-types/%d?typeId=1",TRASH_ID), HttpMethod.GET,
+                        null,new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void create_validRequest_willReturnSucceed(){
         long BEFORE_CREATE_SIZE = repository.count();
 
         login(DB_ADMIN_EMAIL, "qwerty");
@@ -80,10 +103,30 @@ public class SubTypeControllerIntegrationTest {
         SubType sub = repository.findAll().get((int) BEFORE_CREATE_SIZE);
         assertEquals(NEW_SUBTYPE_NAME, sub.getName());
 
-        repository.delete(sub);
     }
     @Test
-    public void whenValidRequestThenSubTypeShouldBeUpdatedSuccessfully(){
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void create_subTypeNameAlreadyExists_willReturnUnprocessable(){
+        long BEFORE_CREATE_SIZE = repository.countAllByTypeId(DB_TYPE_ID);
+
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubTypeRequest(DB_SUBTYPE_NAME),headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange("/api/sub-types?typeId=1", HttpMethod.POST,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        assertEquals(BEFORE_CREATE_SIZE, repository.count());
+
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void update_validRequest_willReturnSucceed(){
         login(DB_ADMIN_EMAIL, "qwerty");
 
         HttpHeaders headers = new HttpHeaders();
@@ -102,25 +145,80 @@ public class SubTypeControllerIntegrationTest {
         assertNotNull(updated);
         assertEquals(NEW_SUBTYPE_NAME,updated.getName());
 
-        updated.setName(DB_SUBTYPE_NAME);
-        repository.save(updated);
     }
+
     @Test
-    public void whenGivenSubTypeIsWithoutOfferThenSubTypeShouldBeDeletedSuccessfully(){
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void update_SubTypeNameAlreadyExists_willReturnUnprocessable(){
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>
+                (new SubTypeRequest(DB_SUBTYPE_ID,DB_SUBTYPE_WITHOUT_CULTURAL_OFFER_NAME),headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange("/api/sub-types/1?typeId=1", HttpMethod.PUT,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void delete_idWithoutCulturalOffer_willReturnSucceed(){
         long SIZE_BEFORE_DELETING = repository.countAllByTypeId(DB_TYPE_ID);
         login(DB_ADMIN_EMAIL, "qwerty");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
-        HttpEntity<Object> httpEntity = new HttpEntity<Object>(new SubTypeRequest(DB_SUBTYPE_ID,NEW_SUBTYPE_NAME),headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(null,headers);
 
         ResponseEntity<Void> responseEntity =
-                restTemplate.exchange("/api/sub-types/1?typeId=1", HttpMethod.DELETE,
+                restTemplate.exchange(String.format("/api/sub-types/%d?typeId=1",SUBTYPE_ID_WITHOUT_CULTURAL_OFFER),
+                        HttpMethod.DELETE, //treba id da bude 2
                         httpEntity, new ParameterizedTypeReference<>() {});
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(SIZE_BEFORE_DELETING - 1, (long) repository.countAllByTypeId(DB_TYPE_ID));
-
     }
 
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void delete_subTypeIdWithCulturalOffer_willReturnUnprocessable(){
+        long SIZE_BEFORE_DELETING = repository.countAllByTypeId(DB_TYPE_ID);
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(null,headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange(String.format("/api/sub-types/%d?typeId=1",DB_SUBTYPE_ID),
+                        HttpMethod.DELETE, //treba id da bude 2
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        assertEquals(SIZE_BEFORE_DELETING , (long) repository.countAllByTypeId(DB_TYPE_ID));
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void delete_subTypeIdDoesntExist_willReturnNotFound(){
+        long SIZE_BEFORE_DELETING = repository.countAllByTypeId(DB_TYPE_ID);
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(null,headers);
+
+        long TRASH_ID = 1234L;
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange(String.format("/api/sub-types/%d?typeId=1",TRASH_ID),
+                        HttpMethod.DELETE,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals(SIZE_BEFORE_DELETING , (long) repository.countAllByTypeId(DB_TYPE_ID));
+    }
 }

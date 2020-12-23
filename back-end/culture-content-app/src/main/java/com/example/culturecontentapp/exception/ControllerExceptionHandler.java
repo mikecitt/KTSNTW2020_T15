@@ -52,7 +52,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(SubTypeHasCulturalOffersException.class)
-  protected ResponseEntity<Object> handleSubTypeHasCulturalOffersException(SubTypeAlreadyExistsException ex,
+  protected ResponseEntity<Object> handleSubTypeHasCulturalOffersException(SubTypeHasCulturalOffersException ex,
       WebRequest request){
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
