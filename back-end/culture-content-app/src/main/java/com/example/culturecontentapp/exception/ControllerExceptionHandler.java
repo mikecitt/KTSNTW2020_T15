@@ -35,23 +35,29 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler
+  @ExceptionHandler(TypeNotFoundException.class)
   protected ResponseEntity<Object> handleTypeNotFoundException(TypeNotFoundException ex, WebRequest request) {
 
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler
+  @ExceptionHandler(TypeAlreadyExistsException.class)
   protected ResponseEntity<Object> handleTypeAlreadyExistsException(TypeAlreadyExistsException ex, WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
-  @ExceptionHandler
+  @ExceptionHandler(SubTypeNotFoundException.class)
   protected ResponseEntity<Object> handleSubTypeNotFoundException(SubTypeNotFoundException ex, WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler
+  @ExceptionHandler(SubTypeHasCulturalOffersException.class)
+  protected ResponseEntity<Object> handleSubTypeHasCulturalOffersException(SubTypeHasCulturalOffersException ex,
+      WebRequest request){
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(SubTypeAlreadyExistsException.class)
   protected ResponseEntity<Object> handleSubTypeAlreadyExistsException(SubTypeAlreadyExistsException ex,
       WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

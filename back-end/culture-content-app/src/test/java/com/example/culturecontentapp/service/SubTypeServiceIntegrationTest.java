@@ -1,5 +1,6 @@
 package com.example.culturecontentapp.service;
 
+import com.example.culturecontentapp.exception.SubTypeHasCulturalOffersException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
 import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.model.Type;
@@ -19,6 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
@@ -27,6 +29,7 @@ import java.util.Optional;
 import static com.example.culturecontentapp.constants.SubTypeConstants.*;
 import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 @RunWith(SpringRunner.class)
@@ -38,8 +41,6 @@ public class SubTypeServiceIntegrationTest {
     private SubTypeService service;
     @Autowired
     private SubTypeRepository repository;
-    @Autowired
-    private TypeRepository typeRepository;
 
     @Test
     public void testFindAll(){
@@ -55,37 +56,47 @@ public class SubTypeServiceIntegrationTest {
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Transactional
+    @Rollback(true)
     public void testCreate(){
+        long BEFORE_CREATE = repository.countAllByTypeId(DB_TYPE_ID);
         SubTypeRequest newTypeRequest = new SubTypeRequest(NEW_SUBTYPE_NAME);
         SubTypeResponse createdSubType = service.create(newTypeRequest,DB_TYPE_ID);
 
         Long typeId = createdSubType.getTypeId();
         assertEquals(NEW_SUBTYPE_NAME, createdSubType.getName());
         assertEquals(DB_TYPE_ID, typeId);
+        assertEquals(BEFORE_CREATE + 1, (long) repository.countAllByTypeId(typeId));
 
-        SubType subType = repository.findByIdAndTypeId(createdSubType.getId(),typeId);
-        repository.delete(subType);
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Transactional
+    @Rollback(true)
     public void testUpdate(){
         SubTypeRequest newTypeRequest = new SubTypeRequest(NEW_SUBTYPE_NAME);
-        String odlSubTypeName = repository.findNameByIdAndTypeId(DB_SUBTYPE_ID,DB_TYPE_ID);
         SubTypeResponse updated = service.update(newTypeRequest,DB_TYPE_ID,DB_SUBTYPE_ID);
 
         assertEquals(NEW_SUBTYPE_NAME, updated.getName());
 
-        //vratimo vrednost
-        SubType subType = repository.findByIdAndTypeId(DB_SUBTYPE_ID, DB_TYPE_ID);
-        subType.update(odlSubTypeName);
-        repository.save(subType);
     }
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Transactional
+    @Rollback(true)
     public void testDelete(){
+        long BEFORE_DELETING = repository.countAllByTypeId(DB_TYPE_ID);
+        service.delete(DB_TYPE_ID, SUBTYPE_ID_WITHOUT_CULTURAL_OFFER);
+        long size = repository.countAllByTypeId(DB_TYPE_ID);
+        assertEquals(BEFORE_DELETING-1, size);
+        SubType type = repository.findByIdAndTypeId(SUBTYPE_ID_WITHOUT_CULTURAL_OFFER, DB_TYPE_ID);
+        assertNull(type);
+    }
+
+    @Test(expected = SubTypeHasCulturalOffersException.class)
+    @Transactional
+    @Rollback(true)
+    public void testDeleteSubTypeHasCulturalOfferWillReturnException(){
         long BEFORE_DELETING = repository.countAllByTypeId(DB_TYPE_ID);
         service.delete(DB_TYPE_ID, DB_SUBTYPE_ID);
         long size = repository.countAllByTypeId(DB_TYPE_ID);

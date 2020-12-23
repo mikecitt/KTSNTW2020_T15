@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 import org.springframework.test.context.TestPropertySource;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SuiteTypeTests.class,  NewsRepositoryIntegrationTest.class})
+@Suite.SuiteClasses({SuiteSubTypeTests.class})
 @TestPropertySource("classpath:test.properties")
 public class SuiteAll {
 
