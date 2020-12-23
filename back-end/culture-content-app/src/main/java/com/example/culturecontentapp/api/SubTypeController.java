@@ -11,10 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> feat/update-type
 @RestController
 @RequestMapping("/api")
 public class SubTypeController {
@@ -26,13 +22,8 @@ public class SubTypeController {
     this.service = service;
   }
 
-<<<<<<< HEAD
-  @GetMapping(value = "{typeId}/sub-types")
-  public ResponseEntity<Page<SubTypeResponse>> getAllSubTypes(@PathVariable Long typeId, Pageable pageable){
-=======
   @GetMapping(value = "/sub-types")
   public ResponseEntity<Page<SubTypeResponse>> getAllSubTypes(@RequestParam Long typeId, Pageable pageable) {
->>>>>>> feat/update-type
     return new ResponseEntity<>(service.findAll(typeId, pageable), HttpStatus.OK);
   }
 

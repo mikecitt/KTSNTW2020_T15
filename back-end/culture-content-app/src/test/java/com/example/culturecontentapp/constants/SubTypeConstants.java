@@ -10,7 +10,7 @@ public class SubTypeConstants {
     public static final Long DB_SUBTYPE_WITHOUT_TYPE = 2L;
 
     public static final Integer SB_PAGEABLE_PAGE = 0;
-    public static final Integer SB_PAGEABLE_SIZE = 1;
+    public static final Integer SB_PAGEABLE_SIZE = 2;
 
-    public static final int SB_FIND_ALL_NUMBER_OF_ITEMS = 1;
+    public static final int SB_FIND_ALL_NUMBER_OF_ITEMS = 2;
 }
