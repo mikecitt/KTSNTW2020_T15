@@ -18,8 +18,13 @@ public class AccountLoginRequest {
   @JsonProperty("password")
   protected String password;
 
-  protected AccountLoginRequest() {
+  public AccountLoginRequest() {
 
+  }
+
+  public AccountLoginRequest(String email, String password) {
+    this.email = email;
+    this.password = password;
   }
 
   public String getEmail() {
