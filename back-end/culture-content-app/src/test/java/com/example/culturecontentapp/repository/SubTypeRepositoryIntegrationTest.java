@@ -48,4 +48,10 @@ public class SubTypeRepositoryIntegrationTest {
         SubType subType = repository.findByNameAndIdNot(DB_SUBTYPE_NAME, DB_SUBTYPE_ID);
         assertNull(subType);
     }
+
+    @Test
+    public void testCountAllByTypeId(){
+        Long count = repository.countAllByTypeId(DB_TYPE_ID);
+        assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS,(long) count);
+    }
 }

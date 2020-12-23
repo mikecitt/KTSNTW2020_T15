@@ -7,7 +7,6 @@ import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.SubTypeRequest;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
-import com.example.culturecontentapp.payload.response.TypeResponse;
 import com.example.culturecontentapp.repository.SubTypeRepository;
 
 import com.example.culturecontentapp.repository.TypeRepository;
