@@ -1,3 +1,4 @@
+
 INSERT INTO Account (role, id, active, email, password, username) VALUES
     ('User', 1001, true, 'user@example.com', '$2a$10$AYTmLNGhVJiX9GKIjgzQ5.yYzFDcspoxrIOfEDuqaHo1SHKcyyAGm', 'user123'),
     ('Administrator', 1002, true, 'admin@example.com', '$2a$10$AYTmLNGhVJiX9GKIjgzQ5.yYzFDcspoxrIOfEDuqaHo1SHKcyyAGm', 'admin123');
@@ -16,3 +17,4 @@ INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
 
 INSERT INTO News (id, date, text, culturaloffer_id) VALUES
     (1001, '2017-01-13T17:09:42.411', 'Najnovija vest o festivalu', 1001);
+

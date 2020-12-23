@@ -38,4 +38,5 @@ public class RestPageImpl<T> extends PageImpl<T>{
     public RestPageImpl() {
         super(new ArrayList<>());
     }
+
 }
