@@ -1,6 +1,7 @@
 package com.example.culturecontentapp.payload.request;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -9,7 +10,9 @@ import javax.validation.constraints.Size;
 
 public class NewsRequest {
 
-    @NotBlank(message = "Text cannot be blank")
+  private Long id;
+
+  @NotBlank(message = "Text cannot be blank")
   @Size(min = 10, max = 256, message = "Description must be between 10 and 256 characters")
   private String text;
 
@@ -17,6 +20,27 @@ public class NewsRequest {
   private LocalDateTime date;
 
   private Set<String> images;
+
+  public NewsRequest(){
+    images = new HashSet<>();
+  }  
+
+  public NewsRequest(String text, LocalDateTime date){
+    this.text = text;
+    this.date = date;
+    this.images = new HashSet<>();
+  }
+
+  public NewsRequest(Long id, String text, LocalDateTime date){
+    this.id = id;
+    this.text = text;
+    this.date = date;
+    this.images = new HashSet<>();
+  }
+
+  public Long getId(){
+    return this.id;
+  }
 
   public String getText() {
     return this.text;
