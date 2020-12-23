@@ -7,6 +7,7 @@ import com.example.culturecontentapp.payload.response.TypeResponse;
 import com.example.culturecontentapp.repository.TypeRepository;
 import com.example.culturecontentapp.security.jwt.TokenBasedAuthentication;
 import com.example.culturecontentapp.service.TypeService;
+import com.example.culturecontentapp.util.RestPageImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -52,19 +54,20 @@ public class TypeControllerIntegrationTest {
         accessToken = "Bearer " + responseEntity.getBody();
     }
 
-//    @Test
-//    public void testGetAllCulturalOfferTypes(){
-//
-//         //a trebalo bi Page<TypeResponse>
-//        ResponseEntity<TypeResponse[]> responseEntity =
-//                restTemplate.getForEntity("/api/types?page=0&size=1",
-//                        TypeResponse[].class);
-//
-//        TypeResponse[] types = responseEntity.getBody();
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, types.length);
-//        assertEquals(DB_TYPE, types[0].getName());
-//    }
+    @Test
+    public void testGetAllCulturalOfferTypes(){
+
+         //a trebalo bi Page<TypeResponse>
+        ResponseEntity<RestPageImpl<TypeResponse>> responseEntity =
+                restTemplate.exchange("/api/types?page=0&size=2", HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>(){});
+
+        RestPageImpl<TypeResponse> types = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, types.getContent().size());
+        assertEquals(DB_TYPE, types.getContent().get(0).getName());
+    }
 
     @Test
     public void testGetCulturalOfferType(){
@@ -80,8 +83,7 @@ public class TypeControllerIntegrationTest {
 
 
     @Test
-    @Transactional
-    @Rollback(true)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testCreateCulturalOfferType(){
         long BEFORE_CREATE_SIZE = typeRepository.count();
         login(DB_ADMIN_EMAIL, "qwerty");
@@ -101,12 +103,11 @@ public class TypeControllerIntegrationTest {
         Type type = typeRepository.findAll().get((int) BEFORE_CREATE_SIZE);
         assertEquals(NEW_TYPE, type.getName());
 
-        typeService.delete(type.getId());
+//        typeService.delete(type.getId());
     }
 
     @Test
-    @Transactional
-    @Rollback(true)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void testUpdateCulturalOfferType(){
         login(DB_ADMIN_EMAIL, "qwerty");
 
@@ -129,14 +130,14 @@ public class TypeControllerIntegrationTest {
         assertEquals(DB_TYPE_ID, type.getId());
         assertEquals(NEW_TYPE, type.getName());
 
-        //vratimo vrednosti
-        type.update(DB_TYPE);
-        typeRepository.save(type);
+//        //vratimo vrednosti
+//        type.update(DB_TYPE);
+//        typeRepository.save(type);
     }
 
     @Test
-    @Transactional
-    @Rollback(true)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+
     public void testDeleteCulturalOfferType(){
 //        TypeResponse createdType = typeService.create(new TypeRequest(NEW_TYPE));
         long sizeAffterPutting = typeRepository.count();

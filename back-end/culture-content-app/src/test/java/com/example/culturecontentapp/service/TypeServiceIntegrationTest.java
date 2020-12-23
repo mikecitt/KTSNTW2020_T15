@@ -11,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -44,15 +46,17 @@ public class TypeServiceIntegrationTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void testCreate(){
         TypeRequest newType = new TypeRequest(NEW_TYPE);
         TypeResponse createdType = typeService.create(newType);
 
         assertEquals(NEW_TYPE, createdType.getName());
 
-        //obrisemo dodati
-        Optional<Type> type = typeRepository.findById(createdType.getId());
-        typeRepository.delete(type.get());
+//        //obrisemo dodati
+//        Optional<Type> type = typeRepository.findById(createdType.getId());
+//        typeRepository.delete(type.get());
     }
 
     @Test
@@ -64,6 +68,8 @@ public class TypeServiceIntegrationTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void testDelete(){
         long BEFORE_DELETING = typeRepository.count();
         typeService.delete(DB_TYPE_WITHOUT_SUBTYPE_ID);

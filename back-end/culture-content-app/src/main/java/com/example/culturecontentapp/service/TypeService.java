@@ -71,9 +71,12 @@ public class TypeService {
   }
 
   public void delete(Long id){
+    //brisemo i pod tipove
     Optional<Type> type = repository.findById(id);
     if(type.isEmpty())
       throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
+
+    //type.get().removeAllSubTypes();;
     repository.delete(type.get());
   }
 
