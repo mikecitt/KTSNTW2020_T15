@@ -2,6 +2,7 @@ package com.example.culturecontentapp.model;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Role")
+@DiscriminatorValue("Administrator")
 public class Account extends Model {
 
   @Email(message = "Email is not valid")
@@ -29,6 +31,9 @@ public class Account extends Model {
   @Column(nullable = false, unique = true)
   private String username;
 
+  @Column(nullable = false)
+  private boolean active;
+
   public Account() {
 
   }
@@ -37,6 +42,7 @@ public class Account extends Model {
     this.email = email;
     this.password = password;
     this.username = username;
+    this.active = false;
   }
 
   public String getEmail() {
@@ -62,4 +68,13 @@ public class Account extends Model {
   public void setUsername(String username) {
     this.username = username;
   }
+
+  public boolean isActive() {
+    return this.active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
 }

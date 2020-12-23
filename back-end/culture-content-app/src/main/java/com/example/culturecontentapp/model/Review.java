@@ -3,12 +3,13 @@ package com.example.culturecontentapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -31,9 +32,10 @@ public class Review extends Model {
   @JoinColumn(name = "user_id")
   private User author;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "review_id")
-  private Set<Image> images;
+  @ElementCollection
+  @CollectionTable(name = "review_images")
+  @Column(name = "image", nullable = false, length = 64)
+  private Set<String> images;
 
   public Review() {
     images = new HashSet<>();
@@ -69,7 +71,7 @@ public class Review extends Model {
     this.author = author;
   }
 
-  public Set<Image> getImages() {
+  public Set<String> getImages() {
     return this.images;
   }
 }

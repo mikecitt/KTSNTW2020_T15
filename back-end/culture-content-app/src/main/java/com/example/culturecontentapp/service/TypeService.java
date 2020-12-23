@@ -30,9 +30,17 @@ public class TypeService {
     this.mapper = mapper;
   }
 
+  public List<TypeResponse> findAll(){
+    List<Type> types = repository.findAll();
+    return types.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+  }
+
   public Page<TypeResponse> findAll(Pageable pageable){
     Page<Type> types = repository.findAll(pageable);
     return new PageImpl<>(toTypeDto(types),types.getPageable(),types.getTotalElements());
+//    return toTypeDto(types);
   }
 
   public TypeResponse findById(Long id){
@@ -63,9 +71,12 @@ public class TypeService {
   }
 
   public void delete(Long id){
+    //brisemo i pod tipove
     Optional<Type> type = repository.findById(id);
     if(type.isEmpty())
       throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
+
+    //type.get().removeAllSubTypes();;
     repository.delete(type.get());
   }
 

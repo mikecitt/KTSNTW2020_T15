@@ -9,10 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/types")
+@RequestMapping("/api/types")
 public class TypeController {
 
   private final TypeService service;
@@ -28,23 +29,26 @@ public class TypeController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<TypeResponse> getCulturalOfferType(@PathVariable Long id){
+  public ResponseEntity<TypeResponse> getCulturalOfferType(@PathVariable Long id) {
     return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("")
   public ResponseEntity<TypeResponse> createCulturalOfferType(@RequestBody TypeRequest typeRequestDto) {
     return new ResponseEntity<>(service.create(typeRequestDto), HttpStatus.CREATED);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping(value = "/{id}")
-  public ResponseEntity<TypeResponse> updateCulturalOfferType(
-          @RequestBody TypeRequest typeRequest, @PathVariable Long id){
+  public ResponseEntity<TypeResponse> updateCulturalOfferType(@RequestBody TypeRequest typeRequest,
+      @PathVariable Long id) {
     return new ResponseEntity<>(service.update(typeRequest, id), HttpStatus.OK);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping(value = "/{id}")
-  public ResponseEntity<Void> deleteCulturalOfferType(@PathVariable Long id){
+  public ResponseEntity<Void> deleteCulturalOfferType(@PathVariable Long id) {
     service.delete(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }

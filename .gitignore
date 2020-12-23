@@ -29,5 +29,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Client upload images
+/back-end/culture-content-app/src/main/resources/static/uploads
+
 ### VS Code ###
 .vscode/

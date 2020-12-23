@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,7 @@ public class SubTypeService {
     return new PageImpl<>(toTypeDto(subTypes));
   }
 
+
   public SubTypeResponse findOne(Long typeId, Long id){
     SubType subType = repository.findByIdAndTypeId(id, typeId);
     if(subType == null)
@@ -60,11 +62,12 @@ public class SubTypeService {
 
     return convertToDTO(repository.save(subType));
   }
-
   public void delete(Long typeId, Long id){
     SubType subType = repository.findByIdAndTypeId(id, typeId);
     if(subType == null)
       throw new SubTypeNotFoundException("Sub type with given id doesn't exist");
+    if(subType.getType() != null)
+      subType.getType().removeSubType(subType);
     repository.delete(subType);
   }
 
