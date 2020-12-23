@@ -1,12 +1,14 @@
 package com.example.culturecontentapp.service;
 
 import com.example.culturecontentapp.exception.SubTypeAlreadyExistsException;
+import com.example.culturecontentapp.exception.SubTypeHasCulturalOffersException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
 import com.example.culturecontentapp.exception.TypeNotFoundException;
 import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.SubTypeRequest;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
+import com.example.culturecontentapp.repository.CulturalOfferRepository;
 import com.example.culturecontentapp.repository.SubTypeRepository;
 
 import com.example.culturecontentapp.repository.TypeRepository;
@@ -16,10 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,12 +28,15 @@ public class SubTypeService {
   private final SubTypeRepository repository;
   private final ModelMapper mapper;
   private final TypeRepository typeRepository;
+  private final CulturalOfferRepository culturalOfferRepository;
 
   @Autowired
-  public SubTypeService(SubTypeRepository repository, ModelMapper mapper, TypeRepository typeRepository) {
+  public SubTypeService(SubTypeRepository repository, ModelMapper mapper,
+                        TypeRepository typeRepository, CulturalOfferRepository culturalOfferRepository) {
     this.repository = repository;
     this.mapper = mapper;
     this.typeRepository = typeRepository;
+    this.culturalOfferRepository = culturalOfferRepository;
   }
 
   public Page<SubTypeResponse> findAll(Long typeId, Pageable pageable){
@@ -64,10 +67,15 @@ public class SubTypeService {
   }
   public void delete(Long typeId, Long id){
     SubType subType = repository.findByIdAndTypeId(id, typeId);
+
     if(subType == null)
       throw new SubTypeNotFoundException("Sub type with given id doesn't exist");
-    if(subType.getType() != null)
+    if(culturalOfferRepository.countAllBySubTypeId(id) != 0)
+      throw new SubTypeHasCulturalOffersException("Sub type with given id has referenced cultural offers");
+
+    if(subType.getType() != null) //mozemo zabraniti i kad ima tip
       subType.getType().removeSubType(subType);
+
     repository.delete(subType);
   }
 

@@ -15,4 +15,6 @@ public interface CulturalOfferRepository extends JpaRepository<CulturalOffer, Lo
   Page<CulturalOffer> findAll(Pageable pageable);
 
   Optional<CulturalOffer> findByName(String name);
+
+  long countAllBySubTypeId(Long subTypeId);
 }

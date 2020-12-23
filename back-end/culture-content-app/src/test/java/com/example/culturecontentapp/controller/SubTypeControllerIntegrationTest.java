@@ -19,14 +19,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.text.html.Option;
-
-import java.util.Optional;
-
 import static com.example.culturecontentapp.constants.SubTypeConstants.*;
 import static com.example.culturecontentapp.constants.TypeConstants.DB_TYPE_ID;
-import static com.example.culturecontentapp.constants.TypeConstants.NEW_TYPE;
 import static com.example.culturecontentapp.constants.UserConstants.DB_ADMIN_EMAIL;
 import static org.junit.Assert.*;
 

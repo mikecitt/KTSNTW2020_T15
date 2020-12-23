@@ -43,9 +43,7 @@ public class TypeControllerIntegrationTest {
     @Autowired
     private TypeRepository typeRepository;
 
-
-    // JWT token za pristup REST servisima. Bice dobijen pri logovanju
-     private String accessToken;
+    private String accessToken;
 
 
     public void login(String username, String password) {

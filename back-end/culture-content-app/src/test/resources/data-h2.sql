@@ -16,7 +16,7 @@ INSERT INTO Sub_type (id, name, type_id) VALUES
 
 
 INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
-    (1, 'Najveci festival u regionu', 'Petrovaradinska tvrdjava', 'Exit festival1', 2);
+    (1, 'Najveci festival u regionu', 'Petrovaradinska tvrdjava', 'Exit festival1', 1);
 
 -- INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
 --     (1001, 'extra', 5, 1001, 1001);
