@@ -51,6 +51,11 @@ public class ReviewService {
   }
 
   public ResponseEntity<Page<ReviewResponse>> get(Long culturalOfferId, Pageable pageable) {
+    Optional<CulturalOffer> culturalOfferEntity = this.culturalOfferRepository.findById(culturalOfferId);
+    if (!culturalOfferEntity.isPresent()) {
+      throw new CulturalOfferNotFoundException("Cultural offer with the given id not exists");
+    }
+
     Page<Review> reviews = repository.findByCulturalOffer(culturalOfferId, pageable);
 
     return new ResponseEntity<>(reviews.map(review -> modelMapper.map(review, ReviewResponse.class)), HttpStatus.OK);
