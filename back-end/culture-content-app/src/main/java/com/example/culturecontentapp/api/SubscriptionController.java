@@ -1,13 +1,11 @@
 package com.example.culturecontentapp.api;
 
-import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.payload.response.SubscriptionResponse;
 import com.example.culturecontentapp.service.SubscriptionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +24,18 @@ public class SubscriptionController {
     @Autowired
     public SubscriptionController(SubscriptionService service) {
         this.service = service;
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping
+    public ResponseEntity<Void> add(@RequestParam Long id) {
+        return this.service.add(id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@RequestParam Long id) {
+        return this.service.delete(id);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

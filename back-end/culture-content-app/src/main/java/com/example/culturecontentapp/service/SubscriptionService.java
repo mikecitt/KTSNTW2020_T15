@@ -11,7 +11,6 @@ import com.example.culturecontentapp.exception.UserNotSubscribedException;
 import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.model.User;
-import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.payload.response.SubscriptionResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
@@ -43,6 +42,56 @@ public class SubscriptionService {
         this.culturalOfferRepository = culturalOfferRepository;
         this.newsRepository = newsRepository;
         this.modelMapper = modelMapper;
+    }
+
+    public ResponseEntity<Void> add(Long id) {
+        org.springframework.security.core.userdetails.User loggedUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+
+        Optional<Account> entityUser = accountRepository.findByEmail(loggedUser.getUsername());
+        if (!entityUser.isPresent()) {
+            throw new AccountNotFoundException("Provided account is not found in the database");
+        }
+
+        Optional<CulturalOffer> entityCulturalOffer = culturalOfferRepository.findById(id);
+        if (!entityCulturalOffer.isPresent()) {
+            throw new CulturalOfferNotFoundException("Provided id is not found in the database");
+        }
+
+        User user = (User) entityUser.get();
+        CulturalOffer culturalOffer = (CulturalOffer) entityCulturalOffer.get();
+
+        if (user.getSubscriptions().contains(culturalOffer))
+            throw new UserAlreadySubscribedException("User already subscribed to cultural offer.");
+
+        user.getSubscriptions().add(culturalOffer);
+        accountRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Void> delete(Long id) {
+        org.springframework.security.core.userdetails.User loggedUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+
+        Optional<Account> entityUser = accountRepository.findByEmail(loggedUser.getUsername());
+        if (!entityUser.isPresent()) {
+            throw new AccountNotFoundException("Provided account is not found in the database");
+        }
+
+        Optional<CulturalOffer> entityCulturalOffer = culturalOfferRepository.findById(id);
+        if (!entityCulturalOffer.isPresent()) {
+            throw new CulturalOfferNotFoundException("Provided id is not found in the database");
+        }
+
+        User user = (User) entityUser.get();
+        CulturalOffer culturalOffer = (CulturalOffer) entityCulturalOffer.get();
+
+        if (!user.getSubscriptions().contains(culturalOffer))
+            throw new UserNotSubscribedException("User is not subscribed to cultural offer.");
+
+        user.getSubscriptions().remove(culturalOffer);
+        accountRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     public ResponseEntity<Page<SubscriptionResponse>> get(Pageable pageable) {
