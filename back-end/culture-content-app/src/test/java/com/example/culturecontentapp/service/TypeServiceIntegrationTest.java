@@ -1,5 +1,7 @@
 package com.example.culturecontentapp.service;
 
+import com.example.culturecontentapp.exception.TypeAlreadyExistsException;
+import com.example.culturecontentapp.exception.TypeNotFoundException;
 import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.TypeRequest;
 import com.example.culturecontentapp.payload.response.TypeResponse;
@@ -20,6 +22,7 @@ import java.util.Optional;
 
 import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,31 +51,57 @@ public class TypeServiceIntegrationTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void testCreate(){
+    public void create_validParams_willReturnSucceed(){
         TypeRequest newType = new TypeRequest(NEW_TYPE);
         TypeResponse createdType = typeService.create(newType);
 
         assertEquals(NEW_TYPE, createdType.getName());
+    }
+    @Test(expected = TypeAlreadyExistsException.class)
+    @Transactional
+    @Rollback(true)
+    public void create_badParams_willReturnAlreadyExists(){
+        TypeRequest newType = new TypeRequest(DB_TYPE);
+        TypeResponse createdType = typeService.create(newType);
 
-//        //obrisemo dodati
-//        Optional<Type> type = typeRepository.findById(createdType.getId());
-//        typeRepository.delete(type.get());
+        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, typeRepository.count());
     }
 
     @Test
-    public void testUpdate(){
+    @Transactional
+    @Rollback(true)
+    public void update_validParams_willReturnSucceed(){
         TypeRequest newType = new TypeRequest(NEW_TYPE);
         TypeResponse updatedType = typeService.update(newType, DB_TYPE_ID);
 
         assertEquals(NEW_TYPE, updatedType.getName());
     }
 
+    @Test(expected = TypeAlreadyExistsException.class)
+    @Transactional
+    @Rollback(true)
+    public void update_badParams_willReturnAlreadyExists(){
+        TypeRequest newType = new TypeRequest(DB_TYPE_WITHOUT_SUBTYPE);
+        TypeResponse updatedType = typeService.update(newType, DB_TYPE_ID);
+
+        assertNotEquals(DB_TYPE_WITHOUT_SUBTYPE, updatedType.getName());
+    }
+
     @Test
     @Transactional
     @Rollback(true)
-    public void testDelete(){
+    public void delete_validParams_willReturnSucceed(){
         long BEFORE_DELETING = typeRepository.count();
         typeService.delete(DB_TYPE_WITHOUT_SUBTYPE_ID);
         assertEquals(BEFORE_DELETING - 1, typeRepository.count());
+    }
+
+    @Test(expected = TypeNotFoundException.class)
+    @Transactional
+    @Rollback(true)
+    public void delete_badParams_willReturnNotFound(){
+        long BEFORE_DELETING = typeRepository.count();
+        typeService.delete(TYPE_DOESNT_EXISTS);
+        assertEquals(BEFORE_DELETING, typeRepository.count());
     }
 }

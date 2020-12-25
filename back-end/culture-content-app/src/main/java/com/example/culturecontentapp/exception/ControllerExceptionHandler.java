@@ -45,6 +45,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleTypeAlreadyExistsException(TypeAlreadyExistsException ex, WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
+  @ExceptionHandler(TypeHasSubTypesException.class)
+  protected ResponseEntity<Object> handleTypeHasSubTypeException(TypeHasSubTypesException ex, WebRequest request){
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 
   @ExceptionHandler(SubTypeNotFoundException.class)
   protected ResponseEntity<Object> handleSubTypeNotFoundException(SubTypeNotFoundException ex, WebRequest request) {
