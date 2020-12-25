@@ -6,17 +6,17 @@ import java.util.Set;
 public class ReviewResponse {
     private Short rating;
     private String comment;
-    private String author;
+    private String authorUsername;
     private Set<String> images;
 
     public ReviewResponse() {
         images = new HashSet<>();
     }
 
-    public ReviewResponse(Short rating, String comment, String author) {
+    public ReviewResponse(Short rating, String comment, String authorUsername) {
         this.rating = rating;
         this.comment = comment;
-        this.author = author;
+        this.authorUsername = authorUsername;
         images = new HashSet<>();
     }
 
@@ -36,12 +36,12 @@ public class ReviewResponse {
         this.comment = comment;
     }
 
-    public String getAuthor() {
-        return this.author;
+    public String getAuthorUsername() {
+        return this.authorUsername;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthorUsername(String author) {
+        this.authorUsername = authorUsername;
     }
 
     public Set<String> getImages() {
