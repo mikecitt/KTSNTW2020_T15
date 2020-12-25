@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -129,7 +130,7 @@ public class CulturalOfferService {
     return new ResponseEntity<>(modelMapper.map(culturalOfferEntity.get(), SelectCulturalOfferResponse.class),
         HttpStatus.OK);
   }
-
+  @Transactional
   public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(String offerName, String subTypeName, String typeName){
     List<CulturalOffer> foundOffers = repository.FindByFilterCriteria(offerName+"%",
             subTypeName+"%", typeName+"%");
