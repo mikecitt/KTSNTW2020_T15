@@ -53,7 +53,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(SubTypeHasCulturalOffersException.class)
   protected ResponseEntity<Object> handleSubTypeHasCulturalOffersException(SubTypeHasCulturalOffersException ex,
-      WebRequest request){
+      WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
@@ -99,5 +99,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
       WebRequest request) {
 
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(UserAlreadySubscribedException.class)
+  protected ResponseEntity<Object> handleUserAlreadySubscribedException(UserAlreadySubscribedException ex,
+      WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(UserNotSubscribedException.class)
+  protected ResponseEntity<Object> handleUserNotSubscribedException(UserNotSubscribedException ex, WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }
