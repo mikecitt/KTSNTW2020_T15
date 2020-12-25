@@ -2,6 +2,7 @@ package com.example.culturecontentapp.api;
 
 import javax.validation.Valid;
 
+import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
 import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
 import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cultural-offer")
@@ -63,5 +66,12 @@ public class CulturalOfferController {
   @GetMapping("/{id}")
   public ResponseEntity<SelectCulturalOfferResponse> selectById(@PathVariable Long id) {
     return service.selectById(id);
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(@RequestParam String culturalOfferName,
+                                                             @RequestParam String subTypeName,
+                                                             @RequestParam String typeName){
+    return service.searchAndFilter(culturalOfferName,subTypeName,typeName);
   }
 }

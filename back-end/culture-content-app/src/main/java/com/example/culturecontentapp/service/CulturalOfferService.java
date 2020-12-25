@@ -1,9 +1,6 @@
 package com.example.culturecontentapp.service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.culturecontentapp.exception.CulturalOfferAlreadyExistsException;
@@ -131,5 +128,13 @@ public class CulturalOfferService {
     }
     return new ResponseEntity<>(modelMapper.map(culturalOfferEntity.get(), SelectCulturalOfferResponse.class),
         HttpStatus.OK);
+  }
+
+  public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(String offerName, String subTypeName, String typeName){
+    List<CulturalOffer> foundOffers = repository.FindByFilterCriteria(offerName+"%",
+            subTypeName+"%", typeName+"%");
+    return new ResponseEntity<>(
+        foundOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class)).collect(Collectors.toList()),
+            HttpStatus.OK);
   }
 }
