@@ -17,11 +17,11 @@ INSERT INTO Sub_type (id, name, type_id) VALUES
 INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
     (1, 'Najveci festival u regionu', 'Petrovaradinska tvrdjava', 'Exit festival1', 1);
 
--- INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
---     (1001, 'extra', 5, 1001, 1001);
-
-INSERT INTO Review ( comment, rating, user_id, culturaloffer_id) VALUES
+INSERT INTO Review (comment, rating, user_id, culturaloffer_id) VALUES
     ('extra', 5, 1, 1);
+
+INSERT INTO Review (comment, rating, user_id, culturaloffer_id) VALUES
+    ('fantastic', 4, 1, 1);
 
 INSERT INTO News (id, date, text, culturaloffer_id) VALUES
     (1, '2017-01-13T17:09:42.411', 'Najnovija vest o festivalu', 1);
