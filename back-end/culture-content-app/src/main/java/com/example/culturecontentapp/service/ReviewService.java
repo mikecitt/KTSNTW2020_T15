@@ -6,12 +6,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.example.culturecontentapp.exception.AccountNotFoundException;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
+import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.model.Review;
+import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.payload.request.AddReviewRequest;
 import com.example.culturecontentapp.payload.response.AddReviewResponse;
 import com.example.culturecontentapp.payload.response.ReviewResponse;
+import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
 import com.example.culturecontentapp.repository.ReviewRepository;
 import com.example.culturecontentapp.storage.StorageService;
@@ -22,6 +26,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,14 +38,16 @@ public class ReviewService {
   private final CulturalOfferRepository culturalOfferRepository;
   private final ModelMapper modelMapper;
   private final StorageService storageService;
+  private final AccountRepository accountRepository;
 
   @Autowired
   public ReviewService(ReviewRepository repository, CulturalOfferRepository culturalOfferRepository,
-      StorageService storageService, ModelMapper modelMapper) {
+      StorageService storageService, ModelMapper modelMapper, AccountRepository accountRepository) {
     this.repository = repository;
     this.culturalOfferRepository = culturalOfferRepository;
     this.storageService = storageService;
     this.modelMapper = modelMapper;
+    this.accountRepository = accountRepository;
   }
 
   public ResponseEntity<Page<ReviewResponse>> get(Long culturalOfferId, Pageable pageable) {
@@ -50,6 +58,14 @@ public class ReviewService {
 
   public ResponseEntity<AddReviewResponse> addReview(Long culturalOfferId, AddReviewRequest request,
       MultipartFile[] files) {
+
+    org.springframework.security.core.userdetails.User loggedUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
+        .getContext().getAuthentication().getPrincipal();
+    Optional<Account> entity = accountRepository.findByEmail(loggedUser.getUsername());
+    if (!entity.isPresent()) {
+      throw new AccountNotFoundException("Provided account is not found in the database");
+    }
+    User user = (User) entity.get();
 
     Optional<CulturalOffer> culturalOfferEntity = this.culturalOfferRepository.findById(culturalOfferId);
     if (!culturalOfferEntity.isPresent()) {
@@ -62,7 +78,8 @@ public class ReviewService {
     }
 
     Review review = modelMapper.map(request, Review.class);
-    review.setAuthor(null);
+
+    review.setAuthor(user);
 
     CulturalOffer culturalOffer = culturalOfferEntity.get();
     fileNames.forEach(fileName -> review.getImages().add(fileName));
