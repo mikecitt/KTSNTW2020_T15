@@ -34,32 +34,31 @@ public class NewsController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("/{offerId}")
   public ResponseEntity<NewsResponse> create(@RequestBody NewsRequest newsRequest, @PathVariable Long offerId){
-    return new ResponseEntity<>(service.create(newsRequest, offerId), HttpStatus.CREATED);
+    return service.create(newsRequest, offerId);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{id}")
   public ResponseEntity<NewsResponse> update(@RequestBody NewsRequest newsRequest, @PathVariable Long id){
-    return new ResponseEntity<>(service.update(newsRequest, id), HttpStatus.OK);
+    return service.update(newsRequest, id);
   }
 
   @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
   @GetMapping("/culturalOffer/{offerId}")
   public ResponseEntity<Page<NewsResponse>> getOffersNews(@PathVariable Long offerId, Pageable pageable){
-    return new ResponseEntity<>(service.getOffersNews(offerId, pageable), HttpStatus.OK);
+    return service.getOffersNews(offerId, pageable);
   }
 
   @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
   @GetMapping("/{id}")
   public ResponseEntity<NewsResponse> find(@PathVariable Long id){
-    return new ResponseEntity<>(service.find(id), HttpStatus.OK);
+    return service.find(id);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteNews(@PathVariable Long id){
-    service.deleteNews(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+    return service.deleteNews(id);
   }
 
 

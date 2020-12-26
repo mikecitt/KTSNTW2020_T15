@@ -1,5 +1,6 @@
 package com.example.culturecontentapp.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.culturecontentapp.model.Account;
@@ -12,4 +13,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByEmail(String email);
 
     Optional<Account> findByUsername(String username);
+
+
+
 }

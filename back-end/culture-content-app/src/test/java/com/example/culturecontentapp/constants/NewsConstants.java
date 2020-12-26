@@ -20,7 +20,7 @@ public class NewsConstants {
     public static final String NEWS = "blablablabla";
     public static final LocalDateTime NEWS_TIME = LocalDateTime.of(2017, 1, 14, 10, 34);
 
-    public static final String DB_ADMIN_EMAIL = "admin@example.com";
+    public static final String DB_ADMIN_EMAIL = "admin1@example.com";
     public static final String DB_ADMIN_PASSWORD = "qwerty";
     
 }
