@@ -2,7 +2,7 @@ package com.example.culturecontentapp.api;
 
 import javax.validation.Valid;
 
-import com.example.culturecontentapp.model.CulturalOffer;
+import com.example.culturecontentapp.payload.request.EditCulturalOfferRequest;
 import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
 import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
 import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
@@ -48,7 +48,7 @@ public class CulturalOfferController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{id}")
   public ResponseEntity<EditCulturalOfferResponse> update(@PathVariable Long id,
-      @RequestPart("request") @Valid NewCulturalOfferRequest request, @RequestPart("files") MultipartFile[] files) {
+      @RequestPart("request") @Valid EditCulturalOfferRequest request, @RequestPart("files") MultipartFile[] files) {
     return service.update(id, request, files);
   }
 
@@ -70,8 +70,7 @@ public class CulturalOfferController {
 
   @GetMapping("/search")
   public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(@RequestParam String culturalOfferName,
-                                                             @RequestParam String subTypeName,
-                                                             @RequestParam String typeName){
-    return service.searchAndFilter(culturalOfferName,subTypeName,typeName);
+      @RequestParam String subTypeName, @RequestParam String typeName) {
+    return service.searchAndFilter(culturalOfferName, subTypeName, typeName);
   }
 }

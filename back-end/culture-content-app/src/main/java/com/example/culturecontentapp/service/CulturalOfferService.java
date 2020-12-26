@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class CulturalOfferService {
 
-  private static String notFoundResponseMessage = "Cultural offer with the given name already exists";
+  private static String notFoundResponseMessage = "Cultural offer with the given id not found";
 
   private final CulturalOfferRepository repository;
   private final SubTypeRepository subTypeRepository;
@@ -81,6 +81,12 @@ public class CulturalOfferService {
 
     if (!culturalOfferEntity.isPresent()) {
       throw new CulturalOfferNotFoundException(notFoundResponseMessage);
+    }
+
+    Optional<CulturalOffer> duplicateCulturalOffer = repository.findByNameAndIdNot(request.getName(), id);
+
+    if (duplicateCulturalOffer.isPresent()) {
+      throw new CulturalOfferAlreadyExistsException("Cultural offer with the given name already exists");
     }
 
     CulturalOffer culturalOffer = culturalOfferEntity.get();
