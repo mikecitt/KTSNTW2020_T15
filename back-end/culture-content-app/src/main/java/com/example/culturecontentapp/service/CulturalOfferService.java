@@ -8,6 +8,7 @@ import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
 import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.model.SubType;
+import com.example.culturecontentapp.payload.request.EditCulturalOfferRequest;
 import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
 import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
 import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
@@ -73,7 +74,7 @@ public class CulturalOfferService {
     return new ResponseEntity<>(modelMapper.map(culturalOffer, NewCulturalOfferResponse.class), HttpStatus.CREATED);
   }
 
-  public ResponseEntity<EditCulturalOfferResponse> update(Long id, NewCulturalOfferRequest request,
+  public ResponseEntity<EditCulturalOfferResponse> update(Long id, EditCulturalOfferRequest request,
       MultipartFile[] files) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
@@ -130,12 +131,15 @@ public class CulturalOfferService {
     return new ResponseEntity<>(modelMapper.map(culturalOfferEntity.get(), SelectCulturalOfferResponse.class),
         HttpStatus.OK);
   }
+
   @Transactional
-  public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(String offerName, String subTypeName, String typeName){
-    List<CulturalOffer> foundOffers = repository.FindByFilterCriteria(offerName+"%",
-            subTypeName+"%", typeName+"%");
+  public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(String offerName, String subTypeName,
+      String typeName) {
+    List<CulturalOffer> foundOffers = repository.FindByFilterCriteria(offerName + "%", subTypeName + "%",
+        typeName + "%");
     return new ResponseEntity<>(
-        foundOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class)).collect(Collectors.toList()),
-            HttpStatus.OK);
+        foundOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class))
+            .collect(Collectors.toList()),
+        HttpStatus.OK);
   }
 }
