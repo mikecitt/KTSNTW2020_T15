@@ -13,5 +13,7 @@ public class SubTypeConstants {
     public static final Integer SB_PAGEABLE_PAGE = 0;
     public static final Integer SB_PAGEABLE_SIZE = 2;
 
+    public static final Long SUBTYPE_DOESNT_EXIST_ID = 8L;
+
     public static final int SB_FIND_ALL_NUMBER_OF_ITEMS = 2;
 }

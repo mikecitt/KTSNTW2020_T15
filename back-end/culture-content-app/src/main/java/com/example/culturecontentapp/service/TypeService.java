@@ -1,6 +1,7 @@
 package com.example.culturecontentapp.service;
 
 import com.example.culturecontentapp.exception.TypeAlreadyExistsException;
+import com.example.culturecontentapp.exception.TypeHasSubTypesException;
 import com.example.culturecontentapp.exception.TypeNotFoundException;
 import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.TypeRequest;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,19 +65,20 @@ public class TypeService {
     if(existingType == null)
       throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
 
-    existingType.setName(newEntity.getName());
     if(repository.findByNameAndIdNot(newEntity.getName(), id) != null)
       throw new TypeAlreadyExistsException("Cultural offer type with given name already exists");
+    existingType.setName(newEntity.getName());
 
     return convertToDTO(repository.save(existingType));
   }
-
+  @Transactional
   public void delete(Long id){
-    //brisemo i pod tipove
+    //ne brisemo subType
     Optional<Type> type = repository.findById(id);
     if(type.isEmpty())
       throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
-
+    if(type.get().getSubTypes().size() != 0)
+      throw new TypeHasSubTypesException("Can't delete type");
     //type.get().removeAllSubTypes();;
     repository.delete(type.get());
   }

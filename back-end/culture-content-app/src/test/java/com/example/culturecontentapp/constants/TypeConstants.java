@@ -13,6 +13,8 @@ public class TypeConstants {
     public static final Integer PAGEABLE_SIZE = 2;
     public static final Integer PAGEABLE_TOTAL_ELEMENTS = 1;
 
+    public static final Long TYPE_DOESNT_EXISTS = 8L;
+
     public static final long FIND_ALL_NUMBER_OF_ITEMS = 2;
 
 }

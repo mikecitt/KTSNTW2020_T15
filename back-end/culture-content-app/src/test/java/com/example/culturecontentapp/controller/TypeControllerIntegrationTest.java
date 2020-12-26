@@ -68,7 +68,7 @@ public class TypeControllerIntegrationTest {
     }
 
     @Test
-    public void testGetCulturalOfferType(){
+    public void getById_validRequest_willReturnSucceed(){
 
         ResponseEntity<TypeResponse> responseEntity =
                 restTemplate.getForEntity("/api/types/1", TypeResponse.class);
@@ -79,10 +79,19 @@ public class TypeControllerIntegrationTest {
         assertEquals(DB_TYPE_ID,typeResponse.getId());
     }
 
+    @Test
+    public void getById_idDoesntExist_willReturnNotFound(){
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange("/api/types/10",HttpMethod.GET, null,
+                        new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testCreateCulturalOfferType(){
+    public void create_validRequest_willReturnSucceed(){
         long BEFORE_CREATE_SIZE = typeRepository.count();
         login(DB_ADMIN_EMAIL, "qwerty");
 
@@ -96,7 +105,6 @@ public class TypeControllerIntegrationTest {
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(BEFORE_CREATE_SIZE + 1, typeRepository.count());
-//        assertNotNull(typeResponse);
 
         Type type = typeRepository.findAll().get((int) BEFORE_CREATE_SIZE);
         assertEquals(NEW_TYPE, type.getName());
@@ -106,13 +114,31 @@ public class TypeControllerIntegrationTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void testUpdateCulturalOfferType(){
+    public void create_subTypeNameAlreadyExists_willReturnUnprocessable(){
+        long BEFORE_CREATE_SIZE = typeRepository.count();
         login(DB_ADMIN_EMAIL, "qwerty");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
-//         kreiramo objekat koji saljemo u sklopu zahteva
-//         objekat nema telo, vec samo zaglavlje, jer je rec o GET zahtevu
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(new TypeRequest(DB_TYPE),headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange("/api/types", HttpMethod.POST,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        assertEquals(BEFORE_CREATE_SIZE, typeRepository.count());
+        assertNull(responseEntity.getBody());
+
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void update_validRequest_willReturnSucceed(){
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(new TypeRequest(DB_TYPE_ID,NEW_TYPE),headers);
 
         ResponseEntity<Void> responseEntity =
@@ -128,16 +154,45 @@ public class TypeControllerIntegrationTest {
         assertEquals(DB_TYPE_ID, type.getId());
         assertEquals(NEW_TYPE, type.getName());
 
-//        //vratimo vrednosti
 //        type.update(DB_TYPE);
 //        typeRepository.save(type);
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void update_SubTypeNameAlreadyExists_willReturnUnprocessable(){
+        login(DB_ADMIN_EMAIL, "qwerty");
 
-    public void testDeleteCulturalOfferType(){
-//        TypeResponse createdType = typeService.create(new TypeRequest(NEW_TYPE));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(new TypeRequest(DB_TYPE_ID,DB_TYPE_WITHOUT_SUBTYPE),headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange("/api/types/1", HttpMethod.PUT,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void update_wrongSubTypeId_willReturnUnprocessable(){
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(new TypeRequest(DB_TYPE_ID,NEW_TYPE),headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange("/api/types/11", HttpMethod.PUT,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void delete_withoutSubType_willReturnSucceed(){
         long sizeAffterPutting = typeRepository.count();
 
         login(DB_ADMIN_EMAIL, "qwerty");
@@ -154,5 +209,43 @@ public class TypeControllerIntegrationTest {
 
         assertEquals(sizeAffterPutting - 1, typeRepository.count());
 
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void delete_withSubType_willReturnUnprocessable(){
+        long sizeAffterPutting = typeRepository.count();
+
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(null,headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange(String.format("/api/types/%d",DB_TYPE_ID), HttpMethod.DELETE,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        assertEquals(sizeAffterPutting, typeRepository.count());
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void delete_subTypeIdDoesntExist_willReturnUnprocessable(){
+        long sizeAffterPutting = typeRepository.count();
+
+        login(DB_ADMIN_EMAIL, "qwerty");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", accessToken);
+        HttpEntity<Object> httpEntity = new HttpEntity<Object>(null,headers);
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange(String.format("/api/types/%d",TYPE_DOESNT_EXISTS), HttpMethod.DELETE,
+                        httpEntity, new ParameterizedTypeReference<>() {});
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals(sizeAffterPutting, typeRepository.count());
     }
 }

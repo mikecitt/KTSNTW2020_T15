@@ -1,7 +1,9 @@
 package com.example.culturecontentapp.service;
 
+import com.example.culturecontentapp.exception.SubTypeAlreadyExistsException;
 import com.example.culturecontentapp.exception.SubTypeHasCulturalOffersException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
+import com.example.culturecontentapp.exception.TypeAlreadyExistsException;
 import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.SubTypeRequest;
@@ -28,8 +30,7 @@ import java.util.Optional;
 
 import static com.example.culturecontentapp.constants.SubTypeConstants.*;
 import static com.example.culturecontentapp.constants.TypeConstants.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -58,7 +59,7 @@ public class SubTypeServiceIntegrationTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void testCreate(){
+    public void create_validParams_willReturnSucceed(){
         long BEFORE_CREATE = repository.countAllByTypeId(DB_TYPE_ID);
         SubTypeRequest newTypeRequest = new SubTypeRequest(NEW_SUBTYPE_NAME);
         SubTypeResponse createdSubType = service.create(newTypeRequest,DB_TYPE_ID);
@@ -70,15 +71,47 @@ public class SubTypeServiceIntegrationTest {
 
     }
 
+    @Test(expected = SubTypeAlreadyExistsException.class)
+    @Transactional
+    @Rollback(true)
+    public void create_nameAlreadyExists_willReturnAlreadyExists(){
+        long BEFORE_CREATE = repository.countAllByTypeId(DB_TYPE_ID);
+        SubTypeRequest newTypeRequest = new SubTypeRequest(DB_SUBTYPE_NAME);
+        SubTypeResponse createdSubType = service.create(newTypeRequest,DB_TYPE_ID);
+
+        assertNull(createdSubType);
+        assertEquals(BEFORE_CREATE, (long) repository.countAllByTypeId(DB_TYPE_ID));
+    }
+
     @Test
     @Transactional
     @Rollback(true)
-    public void testUpdate(){
+    public void update_validParams_willReturnSucceed(){
         SubTypeRequest newTypeRequest = new SubTypeRequest(NEW_SUBTYPE_NAME);
         SubTypeResponse updated = service.update(newTypeRequest,DB_TYPE_ID,DB_SUBTYPE_ID);
 
         assertEquals(NEW_SUBTYPE_NAME, updated.getName());
 
+    }
+
+    @Test(expected = SubTypeAlreadyExistsException.class)
+    @Transactional
+    @Rollback(true)
+    public void update_nameAlreadyExists_willReturnAlreadyExists(){
+        SubTypeRequest newTypeRequest = new SubTypeRequest(DB_SUBTYPE_WITHOUT_CULTURAL_OFFER_NAME);
+        SubTypeResponse updated = service.update(newTypeRequest,DB_TYPE_ID,DB_SUBTYPE_ID);
+
+        assertNotEquals(newTypeRequest.getName(),updated.getName());
+    }
+
+    @Test(expected = SubTypeNotFoundException.class)
+    @Transactional
+    @Rollback(true)
+    public void update_idDoesntExists_willReturnNotFound(){
+        SubTypeRequest newTypeRequest = new SubTypeRequest(NEW_SUBTYPE_NAME);
+        SubTypeResponse updated = service.update(newTypeRequest,DB_TYPE_ID,SUBTYPE_DOESNT_EXIST_ID);
+
+        assertNull(updated);
     }
 
     @Test
