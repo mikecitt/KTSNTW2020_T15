@@ -9,6 +9,10 @@ public class AuthenticationConstants {
     public static final String REGISTER_USERNAME = "register1";
     public static final String REGISTER_PASSWORD = "qwerty";
 
+    public static final String LOGIN_EMAIL = "user1@example.com";
+    public static final String LOGIN_PASSWORD = "qwerty";
+    public static final String LOGIN_BAD_PASSWORD = "badbadbad";
+
     public static final String REGISTER_EMAIL_ALREADY_EXIST = "user1@example.com";
     public static final String REGISTER_USERNAME_ALREADY_EXIST = "user1234";
 
