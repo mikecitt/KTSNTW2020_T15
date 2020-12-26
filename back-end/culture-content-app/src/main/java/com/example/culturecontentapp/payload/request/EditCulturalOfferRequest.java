@@ -26,6 +26,12 @@ public class EditCulturalOfferRequest {
 
   }
 
+  public EditCulturalOfferRequest(String name, String description, String location) {
+    this.name = name;
+    this.description = description;
+    this.location = location;
+  }
+
   public String getName() {
     return this.name;
   }
