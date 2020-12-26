@@ -3,6 +3,7 @@ package com.example.culturecontentapp.controller;
 import static com.example.culturecontentapp.constants.AuthenticationConstants.*;
 import static org.junit.Assert.assertEquals;
 
+import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.AccountRegisterRequest;
 import com.example.culturecontentapp.payload.response.AccountRegisterResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
@@ -32,123 +33,152 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthenticationControllerIntegrationTest {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+        @Autowired
+        private TestRestTemplate restTemplate;
 
-    @Autowired
-    private AccountRepository accountRepository;
+        @Autowired
+        private AccountRepository accountRepository;
 
-    @Autowired
-    private VerificationTokenRepository verificationTokenRepository;
+        @Autowired
+        private VerificationTokenRepository verificationTokenRepository;
 
-    @Test
-    @Transactional
-    @Rollback(true)
-    public void testRegister() {
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testRegister() {
 
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Object> httpEntity = new HttpEntity<Object>(
-                new AccountRegisterRequest(REGISTER_EMAIL, REGISTER_USERNAME, REGISTER_PASSWORD), headers);
+                HttpHeaders headers = new HttpHeaders();
+                HttpEntity<Object> httpEntity = new HttpEntity<Object>(
+                                new AccountRegisterRequest(REGISTER_EMAIL, REGISTER_USERNAME, REGISTER_PASSWORD),
+                                headers);
 
-        ResponseEntity<AccountRegisterResponse> response = restTemplate.exchange("/api/auth/register", HttpMethod.POST,
-                httpEntity, new ParameterizedTypeReference<>() {
-                });
+                ResponseEntity<AccountRegisterResponse> response = restTemplate.exchange("/api/auth/register",
+                                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                                });
 
-        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-        assertEquals(accountRepository.count(), DB_USERS_COUNT + 1);
-        assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT + 1);
-    }
+                assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+                assertEquals(accountRepository.count(), DB_USERS_COUNT + 1);
+                assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT + 1);
+        }
 
-    /*
-     * @Test(expected = AccountAlreadyExistsException.class)
-     * 
-     * @Transactional
-     * 
-     * @Rollback(true) public void testRegisterEmailAlreadyExist() {
-     * 
-     * HttpHeaders headers = new HttpHeaders(); HttpEntity<Object> httpEntity = new
-     * HttpEntity<Object>( new AccountRegisterRequest(REGISTER_EMAIL_ALREADY_EXIST,
-     * REGISTER_USERNAME, REGISTER_PASSWORD), headers);
-     * 
-     * restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity, new
-     * ParameterizedTypeReference<>() { }); ; }
-     */
+        /*
+         * @Test(expected = AccountAlreadyExistsException.class)
+         * 
+         * @Transactional
+         * 
+         * @Rollback(true) public void testRegisterEmailAlreadyExist() {
+         * 
+         * HttpHeaders headers = new HttpHeaders(); HttpEntity<Object> httpEntity = new
+         * HttpEntity<Object>( new AccountRegisterRequest(REGISTER_EMAIL_ALREADY_EXIST,
+         * REGISTER_USERNAME, REGISTER_PASSWORD), headers);
+         * 
+         * restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity, new
+         * ParameterizedTypeReference<>() { }); ; }
+         */
 
-    /*
-     * @Test(expected = AccountAlreadyExistsException.class)
-     * 
-     * @Transactional
-     * 
-     * @Rollback(true) public void testRegisterUsernamelAlreadyExist() {
-     * 
-     * HttpHeaders headers = new HttpHeaders(); HttpEntity<Object> httpEntity = new
-     * HttpEntity<Object>( new AccountRegisterRequest(REGISTER_EMAIL,
-     * REGISTER_USERNAME_ALREADY_EXIST, REGISTER_PASSWORD), headers);
-     * 
-     * restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity, new
-     * ParameterizedTypeReference<>() { }); ; }
-     */
+        /*
+         * @Test(expected = AccountAlreadyExistsException.class)
+         * 
+         * @Transactional
+         * 
+         * @Rollback(true) public void testRegisterUsernamelAlreadyExist() {
+         * 
+         * HttpHeaders headers = new HttpHeaders(); HttpEntity<Object> httpEntity = new
+         * HttpEntity<Object>( new AccountRegisterRequest(REGISTER_EMAIL,
+         * REGISTER_USERNAME_ALREADY_EXIST, REGISTER_PASSWORD), headers);
+         * 
+         * restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity, new
+         * ParameterizedTypeReference<>() { }); ; }
+         */
 
-    @Test
-    @Transactional
-    @Rollback(true)
-    public void testActivateAccount() {
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testLogin() {
 
-        ResponseEntity<?> response = restTemplate.exchange("/api/auth/activate?token=" + DB_TOKEN_VALID, HttpMethod.GET,
-                null, new ParameterizedTypeReference<>() {
-                });
+                ResponseEntity<String> response = restTemplate
+                                .exchange("/api/auth/login", HttpMethod.POST,
+                                                new HttpEntity<AccountLoginRequest>(
+                                                                new AccountLoginRequest(LOGIN_EMAIL, LOGIN_PASSWORD)),
+                                                String.class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT - 2);
-    }
+                assertEquals(response.getStatusCode(), HttpStatus.OK);
+        }
 
-    @Test
-    @Transactional
-    @Rollback(true)
-    public void testActivateAccountTokenExpired() {
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testLoginBadCredentials() {
 
-        ResponseEntity<?> response = restTemplate.exchange("/api/auth/activate?token=" + DB_TOKEN_INVALID,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                });
+                ResponseEntity<String> response = restTemplate.exchange("/api/auth/login", HttpMethod.POST,
+                                new HttpEntity<AccountLoginRequest>(
+                                                new AccountLoginRequest(LOGIN_EMAIL, LOGIN_BAD_PASSWORD)),
+                                String.class);
 
-        assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
-    }
+                assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+        }
 
-    @Test
-    @Transactional
-    @Rollback(true)
-    public void testResendActivationEmail() {
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testActivateAccount() {
 
-        ResponseEntity<?> response = restTemplate.exchange("/api/auth/resend?email=" + DB_ACTIVATION_EMAIL_VALID,
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                });
+                ResponseEntity<?> response = restTemplate.exchange("/api/auth/activate?token=" + DB_TOKEN_VALID,
+                                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                                });
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT + 1);
-    }
+                assertEquals(response.getStatusCode(), HttpStatus.OK);
+                assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT - 2);
+        }
 
-    /*
-     * @Test(expected = AccountNotFoundException.class)
-     * 
-     * @Transactional
-     * 
-     * @Rollback(true) public void testResendActivationEmailAccountDoesntExist() {
-     * 
-     * restTemplate.exchange("/api/auth/resend?email=" +
-     * DB_ACTIVATION_EMAIL_INVALID, HttpMethod.GET, null, new
-     * ParameterizedTypeReference<>() { }); }
-     */
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testActivateAccountTokenExpired() {
 
-    /*
-     * @Test(expected = AccountAlreadyActiveException.class)
-     * 
-     * @Transactional
-     * 
-     * @Rollback(true) public void testResendActivationEmailAlreadyActive() {
-     * 
-     * restTemplate.exchange("/api/auth/resend?email=" +
-     * DB_ACTIVATION_EMAIL_ALREADY_ACTIVE, HttpMethod.GET, null, new
-     * ParameterizedTypeReference<>() { }); }
-     */
+                ResponseEntity<?> response = restTemplate.exchange("/api/auth/activate?token=" + DB_TOKEN_INVALID,
+                                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                                });
+
+                assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+        }
+
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testResendActivationEmail() {
+
+                ResponseEntity<?> response = restTemplate.exchange(
+                                "/api/auth/resend?email=" + DB_ACTIVATION_EMAIL_VALID, HttpMethod.GET, null,
+                                new ParameterizedTypeReference<>() {
+                                });
+
+                assertEquals(response.getStatusCode(), HttpStatus.OK);
+                assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT + 1);
+        }
+
+        /*
+         * @Test(expected = AccountNotFoundException.class)
+         * 
+         * @Transactional
+         * 
+         * @Rollback(true) public void testResendActivationEmailAccountDoesntExist() {
+         * 
+         * restTemplate.exchange("/api/auth/resend?email=" +
+         * DB_ACTIVATION_EMAIL_INVALID, HttpMethod.GET, null, new
+         * ParameterizedTypeReference<>() { }); }
+         */
+
+        /*
+         * @Test(expected = AccountAlreadyActiveException.class)
+         * 
+         * @Transactional
+         * 
+         * @Rollback(true) public void testResendActivationEmailAlreadyActive() {
+         * 
+         * restTemplate.exchange("/api/auth/resend?email=" +
+         * DB_ACTIVATION_EMAIL_ALREADY_ACTIVE, HttpMethod.GET, null, new
+         * ParameterizedTypeReference<>() { }); }
+         */
 
 }

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import com.example.culturecontentapp.exception.AccountAlreadyActiveException;
 import com.example.culturecontentapp.exception.AccountAlreadyExistsException;
 import com.example.culturecontentapp.exception.AccountNotFoundException;
+import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.AccountRegisterRequest;
 import com.example.culturecontentapp.payload.response.AccountRegisterResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -71,7 +73,26 @@ public class AuthenticationServiceIntegrationTest {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         authenticationService.register(accountRegisterRequest, request);
+    }
 
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testLogin() {
+
+        AccountLoginRequest accountLoginRequest = new AccountLoginRequest(LOGIN_EMAIL, LOGIN_PASSWORD);
+
+        ResponseEntity<?> response = authenticationService.login(accountLoginRequest);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test(expected = BadCredentialsException.class)
+    @Transactional
+    @Rollback(true)
+    public void testLoginBadCredentials() {
+
+        AccountLoginRequest accountLoginRequest = new AccountLoginRequest(LOGIN_EMAIL, LOGIN_BAD_PASSWORD);
+        authenticationService.login(accountLoginRequest);
     }
 
     @Test
