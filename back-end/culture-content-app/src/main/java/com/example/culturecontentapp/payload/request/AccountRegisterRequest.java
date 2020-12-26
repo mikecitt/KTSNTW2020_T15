@@ -21,6 +21,12 @@ public class AccountRegisterRequest {
     public AccountRegisterRequest() {
     }
 
+    public AccountRegisterRequest(String email, String username, String password) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
+
     public String getEmail() {
         return this.email;
     }
