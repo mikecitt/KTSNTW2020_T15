@@ -18,10 +18,12 @@ public interface CulturalOfferRepository extends JpaRepository<CulturalOffer, Lo
 
   Optional<CulturalOffer> findByName(String name);
 
+  Optional<CulturalOffer> findByNameAndIdNot(String name, Long id);
+
   long countAllBySubTypeId(Long subTypeId);
 
-  @Query("SELECT c FROM CulturalOffer c, SubType s WHERE " +
-          "c.subType.id = s.id and UPPER(c.name) LIKE UPPER(:culturalOfferName) and " +
-          "UPPER(s.name) LIKE UPPER(:subTypeName) and UPPER(s.type.name) LIKE UPPER(:typeName)")
+  @Query("SELECT c FROM CulturalOffer c, SubType s WHERE "
+      + "c.subType.id = s.id and UPPER(c.name) LIKE UPPER(:culturalOfferName) and "
+      + "UPPER(s.name) LIKE UPPER(:subTypeName) and UPPER(s.type.name) LIKE UPPER(:typeName)")
   List<CulturalOffer> FindByFilterCriteria(String culturalOfferName, String subTypeName, String typeName);
 }
