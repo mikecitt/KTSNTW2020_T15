@@ -42,7 +42,7 @@ public class NewsServiceIntegrationTest {
     @Transactional
     public void testCreate(){
         NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
-        NewsResponse created = newsService.create(newsRequest, OFFER_ID);
+        NewsResponse created = newsService.create(newsRequest, OFFER_ID).getBody();
         assertEquals(newsRequest.getText(), created.getText());
     }
 
@@ -56,7 +56,7 @@ public class NewsServiceIntegrationTest {
     @Transactional
     public void testUpdate(){
         NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
-        NewsResponse created = newsService.update(newsRequest, NEWS_ID);
+        NewsResponse created = newsService.update(newsRequest, NEWS_ID).getBody();
         assertEquals(NEWS, created.getText());
     }
 
@@ -70,7 +70,7 @@ public class NewsServiceIntegrationTest {
     @Transactional
     public void testGetOffersNews(){
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        int size = newsService.getOffersNews(OFFER_ID, pageable).getContent().size();
+        int size = newsService.getOffersNews(OFFER_ID, pageable).getBody().getContent().size();
         assertEquals(DB_NEWS_SIZE, size);
         //
     }
@@ -85,7 +85,7 @@ public class NewsServiceIntegrationTest {
     @Test
     @Transactional
     public void testFindNews(){
-        NewsResponse newsResponse = newsService.find(NEWS_ID);
+        NewsResponse newsResponse = newsService.find(NEWS_ID).getBody();
         assertEquals(NEWS_ID, newsResponse.getId());
     }
 
