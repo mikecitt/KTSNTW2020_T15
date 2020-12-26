@@ -28,8 +28,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
         Account account = event.getAccount();
-        String token = UUID.randomUUID().toString();
-        service.createVerificationToken(account, token);
+        String token = service.createVerificationToken(account);
 
         String recipientAddress = account.getEmail();
         String subject = "Potvrda registracije";

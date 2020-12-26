@@ -16,7 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long> {
     Optional<VerificationToken> findByToken(String token);
 
-    Optional<VerificationToken> findByAccount(Account account);
-
     List<VerificationToken> deleteByAccount(Account account);
 }

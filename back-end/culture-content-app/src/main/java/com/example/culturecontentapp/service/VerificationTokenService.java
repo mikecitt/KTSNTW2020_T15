@@ -1,5 +1,8 @@
 package com.example.culturecontentapp.service;
 
+import java.util.UUID;
+
+import com.example.culturecontentapp.exception.AccountAlreadyActiveException;
 import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.model.VerificationToken;
 import com.example.culturecontentapp.repository.VerificationTokenRepository;
@@ -12,8 +15,14 @@ public class VerificationTokenService {
     @Autowired
     private VerificationTokenRepository repository;
 
-    public void createVerificationToken(Account account, String token) {
+    public String createVerificationToken(Account account) {
+
+        if (account.isActive())
+            throw new AccountAlreadyActiveException("Given account with is already active");
+
+        String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken(token, account);
         repository.save(verificationToken);
+        return token;
     }
 }

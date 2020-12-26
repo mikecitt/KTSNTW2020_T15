@@ -1,6 +1,11 @@
 INSERT INTO Account (role, id, active, email, password, username) VALUES
     ('User', 1, true, 'user1@example.com', '$2a$10$AYTmLNGhVJiX9GKIjgzQ5.yYzFDcspoxrIOfEDuqaHo1SHKcyyAGm', 'user1234'),
-    ('Administrator', 2, true, 'admin1@example.com', '$2a$10$AYTmLNGhVJiX9GKIjgzQ5.yYzFDcspoxrIOfEDuqaHo1SHKcyyAGm', 'admin1234');
+    ('Administrator', 2, true, 'admin1@example.com', '$2a$10$AYTmLNGhVJiX9GKIjgzQ5.yYzFDcspoxrIOfEDuqaHo1SHKcyyAGm', 'admin1234'),
+    ('User', 3, false, 'notactive1@example.com', '$2a$10$AYTmLNGhVJiX9GKIjgzQ5.yYzFDcspoxrIOfEDuqaHo1SHKcyyAGm', 'notactive1');
+
+INSERT INTO Verification_token (id, expiry_date, token, account_id) VALUES
+    (1, '2021-12-27T10:58:55.042', 'da9110a4-985d-4ce2-b514-e0abf7272eb8', 3),
+    (2, '2019-12-27T10:58:55.042', 'da9110a4-985d-4ce2-b514-e04562472eb4', 3);
 
 INSERT INTO Type (id, name) VALUES
     (1, 'Manifestacija1');
