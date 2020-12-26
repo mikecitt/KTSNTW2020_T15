@@ -3,6 +3,7 @@ package com.example.culturecontentapp.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.example.culturecontentapp.exception.AccountNotFoundException;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
@@ -112,7 +113,7 @@ public class SubscriptionService {
             resp.setCulturalOfferName(culturalOffer.getName());
             subscriptions.add(resp);
         }));
-        return new ResponseEntity<>(new PageImpl<>(subscriptions, pageable, subscriptions.size()), HttpStatus.OK);
+        return new ResponseEntity<>(new PageImpl<>(subscriptions.stream().collect(Collectors.toList())), HttpStatus.OK);
 
     }
 }
