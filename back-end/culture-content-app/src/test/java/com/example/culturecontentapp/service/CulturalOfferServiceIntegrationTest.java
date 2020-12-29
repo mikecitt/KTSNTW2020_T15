@@ -84,6 +84,7 @@ public class CulturalOfferServiceIntegrationTest {
         }
 
         @Test
+        @Transactional
         public void insert_InsertsCulturalOfferSuccessfully() {
                 NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
