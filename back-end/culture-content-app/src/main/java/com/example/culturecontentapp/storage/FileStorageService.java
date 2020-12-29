@@ -24,8 +24,7 @@ public class FileStorageService implements StorageService {
       }
       String originalFilename = file.getOriginalFilename();
       if (originalFilename != null) {
-        originalFilename = java.util.UUID.randomUUID()
-            + originalFilename.substring(originalFilename.lastIndexOf("."));
+        originalFilename = java.util.UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
       }
       Path destinationFile = this.root.resolve(Paths.get(originalFilename)).normalize().toAbsolutePath();
       if (!destinationFile.getParent().equals(this.root.toAbsolutePath())) {
@@ -39,6 +38,15 @@ public class FileStorageService implements StorageService {
       return originalFilename;
     } catch (IOException e) {
       throw new StorageException("Failed to store file");
+    }
+  }
+
+  @Override
+  public void delete(String fileName) {
+    try {
+      FileSystemUtils.deleteRecursively(this.root.resolve(fileName));
+    } catch (IOException e) {
+      throw new StorageException("Failed to delete file");
     }
   }
 

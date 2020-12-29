@@ -6,6 +6,8 @@ public interface StorageService {
 
   String store(MultipartFile file);
 
+  void delete(String fileName);
+
   void deleteAll();
 
   void init();
