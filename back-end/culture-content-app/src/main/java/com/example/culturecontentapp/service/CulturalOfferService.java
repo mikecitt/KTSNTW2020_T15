@@ -49,9 +49,9 @@ public class CulturalOfferService {
   public ResponseEntity<NewCulturalOfferResponse> insert(Long subTypeId, NewCulturalOfferRequest request,
       MultipartFile[] files) {
 
-    Optional<CulturalOffer> culturalOfferentity = repository.findByName(request.getName());
+    Optional<CulturalOffer> culturalOfferEntity = repository.findByName(request.getName());
 
-    if (culturalOfferentity.isPresent()) {
+    if (culturalOfferEntity.isPresent()) {
       throw new CulturalOfferAlreadyExistsException("Cultural offer with the given name already exists");
     }
 
@@ -62,8 +62,10 @@ public class CulturalOfferService {
     }
 
     Set<String> fileNames = new HashSet<>();
-    if (files.length >= 1 && !files[0].isEmpty()) {
-      fileNames = Arrays.asList(files).stream().map(storageService::store).collect(Collectors.toSet());
+    for (MultipartFile file : files) {
+      if (!file.isEmpty()) {
+        fileNames.add(storageService.store(file));
+      }
     }
 
     CulturalOffer culturalOffer = modelMapper.map(request, CulturalOffer.class);
@@ -92,14 +94,19 @@ public class CulturalOfferService {
     CulturalOffer culturalOffer = culturalOfferEntity.get();
     modelMapper.map(request, culturalOffer);
 
-    // TODO delte images from store
     Set<String> fileNames = new HashSet<>();
-    if (files.length >= 1 && !files[0].isEmpty()) {
-      culturalOffer.getImages().clear();
-      fileNames = Arrays.asList(files).stream().map(storageService::store).collect(Collectors.toSet());
+    for (MultipartFile file : files) {
+      if (!file.isEmpty()) {
+        fileNames.add(storageService.store(file));
+      }
     }
 
-    fileNames.forEach(fileName -> culturalOffer.getImages().add(fileName));
+    if (!fileNames.isEmpty()) {
+      culturalOffer.getImages().forEach(storageService::delete);
+      culturalOffer.getImages().clear();
+      fileNames.forEach(fileName -> culturalOffer.getImages().add(fileName));
+    }
+
     repository.save(culturalOffer);
 
     return new ResponseEntity<>(modelMapper.map(culturalOffer, EditCulturalOfferResponse.class), HttpStatus.OK);
