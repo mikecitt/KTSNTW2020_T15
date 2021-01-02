@@ -23,6 +23,7 @@ import static com.example.culturecontentapp.constants.CulturalOfferConstants.PAG
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.PAGEABLE_SIZE_TWO;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_NOT_EXISTS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_ID_EXISTS;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -78,14 +79,33 @@ public class CulturalOfferRepositoryIntegrationTest {
     }
 
     @Test
-    public void findByName_ReturnsResult_WhenResultExists() {
+    public void findByName_ReturnsResult_WhenNameExists() {
         Optional<CulturalOffer> culturalOffer = repository.findByName(CULTURAL_OFFER_NAME_EXISTS);
         assertEquals(true, culturalOffer.isPresent());
     }
 
     @Test
-    public void findByName_ReturnsNothing_WhenResultNotExists() {
+    public void findByName_ReturnsNothing_WhenNameNotExists() {
         Optional<CulturalOffer> culturalOffer = repository.findByName(CULTURAL_OFFER_NAME_NOT_EXISTS);
         assertEquals(false, culturalOffer.isPresent());
+    }
+
+    @Test
+    public void findByNameAndIdNot_ReturnsNothing_WhenNameNotExists() {
+        Optional<CulturalOffer> culturalOffer = repository.findByNameAndIdNot(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                CULTURAL_OFFER_ID_EXISTS);
+        assertEquals(false, culturalOffer.isPresent());
+    }
+
+    @Test
+    public void findByNameAndIdNot_ReturnsNothing_WhenNameExistsAndIdEqual() {
+        Optional<CulturalOffer> culturalOffer = repository.findByNameAndIdNot(CULTURAL_OFFER_NAME_EXISTS, 2L);
+        assertEquals(false, culturalOffer.isPresent());
+    }
+
+    @Test
+    public void findByNameAndIdNot_ReturnsResult_WhenNameExistsAndIdNotEqual() {
+        Optional<CulturalOffer> culturalOffer = repository.findByNameAndIdNot(CULTURAL_OFFER_NAME_EXISTS, 1L);
+        assertEquals(true, culturalOffer.isPresent());
     }
 }

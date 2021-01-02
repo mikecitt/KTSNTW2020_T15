@@ -16,4 +16,10 @@ public class CulturalOfferConstants {
 
   public static final Long CULTURAL_OFFER_SUBTYPE = 1L;
   public static final Long CULTURAL_OFFER_SUBTYPE_NOT_EXISTS = 5L;
+
+  public static final Long CULTURAL_OFFER_ID_EXISTS = 1L;
+  public static final Long CULTURAL_OFFER_ID_NOT_EXISTS = 5L;
+
+  public static final String DB_ADMIN_EMAIL = "admin1@example.com";
+  public static final String DB_ADMIN_PASSWORD = "qwerty";
 }
