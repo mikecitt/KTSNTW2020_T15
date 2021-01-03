@@ -12,14 +12,23 @@ INSERT INTO Sub_type (id, name, type_id) VALUES
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1002, 'Koncert', 1001);
 
-INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
-    (1001, 'Najveci festival u regionu', 'Petrovaradinska tvrdjava', 'Exit festival', 1001);
+INSERT INTO Location (id, address, latitude, longitude) VALUES
+    (1001, 'Petrovaradinska tvrdjava', 45.252736, 19.8601);
 
-INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
-    (1002, 'Najveci festival u regionu', 'Usce', 'BeerFest', 1001);
+INSERT INTO Location (id, address, latitude, longitude) VALUES
+    (1002, 'Usce', 44.8177044, 20.4284067);
 
-INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
-    (1003, 'Najveci festival u regionu', 'Petrovaradinska tvrdjava', 'Koncert Zdravko colic', 1002);
+INSERT INTO Location (id, address, latitude, longitude) VALUES
+    (1003, 'Bg Arena', 44.8141499, 20.4191007);
+
+INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
+    (1001, 'Najveci festival u regionu', 1001, 'Exit festival', 1001);
+
+INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
+    (1002, 'Najveci festival u regionu', 1002, 'BeerFest', 1001);
+
+INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
+    (1003, 'Najveci festival u regionu',1003 , 'Koncert Zdravko colic', 1002);
 
 INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
     (1001, 'extra', 5, 1001, 1001);

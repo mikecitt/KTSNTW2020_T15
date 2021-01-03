@@ -2,6 +2,7 @@ package com.example.culturecontentapp.payload.response;
 
 import java.util.Set;
 
+import com.example.culturecontentapp.model.Location;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SelectCulturalOfferResponse {
@@ -16,7 +17,7 @@ public class SelectCulturalOfferResponse {
   private String description;
 
   @JsonProperty("location")
-  private String location;
+  private Location location;
 
   @JsonProperty("images")
   private Set<String> images;
@@ -40,7 +41,7 @@ public class SelectCulturalOfferResponse {
     return this.description;
   }
 
-  public String getLocation() {
+  public Location getLocation() {
     return this.location;
   }
 

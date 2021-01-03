@@ -3,15 +3,7 @@ package com.example.culturecontentapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -28,10 +20,9 @@ public class CulturalOffer extends Model {
   @Column(nullable = false)
   private String description;
 
-  @NotBlank(message = "Location cannot be blank")
-  @Size(min = 5, max = 128, message = "Location must be between 5 and 128 characters")
-  @Column(nullable = false)
-  private String location;
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "location_id")
+  private Location location;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "culturaloffer_id")
@@ -56,7 +47,7 @@ public class CulturalOffer extends Model {
     news = new HashSet<>();
   }
 
-  public CulturalOffer(String name, String description, String location) {
+  public CulturalOffer(String name, String description, Location location) {
     this.name = name;
     this.description = description;
     this.location = location;
@@ -81,11 +72,11 @@ public class CulturalOffer extends Model {
     this.description = description;
   }
 
-  public String getLocation() {
+  public Location getLocation() {
     return this.location;
   }
 
-  public void setLocation(String location) {
+  public void setLocation(Location location) {
     this.location = location;
   }
 
