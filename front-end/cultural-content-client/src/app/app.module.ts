@@ -7,9 +7,14 @@ import { MaterialModule } from './material-module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { MapPageComponent } from './pages/map-page/map-page.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent],
+  declarations: [
+    AppComponent,
+    NavigationBarComponent,
+    MapPageComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
