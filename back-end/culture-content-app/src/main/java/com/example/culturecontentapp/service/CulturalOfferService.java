@@ -134,6 +134,14 @@ public class CulturalOfferService {
         HttpStatus.OK);
   }
 
+  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll(){
+    List<CulturalOffer> culturalOffers = repository.findAll();
+    return new ResponseEntity<>(
+            culturalOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class))
+                    .collect(Collectors.toList()),
+            HttpStatus.OK);
+  }
+
   public ResponseEntity<SelectCulturalOfferResponse> selectById(Long id) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
