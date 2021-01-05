@@ -4,9 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
-
 @NgModule({
-  exports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSelectModule],
+  exports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSelectModule,],
 })
 export class MaterialModule {}
 

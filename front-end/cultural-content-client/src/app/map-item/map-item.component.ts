@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { CulturalOfferLocation } from '../model/culutral-offer-location';
 import {environment} from '../../environments/environment.prod'
 import * as Mapboxgl from 'mapbox-gl';
@@ -9,15 +9,25 @@ import * as Mapboxgl from 'mapbox-gl';
   templateUrl: './map-item.component.html',
   styleUrls: ['./map-item.component.scss']
 })
-export class MapItemComponent implements OnInit {
+export class MapItemComponent implements OnInit, OnChanges {
 
   @Input()
   culutralOffers: CulturalOfferLocation[];
 
   mapa: Mapboxgl.Map;
   markers: Mapboxgl.Marker[] = [];
+  mapInitialiezd: boolean = false;
 
   constructor() {  }
+
+  ngOnChanges(): void{
+    if(this.mapInitialiezd){
+      this.markers.forEach((marker) => marker.remove());
+      this.markers = [];
+      this.createMarkers();
+      this.markers.forEach((marker) =>  marker.addTo(this.mapa));
+    }
+  }
 
   ngOnInit(): void {
       this.initializeMap();
@@ -46,6 +56,7 @@ export class MapItemComponent implements OnInit {
       zoom: 8
       });
 
+    this.mapInitialiezd = true;
   }
 
 }
