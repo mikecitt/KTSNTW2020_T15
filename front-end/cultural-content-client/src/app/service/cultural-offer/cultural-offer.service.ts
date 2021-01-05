@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CulturalOfferResponse } from 'src/app/model/cultural-offer-response';
+import { FilterRequest } from 'src/app/model/filter-request';
 
 @Injectable()
 export class CulturalOfferService {
@@ -17,4 +18,8 @@ export class CulturalOfferService {
   });
     return this.http.get<CulturalOfferResponse[]>(this.path + "/all", {headers:ht});
   }
+  filterCulturalOffers(filterReq: FilterRequest): Observable<CulturalOfferResponse[]>{
+    return this.http.get<CulturalOfferResponse[]>(this.path + `/search?culturalOfferName=&subTypeName=${filterReq.subTypeName}&typeName=${filterReq.typeName}`);
+  }
+
 }

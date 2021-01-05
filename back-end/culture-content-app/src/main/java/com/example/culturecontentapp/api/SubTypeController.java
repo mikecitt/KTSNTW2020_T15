@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class SubTypeController {
@@ -25,6 +28,11 @@ public class SubTypeController {
   @GetMapping(value = "/sub-types")
   public ResponseEntity<Page<SubTypeResponse>> getAllSubTypes(@RequestParam Long typeId, Pageable pageable) {
     return new ResponseEntity<>(service.findAll(typeId, pageable), HttpStatus.OK);
+  }
+
+  @GetMapping(value = "/sub-types/all")
+  public ResponseEntity<List<SubTypeResponse>> getAllSubTypes(@RequestParam Long typeId){
+    return new ResponseEntity<>(service.findAll(typeId), HttpStatus.OK);
   }
 
   @GetMapping(value = "/sub-types/{id}")

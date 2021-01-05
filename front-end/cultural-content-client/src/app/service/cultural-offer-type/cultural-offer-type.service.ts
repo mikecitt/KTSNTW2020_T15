@@ -13,4 +13,5 @@ export class CulturalOfferTypeService {
   getAll(): Observable<CulturalOfferType[]>{
     return this.http.get<CulturalOfferType[]>(this.path + "/all");
   }
+
 }

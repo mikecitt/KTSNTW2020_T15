@@ -15,13 +15,18 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CulturalOfferTypeService } from './service/cultural-offer-type/cultural-offer-type.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CulturalOfferSubTypeService } from './service/cultural-offer-subtype/cultural-offer-sub-type.service';
+import { MapFilterFormComponent } from './map-filter-form/map-filter-form.component';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
     MapPageComponent,
-    MapItemComponent
+    MapItemComponent,
+    MapFilterFormComponent
 
   ],
   imports: [
@@ -32,6 +37,8 @@ import { CulturalOfferSubTypeService } from './service/cultural-offer-subtype/cu
     HttpClientModule,
     MatGridListModule,
     NoopAnimationsModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [
     CulturalOfferService,

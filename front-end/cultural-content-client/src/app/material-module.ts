@@ -74,7 +74,6 @@ const materialModules = [
     ...materialModules
   ],
 
-})
 export class MaterialModule {}
 
 /**  Copyright 2020 Google LLC. All Rights Reserved.

@@ -5,6 +5,7 @@ import { CulturalOfferType } from 'src/app/model/cultural-offer-type';
 import { CulturalOfferSubType} from 'src/app/model/culutral-offer-subType';
 import { CulturalOfferTypeService} from 'src/app/service/cultural-offer-type/cultural-offer-type.service';
 import { CulturalOfferSubTypeService } from 'src/app/service/cultural-offer-subtype/cultural-offer-sub-type.service';
+import { FilterRequest } from 'src/app/model/filter-request';
 
 @Component({
   selector: 'app-map-page',
@@ -26,27 +27,39 @@ export class MapPageComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.loadOffers();
-    this.loadTypes();
+    this.loadCulturalOffers();
+    this.loadCulturalOfferTypes();
   }
 
-  onSelectChange(newSelected: any): void{
-    //this.selected = newSelected.value;
-    console.log(this.selectedType);
-  }
+  // onSelectChange(newSelected: any): void{
+  //   //this.selected = newSelected.value;
+  //   console.log(this.selectedType);
+  // }
 
-  loadOffers(): void{
+  loadCulturalOffers(): void{
     this.culturalOfferService
         .getAll()
         .subscribe(res =>
           this.culturalOffersLocations = res.map(offer => offer.location)
         )
   }
-  loadTypes(): void{
+  loadCulturalOfferTypes(): void{
     this.culturalOfferTypeService
         .getAll()
         .subscribe(res => this.culturalOfferTypes = res)
   }
+  loadSubTypes(typeId: any): void{
+    this.culturalOfferSubTypeService
+        .getAll(typeId)
+        .subscribe(res => this.culturalOfferSubTypes = res);
+  }
 
+  applyFilter(filterReq: FilterRequest): void{
+    console.log("Cathced event")
+    this.culturalOfferService
+        .filterCulturalOffers(filterReq)
+        .subscribe(res => this.culturalOffersLocations = res.map(offer => offer.location));
+    // this.culturalOffersLocations = [];
+  }
 
 }
