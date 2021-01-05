@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormGroupDirective, NgForm, FormBuilder, Validators } from "@angular/forms";
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AuthService, RegistrationForm } from '../service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
-/*export class MyErrorStateMatcher implements ErrorStateMatcher {
+export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control && control.invalid && control.dirty);
-    const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
-
-    return (invalidCtrl || invalidParent);
+    const invalidParent = !!(
+      control
+      && control.parent
+      && control.parent.invalid
+      && control.parent.dirty
+      && control.parent.hasError('notSame'));
+    return (invalidParent);
   }
-}*/
+}
 
 @Component({
   selector: 'app-registration',
@@ -20,11 +25,15 @@ import { AuthService, RegistrationForm } from '../service';
 export class RegistrationComponent implements OnInit {
   form: FormGroup;
 
-  errorRePassword = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  //matcher = new MyErrorStateMatcher();
+  @ViewChild('registerForm')
+  private registerForm!: NgForm;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  matcher = new MyErrorStateMatcher();
+
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"), Validators.maxLength(50)])],
       username: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(64)])],
@@ -48,9 +57,23 @@ export class RegistrationComponent implements OnInit {
     delete formObj['rePassword'];
 
     this.authService.register(formObj).subscribe(data => {
-      console.log("uspesna registracija");
+      this.form.reset();
+      this.registerForm.resetForm();
+      let snackBarRef = this._snackBar.open('Confirmation mail has been sent. Please activate your account.', 'Go to Home page', {
+        duration: 0,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+      snackBarRef.afterDismissed().subscribe(() => {
+        this.router.navigate(['']);
+      })
     },
-    (err) => { console.log("neuspesna registracija")})
+    (err) => { 
+      this._snackBar.open(err.error, 'Try Again', {
+        duration: 0,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    })
   }
-
 }
