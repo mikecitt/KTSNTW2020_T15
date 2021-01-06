@@ -16,6 +16,8 @@ export class MapFilterFormComponent implements OnInit {
   @Output()
   applyFilterEvent = new EventEmitter<FilterRequest>();
   @Output()
+  resetFilterEvent = new EventEmitter<string>();
+  @Output()
   getSubTypesEvent = new EventEmitter<CulturalOfferType>();
 
   @Input()
@@ -30,7 +32,7 @@ export class MapFilterFormComponent implements OnInit {
 
   selectedType: CulturalOfferType;
   selectedSubType: CulturalOfferSubType;
-  //filterReq: FilterRequest;
+  disabled: boolean = true;
 
   constructor(
     private culturalOfferSubTypeService: CulturalOfferSubTypeService
@@ -42,13 +44,12 @@ export class MapFilterFormComponent implements OnInit {
   onSubmit():void{
     let filterReq: FilterRequest;
 
-    if(this.filterForm.value == undefined){
-      filterReq = {
-        subTypeName: "",
-        typeName: ""
-      }
-    }
-
+    // if(this.filterForm.value == undefined){
+    //   filterReq = {
+    //     subTypeName: "",
+    //     typeName: ""
+    //   }
+    // }
     filterReq = {
       subTypeName: this.filterForm.value.subTypeName.name == undefined ? "" : this.filterForm.value.subTypeName.name,
       typeName: this.filterForm.value.typeName.name == undefined ? "" : this.filterForm.value.typeName.name
@@ -62,9 +63,14 @@ export class MapFilterFormComponent implements OnInit {
       this.culturalOfferSubTypes = [];
       return;
     }
-    console.log(newSelected)
     this.getSubTypesEvent.emit(this.filterForm.value.typeName.id);
+    this.disabled = false;
   }
 
+  resetFilter(): void{
+    this.filterForm.reset({typeName: '', subTypeName: ''});
+    this.disabled = true;
+    this.resetFilterEvent.emit("RESET");
+  }
 
 }

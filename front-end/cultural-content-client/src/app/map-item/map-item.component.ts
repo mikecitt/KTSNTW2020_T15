@@ -52,7 +52,7 @@ export class MapItemComponent implements OnInit, OnChanges {
     this.mapa = new Mapboxgl.Map({
       container: 'map-mapbox',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [20.526773,44.5079649],   //LNG, LAT
+      center: [20.426773,44.9979649],   //LNG, LAT
       zoom: 8
       });
 
