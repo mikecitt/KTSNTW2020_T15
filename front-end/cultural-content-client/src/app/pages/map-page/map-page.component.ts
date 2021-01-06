@@ -62,4 +62,8 @@ export class MapPageComponent implements OnInit {
     // this.culturalOffersLocations = [];
   }
 
+  resetFilter(reset: string): void{
+    this.loadCulturalOffers();
+  }
+
 }
