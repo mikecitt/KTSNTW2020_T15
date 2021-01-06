@@ -6,11 +6,17 @@ INSERT INTO Account (role, id, active, email, password, username) VALUES
 INSERT INTO Type (id, name) VALUES
     (1001, 'Manifestacija');
 
+INSERT INTO Type (id, name) VALUES
+    (1002, 'Institucija');
+
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1001, 'Festival', 1001);
 
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1002, 'Koncert', 1001);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1003, 'Podkategorija1', 1002);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
     (1001, 'Petrovaradinska tvrdjava', 45.252736, 19.8601);

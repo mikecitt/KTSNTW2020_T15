@@ -1,1 +1,20 @@
-<p>map-page works!</p>
+<mat-grid-list cols="4" rowHeight="100px">
+
+  <mat-grid-tile [colspan] = "4">
+    <app-map-filter-form
+      [culturalOfferTypes]="culturalOfferTypes"
+      [culturalOfferSubTypes]="culturalOfferSubTypes"
+      (getSubTypesEvent)="loadSubTypes($event)"
+      (applyFilterEvent)="applyFilter($event)"></app-map-filter-form>
+  </mat-grid-tile>
+
+
+  <mat-grid-tile [rowspan] = "4" [colspan] = "4">
+    <div id="map-page">
+      <app-map-item
+        *ngIf="culturalOffersLocations"
+        [culutralOffers]="culturalOffersLocations"> </app-map-item>
+    </div>
+  </mat-grid-tile>
+
+</mat-grid-list>
