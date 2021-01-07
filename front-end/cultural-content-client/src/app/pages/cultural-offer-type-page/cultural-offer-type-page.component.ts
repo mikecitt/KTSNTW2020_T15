@@ -54,9 +54,20 @@ export class CulturalOfferTypePageComponent implements OnInit {
     const dialogRef = this.dialog.open(UpdateTypeFormComponent, {
       width: '300px',
       panelClass : "mat-elevation-z8",
-      data: {_id: updatedType.id, name: updatedType.name}
+      data: {id: updatedType.id, name: updatedType.name}
     });
-
+    dialogRef.afterClosed().subscribe(result => {
+      if(result != undefined){
+        let req: CulturalOfferType = {_id: result.id, name: result.name};
+        this.typeService.updateType(req)
+            .subscribe((response) => {
+              this.loadCulturalOfferTypes();
+            },
+            (error) => {
+              alert(error.error)
+            });
+      }
+    });
   }
 
 }

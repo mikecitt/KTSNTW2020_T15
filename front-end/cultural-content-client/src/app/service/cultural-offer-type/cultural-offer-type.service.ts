@@ -9,7 +9,7 @@ export class CulturalOfferTypeService {
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMDMxNjk0LCJleHAiOjE2MTAwMzM0OTR9.xFwCSuI8SacfFZTUTQgSpb_viU9C1l0jsbmaokrXPUDa__4CS-JdXDneFB9UL_J2lSMtrhPBcAlJN5X4cta5RA',
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMDU3Mjg5LCJleHAiOjE2MTAwNTkwODl9.gD1KciWIfdkDIxMLnNBcsGgLOg_666IvRFVuO9MM3TO3wkkPb9UtOj9h0B3vxseynaFom6CqoOxbDvB_9mkRIg',
   });
 
   constructor(private http: HttpClient) { }
@@ -21,6 +21,11 @@ export class CulturalOfferTypeService {
   saveType(req: CulturalOfferType): Observable<CulturalOfferType>{
     return this.http.post<CulturalOfferType>
       (environment.api_url + "/types", req,{headers:this.headers});
+  }
+
+  updateType(req: CulturalOfferType): Observable<CulturalOfferType>{
+    return this.http.put<CulturalOfferType>
+      (environment.api_url + `/types/${req._id}`, req ,{headers:this.headers});
   }
 
 }
