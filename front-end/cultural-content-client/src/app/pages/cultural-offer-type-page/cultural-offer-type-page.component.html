@@ -1,0 +1,7 @@
+<app-cultural-offer-type-list
+    *ngIf="culturalOfferTypes"
+    [offerTypes]="culturalOfferTypes"
+    (onCreateTypeEvent)="openCreateDialog($event)"
+    (onUpdateTypeEvent)="openUpdateDialog($event)">
+
+</app-cultural-offer-type-list>
