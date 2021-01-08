@@ -1,0 +1,20 @@
+<mat-card >
+    <mat-card-header>
+        <button mat-raised-button >Subscribe</button>
+        <button mat-icon-button>
+            <mat-icon id="add-button">add_box</mat-icon>
+        </button>
+        <mat-card-title class="centered">News</mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content *ngIf="newsPage">
+        <div class="drop-shadow" *ngFor="let element of newsPage.content">
+            <p>{{element.text}}</p>
+            <p class="date">{{element.date | date: 'HH:mma dd.MM.YY'}}</p>    
+        </div>
+        <app-pagination-bar class="centered" [hasPrev]="!newsPage.first" [hasNext]="!newsPage.last"
+          [currentPage]="currentNewsPage" (navigatePrevEvent)="getPreviousNews()" (navigateNextEvent)="getNextNews()">
+        </app-pagination-bar>
+    </mat-card-content>
+  </mat-card>
+  

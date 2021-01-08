@@ -1,0 +1,13 @@
+<div>
+    <button 
+        pButton 
+        [disabled]="!hasPrev" 
+        (click)="navigatePrevious()"
+    >Previous</button>
+    <p class="page-number">{{ currentPage + 1 }}</p>
+    <button 
+        pButton 
+        [disabled]="!hasNext" 
+        (click)="navigateNext()"
+    >Next</button>
+</div>

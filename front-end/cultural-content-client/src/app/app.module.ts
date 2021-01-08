@@ -1,3 +1,4 @@
+import { NewsService } from './service/news/news.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +19,8 @@ import { CulturalOfferSubTypeService } from './service/cultural-offer-subtype/cu
 import { MapFilterFormComponent } from './map-filter-form/map-filter-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewsComponent } from './news/news.component';
+import { PaginationBarComponent } from './pagination-bar/pagination-bar.component';
 
 
 @NgModule({
@@ -26,7 +29,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavigationBarComponent,
     MapPageComponent,
     MapItemComponent,
-    MapFilterFormComponent
+    MapFilterFormComponent,
+    NewsComponent,
+    PaginationBarComponent
 
   ],
   imports: [
@@ -44,6 +49,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CulturalOfferService,
     CulturalOfferTypeService,
     CulturalOfferSubTypeService,
+    NewsService
   ],
   bootstrap: [AppComponent],
 })
