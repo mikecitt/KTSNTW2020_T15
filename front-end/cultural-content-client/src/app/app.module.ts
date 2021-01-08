@@ -22,6 +22,7 @@ import { CulturalOfferTypePageComponent } from './pages/cultural-offer-type-page
 import { CulturalOfferTypeListComponent } from './cultural-offer-type-list/cultural-offer-type-list.component';
 import { CreateTypeFormComponent } from './create-type-form/create-type-form.component';
 import { UpdateTypeFormComponent } from './update-type-form/update-type-form.component';
+import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { UpdateTypeFormComponent } from './update-type-form/update-type-form.com
     CulturalOfferTypePageComponent,
     CulturalOfferTypeListComponent,
     CreateTypeFormComponent,
-    UpdateTypeFormComponent
+    UpdateTypeFormComponent,
+    ConfirmDeleteComponent
 
   ],
   imports: [

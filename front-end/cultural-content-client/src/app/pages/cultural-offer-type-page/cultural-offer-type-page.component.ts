@@ -5,6 +5,7 @@ import { CulturalOfferTypeService } from '../../service/cultural-offer-type/cult
 import { CreateTypeFormComponent } from '../../create-type-form/create-type-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateTypeFormComponent } from 'src/app/update-type-form/update-type-form.component';
+import { ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-cultural-offer-type-page',
@@ -29,6 +30,27 @@ export class CulturalOfferTypePageComponent implements OnInit {
   ngOnInit(): void {
     this.loadCulturalOfferTypes();
   }
+  deleteType(typeId: any): void{
+    console.log(typeId);
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      width: '300px',
+      panelClass : "mat-elevation-z8",
+      data: {}
+    });
+    dialogRef.afterClosed()
+             .subscribe(result =>{
+                if(result){
+                  this.typeService
+                      .deleteType(typeId)
+                      .subscribe((response)=>{
+                        this.loadCulturalOfferTypes();
+                        alert("Deleted successfully");
+                      },
+                      (error) => alert(error.error));
+                }
+             })
+  }
+
   openCreateDialog(event:any){
     const dialogRef = this.dialog.open(CreateTypeFormComponent, {
       width: '300px',
