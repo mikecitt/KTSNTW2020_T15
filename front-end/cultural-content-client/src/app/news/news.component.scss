@@ -9,6 +9,25 @@ mat-card-header{
     margin-bottom: 10px;
 }
 
+.row{
+    display: table;
+}
+
+.right{
+    position:absolute;
+    top: 10px;
+    right:0;
+}
+
+.column {
+    display: table-cell;
+}
+
+.float-right {
+    float:right;
+    width:300px; // or 33% for equal width independent of parent width
+}
+
 .centered{
     text-align: center;
 }

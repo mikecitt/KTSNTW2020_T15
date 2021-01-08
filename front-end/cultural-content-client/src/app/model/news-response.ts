@@ -1,7 +1,7 @@
 export interface NewsResponse {
-  _id?:any;
-  text: String;
+  id:number;
+  text: string;
   date: Date;
-  images: String[];
+  images: string[];
   
 }

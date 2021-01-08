@@ -1,12 +1,12 @@
 <div>
     <button 
-        pButton 
+        mat-raised-button 
         [disabled]="!hasPrev" 
         (click)="navigatePrevious()"
     >Previous</button>
     <p class="page-number">{{ currentPage + 1 }}</p>
     <button 
-        pButton 
+        mat-raised-button 
         [disabled]="!hasNext" 
         (click)="navigateNext()"
     >Next</button>

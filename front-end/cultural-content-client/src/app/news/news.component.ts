@@ -15,7 +15,7 @@ export class NewsComponent implements OnInit {
 
   private culturalOfferId: number;
   public currentNewsPage: number;
-  private newsLimit: number = 1;
+  private newsLimit: number = 2;
 
   constructor(
     private newsService:NewsService
@@ -31,6 +31,11 @@ export class NewsComponent implements OnInit {
     this.newsService
         .getAll(1001, this.currentNewsPage, this.newsLimit)
         .subscribe(res => {this.newsPage = res; console.log(this.newsPage);});
+  }
+
+  deleteNews(id:number):void{
+    this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
+    
   }
 
   getNextNews(): void{
