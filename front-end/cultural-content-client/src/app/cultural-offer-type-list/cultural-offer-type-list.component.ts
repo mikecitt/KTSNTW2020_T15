@@ -41,8 +41,8 @@ export class CulturalOfferTypeListComponent implements OnInit {
     this.onCreateTypeEvent.emit("dldkls");
   }
 
-  deleteType(): void{
-
+  deleteType(element: any): void{
+    this.onDeleteTypeEvent.emit(element.id);
   }
 
   updateType(element: any): void{
