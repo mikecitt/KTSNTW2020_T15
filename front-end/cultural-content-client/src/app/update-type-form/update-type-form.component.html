@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Update type</h1>
+<div mat-dialog-content>
+  <mat-form-field [formGroup]= "updateForm">
+    <mat-label>Type name</mat-label>
+    <input id="name" matInput formControlName="name" required>
+      <div *ngIf="name">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)">
+          <div *ngIf="name.errors">
+            <mat-error *ngIf="name.errors.required">
+              Name is required.
+            </mat-error>
+            <mat-error *ngIf="name.errors.minlength">
+              Name must be at least 4 characters long.
+            </mat-error>
+          </div>
+        </div>
+      </div>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button color="primary" type="button" [disabled]="updateForm.invalid"
+         (click)="onSaveClick()">Save</button>
+  <!-- <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button> -->
+</div>

@@ -18,6 +18,10 @@ import { CulturalOfferSubTypeService } from './service/cultural-offer-subtype/cu
 import { MapFilterFormComponent } from './map-filter-form/map-filter-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CulturalOfferTypePageComponent } from './pages/cultural-offer-type-page/cultural-offer-type-page.component';
+import { CulturalOfferTypeListComponent } from './cultural-offer-type-list/cultural-offer-type-list.component';
+import { CreateTypeFormComponent } from './create-type-form/create-type-form.component';
+import { UpdateTypeFormComponent } from './update-type-form/update-type-form.component';
 
 
 @NgModule({
@@ -26,7 +30,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavigationBarComponent,
     MapPageComponent,
     MapItemComponent,
-    MapFilterFormComponent
+    MapFilterFormComponent,
+    CulturalOfferTypePageComponent,
+    CulturalOfferTypeListComponent,
+    CreateTypeFormComponent,
+    UpdateTypeFormComponent
 
   ],
   imports: [
