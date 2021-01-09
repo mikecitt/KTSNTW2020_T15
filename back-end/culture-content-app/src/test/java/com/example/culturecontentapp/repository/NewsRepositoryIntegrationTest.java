@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
@@ -30,8 +31,8 @@ public class NewsRepositoryIntegrationTest {
     @Test
     public void testFindByCulturalOffer() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
-        List<News> found = newsRepository.findByCulturalOffer(OFFER_ID,pageable);
-        assertEquals(DB_NEWS_SIZE, found.size());
+        Page<News> found = newsRepository.findByCulturalOffer(OFFER_ID,pageable);
+        assertEquals(DB_NEWS_SIZE, found.getContent().size());
     }
     
 }
