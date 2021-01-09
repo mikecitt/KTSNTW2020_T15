@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, OnChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { CulturalOfferType} from '../model/cultural-offer-type';
 import {MatTableDataSource} from '@angular/material/table';
 import { EventEmitter } from '@angular/core';
@@ -21,6 +21,9 @@ export class CulturalOfferTypeListComponent implements OnInit {
   @Output()
   onUpdateTypeEvent = new EventEmitter<any>();
 
+  @Output()
+  onPageChangeEvent = new EventEmitter<any>();
+
   displayedColumns: string[] = ['name', 'options'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -28,13 +31,23 @@ export class CulturalOfferTypeListComponent implements OnInit {
 
   constructor() { }
 
+  ngAfterViewInit(){
+    this.paginator.length = 10;
+    this.dataSource.paginator = this.paginator;
+  }
+
   ngOnChanges(): void{
     this.dataSource = new MatTableDataSource<CulturalOfferType>(this.offerTypes);
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<CulturalOfferType>(this.offerTypes);
-    this.dataSource.paginator = this.paginator;
+  }
+
+  onPageChanged(paginator: any){
+    console.log(paginator);
+    this.onPageChangeEvent.emit(paginator);
   }
 
   createType(): void{

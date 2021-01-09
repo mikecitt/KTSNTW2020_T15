@@ -16,15 +16,24 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   culturalOfferTypes: CulturalOfferType[];
   culturalOfferSubTypes: CulturalOfferSubType[];
+  paginatorSize: number;
 
   constructor(
     private typeService: CulturalOfferTypeService, public dialog: MatDialog
   ) { }
 
   loadCulturalOfferTypes(): void{
+    // this.typeService
+    //     .getAll()
+    //     .subscribe(res => this.culturalOfferTypes = res);
     this.typeService
-        .getAll()
-        .subscribe(res => this.culturalOfferTypes = res);
+        .getAllPaginated(0).subscribe((res: any) => this.culturalOfferTypes = res.content);
+
+  }
+
+  pageChanged(paginator: any): void{
+    // this.typeService
+    //     .getAllPaginated(paginator.pageIndex).subscribe(res => this.culturalOfferTypes = res);
   }
 
   ngOnInit(): void {

@@ -9,13 +9,18 @@ export class CulturalOfferTypeService {
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMTAwNjQyLCJleHAiOjE2MTAxMDI0NDJ9.28id310-l8M519ubCsHSl9PLZB-7pqRE1M-q8i3d26GXepEmOUKbjhMlg0bCgU2HgbsULcpe7g_77A05VLrj1Q',
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMTkzMzQ0LCJleHAiOjE2MTAxOTUxNDR9.fctyV62Gm85u0u211wk9IwDnTD36uXUe8pBmWQevj2n0gGGaTLMQU7JLRPRzS7ph2AEJ9Q3JukWhCVX4dPgOzA',
   });
 
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<CulturalOfferType[]>{
     return this.http.get<CulturalOfferType[]>(environment.api_url + "/types/all");
+  }
+
+  getAllPaginated(pageIndex: number): Observable<CulturalOfferType[]>{
+    let url = `/types?page=${pageIndex}&size=5`;
+    return this.http.get<CulturalOfferType[]>(environment.api_url + url);
   }
 
   saveType(req: CulturalOfferType): Observable<CulturalOfferType>{
