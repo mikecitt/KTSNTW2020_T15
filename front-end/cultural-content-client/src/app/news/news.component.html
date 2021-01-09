@@ -1,0 +1,25 @@
+<mat-card >
+    <mat-card-header>
+        <button mat-raised-button id="sub-button" (click)="subscribe()" >Subscribe</button>
+        <button mat-icon-button>
+            <mat-icon >add_box</mat-icon>
+        </button>
+        <mat-card-title class="centered">News</mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content *ngIf="newsPage">
+        <mat-card class="drop-shadow" *ngFor="let element of newsPage.content">
+            <p>{{element.text}}</p>
+            <div class="row">
+                <p class="date column">{{element.date | date: 'HH:mma dd.MM.YY'}}</p>    
+                <button mat-icon-button class="column right" (click)="deleteNews(element.id)">
+                    <mat-icon >remove_circle</mat-icon>
+                </button>
+            </div>
+        </mat-card>
+        <app-pagination-bar class="centered" [hasPrev]="!newsPage.first" [hasNext]="!newsPage.last"
+          [currentPage]="currentNewsPage" (navigatePrevEvent)="getPreviousNews()" (navigateNextEvent)="getNextNews()">
+        </app-pagination-bar>
+    </mat-card-content>
+  </mat-card>
+  

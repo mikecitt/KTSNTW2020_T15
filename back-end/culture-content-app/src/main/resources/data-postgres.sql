@@ -42,6 +42,9 @@ INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
 INSERT INTO News (id, date, text, culturaloffer_id) VALUES
     (1001, '2017-01-13T17:09:42.411', 'Najnovija vest o festivalu', 1001);
 
+INSERT INTO News (id, date, text, culturaloffer_id) VALUES
+    (1002, '2018-02-14T15:09:42.411', 'Festival je odlozen do daljnjeg', 1001);
+
 INSERT INTO User_culturaloffers (user_id, culturaloffer_id) VALUES
     (1001, 1001);
 

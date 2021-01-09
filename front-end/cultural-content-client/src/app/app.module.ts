@@ -1,6 +1,8 @@
+import { SubsriptionService } from './service/subscription/subsription.service';
+import { NewsService } from './service/news/news.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from './material-module';
@@ -18,6 +20,9 @@ import { CulturalOfferSubTypeService } from './service/cultural-offer-subtype/cu
 import { MapFilterFormComponent } from './map-filter-form/map-filter-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewsComponent } from './news/news.component';
+import { PaginationBarComponent } from './pagination-bar/pagination-bar.component';
+import { HttpErrorInterceptor } from './helpers/http-error.interceptor';
 import { CulturalOfferTypePageComponent } from './pages/cultural-offer-type-page/cultural-offer-type-page.component';
 import { CulturalOfferTypeListComponent } from './cultural-offer-type-list/cultural-offer-type-list.component';
 import { CreateTypeFormComponent } from './create-type-form/create-type-form.component';
@@ -32,6 +37,8 @@ import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.componen
     MapPageComponent,
     MapItemComponent,
     MapFilterFormComponent,
+    NewsComponent,
+    PaginationBarComponent,
     CulturalOfferTypePageComponent,
     CulturalOfferTypeListComponent,
     CreateTypeFormComponent,
@@ -54,6 +61,13 @@ import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.componen
     CulturalOfferService,
     CulturalOfferTypeService,
     CulturalOfferSubTypeService,
+    NewsService,
+    SubsriptionService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

@@ -81,12 +81,14 @@ public class NewsService {
     return mapper.map(news, NewsResponse.class);
   }
 
+  public Page<NewsResponse> toPageNewsResponse(Page<News> news) {
+    return news.map(this::convertToNewsResponse);
+}
+
   public ResponseEntity<Page<NewsResponse>> getOffersNews(Long offerId, Pageable pageable) {
     offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
-    List<News> news = repository.findByCulturalOffer(offerId, pageable);
-    return new ResponseEntity<>(new PageImpl<>(news.stream()
-            .map(this::convertToNewsResponse)
-            .collect(Collectors.toList())), HttpStatus.OK);
+    Page<News> news = repository.findByCulturalOffer(offerId, pageable);
+    return new ResponseEntity<>(toPageNewsResponse(news), HttpStatus.OK);
   }
 
   public ResponseEntity<NewsResponse> find(Long id){
