@@ -1,7 +1,8 @@
+import { SubsriptionService } from './service/subscription/subsription.service';
 import { NewsService } from './service/news/news.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from './material-module';
@@ -21,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewsComponent } from './news/news.component';
 import { PaginationBarComponent } from './pagination-bar/pagination-bar.component';
+import { HttpErrorInterceptor } from './helpers/http-error.interceptor';
 
 
 @NgModule({
@@ -49,7 +51,13 @@ import { PaginationBarComponent } from './pagination-bar/pagination-bar.componen
     CulturalOfferService,
     CulturalOfferTypeService,
     CulturalOfferSubTypeService,
-    NewsService
+    NewsService,
+    SubsriptionService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })
