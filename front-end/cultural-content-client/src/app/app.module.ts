@@ -23,6 +23,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NewsComponent } from './news/news.component';
 import { PaginationBarComponent } from './pagination-bar/pagination-bar.component';
 import { HttpErrorInterceptor } from './helpers/http-error.interceptor';
+import { CulturalOfferTypePageComponent } from './pages/cultural-offer-type-page/cultural-offer-type-page.component';
+import { CulturalOfferTypeListComponent } from './cultural-offer-type-list/cultural-offer-type-list.component';
+import { CreateTypeFormComponent } from './create-type-form/create-type-form.component';
+import { UpdateTypeFormComponent } from './update-type-form/update-type-form.component';
+import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
 
 
 @NgModule({
@@ -33,7 +38,12 @@ import { HttpErrorInterceptor } from './helpers/http-error.interceptor';
     MapItemComponent,
     MapFilterFormComponent,
     NewsComponent,
-    PaginationBarComponent
+    PaginationBarComponent,
+    CulturalOfferTypePageComponent,
+    CulturalOfferTypeListComponent,
+    CreateTypeFormComponent,
+    UpdateTypeFormComponent,
+    ConfirmDeleteComponent
 
   ],
   imports: [

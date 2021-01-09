@@ -66,7 +66,8 @@ const materialModules = [
   MatGridListModule,
   MatRadioModule,
   MatDatepickerModule,
-  MatTooltipModule
+  MatTooltipModule,
+
 ];
 
 @NgModule({
@@ -74,6 +75,7 @@ const materialModules = [
     ...materialModules
   ],
 })
+
 export class MaterialModule {}
 
 /**  Copyright 2020 Google LLC. All Rights Reserved.
