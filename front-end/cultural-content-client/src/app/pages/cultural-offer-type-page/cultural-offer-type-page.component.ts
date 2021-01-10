@@ -6,6 +6,7 @@ import { CreateTypeFormComponent } from '../../create-type-form/create-type-form
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateTypeFormComponent } from 'src/app/update-type-form/update-type-form.component';
 import { ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.component';
+import { TypePage } from 'src/app/model/type-page';
 
 @Component({
   selector: 'app-cultural-offer-type-page',
@@ -16,24 +17,31 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   culturalOfferTypes: CulturalOfferType[];
   culturalOfferSubTypes: CulturalOfferSubType[];
-  paginatorSize: number;
+
+  typePage: TypePage;
+  curentPage: number = 0;
+  pageSize: number = 5;
 
   constructor(
     private typeService: CulturalOfferTypeService, public dialog: MatDialog
   ) { }
 
   loadCulturalOfferTypes(): void{
-    // this.typeService
-    //     .getAll()
-    //     .subscribe(res => this.culturalOfferTypes = res);
     this.typeService
-        .getAllPaginated(0).subscribe((res: any) => this.culturalOfferTypes = res.content);
-
+        .getAllPaginated(this.curentPage,this.pageSize).subscribe((res) => {
+          this.typePage = res;
+          this.culturalOfferTypes = res.content
+        });
   }
 
-  pageChanged(paginator: any): void{
-    // this.typeService
-    //     .getAllPaginated(paginator.pageIndex).subscribe(res => this.culturalOfferTypes = res);
+  getNextType(): void{
+    this.curentPage++;
+    this.loadCulturalOfferTypes();
+  }
+
+  getPreviousType():void{
+    this.curentPage--;
+    this.loadCulturalOfferTypes();
   }
 
   ngOnInit(): void {
@@ -66,7 +74,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
       panelClass : "mat-elevation-z8",
       data: {_id: 1, name: ""}
     });
-
+    this.curentPage = this.typePage.totalPages - 1;
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
         let req: CulturalOfferType = {_id:1, name: result};

@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CulturalOfferType } from '../../model/cultural-offer-type';
 import { environment } from 'src/environments/environment';
+import { TypePage } from 'src/app/model/type-page';
 
 @Injectable()
 export class CulturalOfferTypeService {
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMTkzMzQ0LCJleHAiOjE2MTAxOTUxNDR9.fctyV62Gm85u0u211wk9IwDnTD36uXUe8pBmWQevj2n0gGGaTLMQU7JLRPRzS7ph2AEJ9Q3JukWhCVX4dPgOzA',
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMjczODI0LCJleHAiOjE2MTAyNzU2MjR9.l2VMKP3vPVSVZ1pBXZGJ3oFXp5D9wdesl0xHHMkVHEw27cQ9P8A1fC1DWNGOUbut5F7AIslUezt_V48_c0-YwQ',
   });
 
   constructor(private http: HttpClient) { }
@@ -18,9 +19,9 @@ export class CulturalOfferTypeService {
     return this.http.get<CulturalOfferType[]>(environment.api_url + "/types/all");
   }
 
-  getAllPaginated(pageIndex: number): Observable<CulturalOfferType[]>{
-    let url = `/types?page=${pageIndex}&size=5`;
-    return this.http.get<CulturalOfferType[]>(environment.api_url + url);
+  getAllPaginated(pageIndex: number, pageSize: number): Observable<TypePage>{
+    let url = `/types?page=${pageIndex}&size=${pageSize}`;
+    return this.http.get<TypePage>(environment.api_url + url);
   }
 
   saveType(req: CulturalOfferType): Observable<CulturalOfferType>{

@@ -1,10 +1,22 @@
-<app-cultural-offer-type-list
-    *ngIf="culturalOfferTypes"
-    [offerTypes]="culturalOfferTypes"
-    (onCreateTypeEvent)="openCreateDialog($event)"
-    (onUpdateTypeEvent)="openUpdateDialog($event)"
-    (onDeleteTypeEvent)="deleteType($event)"
-    (onPageChangeEvent)="pageChanged($event)">
+<mat-card class="mat-elevation-z8" style="width: 450px; margin: 40px; margin-top: 50px;">
+  <app-cultural-offer-type-list
+      *ngIf="culturalOfferTypes"
+      [offerTypes]="culturalOfferTypes"
+      (onCreateTypeEvent)="openCreateDialog($event)"
+      (onUpdateTypeEvent)="openUpdateDialog($event)"
+      (onDeleteTypeEvent)="deleteType($event)"
+      >
+  </app-cultural-offer-type-list>
 
-</app-cultural-offer-type-list>
+  <mat-card-actions style="width: 300px; margin-left: 110px;">
+    <app-pagination-bar
+        *ngIf="typePage"
+        [hasNext]="!typePage.last"
+        [hasPrev]="!typePage.first"
+        [currentPage]="curentPage"
+        (navigateNextEvent)="getNextType()"
+        (navigatePrevEvent)="getPreviousType()">
+    </app-pagination-bar>
+  </mat-card-actions>
 
+</mat-card>
