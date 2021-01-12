@@ -1,0 +1,38 @@
+<mat-card class="mat-elevation-z8" style="width: 450px; margin: 40px; margin-top: 50px;">
+  <mat-card-header>
+    <mat-card-title style="font-size: 30px;">Offer types</mat-card-title>
+    <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon"
+            style="margin-left: 200px;" (click)="createType()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <div  >
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Options Column -->
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef> Options </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="deleteType(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button type="button" (click)="updateType(element)">
+            <mat-icon>launch</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</mat-card>

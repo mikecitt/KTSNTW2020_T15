@@ -4,7 +4,12 @@
 
 export const environment = {
   production: false,
+
+  mapboxKey: 'pk.eyJ1IjoibmlraTI5OSIsImEiOiJja2o4dHJpNXIwOWppMnlwZWxxYmF6cHhvIn0.Sz-EzS9C-C272sm6GM-hGw',
+
+
   api_url: 'http://localhost:8080/api'
+
 };
 
 /*

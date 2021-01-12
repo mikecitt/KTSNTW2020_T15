@@ -6,11 +6,17 @@ INSERT INTO Account (role, id, active, email, password, username) VALUES
 INSERT INTO Type (id, name) VALUES
     (1001, 'Manifestacija');
 
+INSERT INTO Type (id, name) VALUES
+    (1002, 'Institucija');
+
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1001, 'Festival', 1001);
 
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1002, 'Koncert', 1001);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1003, 'Podkategorija1', 1002);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
     (1001, 'Petrovaradinska tvrdjava', 45.252736, 19.8601);
@@ -35,6 +41,9 @@ INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
 
 INSERT INTO News (id, date, text, culturaloffer_id) VALUES
     (1001, '2017-01-13T17:09:42.411', 'Najnovija vest o festivalu', 1001);
+
+INSERT INTO News (id, date, text, culturaloffer_id) VALUES
+    (1002, '2018-02-14T15:09:42.411', 'Festival je odlozen do daljnjeg', 1001);
 
 INSERT INTO User_culturaloffers (user_id, culturaloffer_id) VALUES
     (1001, 1001);

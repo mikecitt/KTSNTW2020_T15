@@ -45,6 +45,9 @@ public class SubTypeService {
     return new PageImpl<>(toTypeDto(subTypes));
   }
 
+  public List<SubTypeResponse> findAll(Long typeId){
+    return toTypeDto(repository.findAllByTypeId(typeId));
+  }
 
   public SubTypeResponse findOne(Long typeId, Long id){
     SubType subType = repository.findByIdAndTypeId(id, typeId);

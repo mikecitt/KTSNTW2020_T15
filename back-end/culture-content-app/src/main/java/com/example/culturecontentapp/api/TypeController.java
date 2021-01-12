@@ -12,6 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/types")
 public class TypeController {
@@ -28,6 +32,11 @@ public class TypeController {
     return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
   }
 
+  @GetMapping(value = "/all")
+  public ResponseEntity<List<TypeResponse>> getAllCulturalOfferTypes(){
+    return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+  }
+
   @GetMapping(value = "/{id}")
   public ResponseEntity<TypeResponse> getCulturalOfferType(@PathVariable Long id) {
     return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
@@ -41,7 +50,7 @@ public class TypeController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping(value = "/{id}")
-  public ResponseEntity<TypeResponse> updateCulturalOfferType(@RequestBody TypeRequest typeRequest,
+  public ResponseEntity<TypeResponse> updateCulturalOfferType(@RequestBody @Valid TypeRequest typeRequest,
       @PathVariable Long id) {
     return new ResponseEntity<>(service.update(typeRequest, id), HttpStatus.OK);
   }

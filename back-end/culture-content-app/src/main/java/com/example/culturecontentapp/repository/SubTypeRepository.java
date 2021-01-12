@@ -21,6 +21,7 @@ public interface SubTypeRepository extends JpaRepository<SubType, Long> {
 
     SubType findByNameAndIdNot(String name, Long id);
 
+    List<SubType> findAllByTypeId(Long id);
 
 //    @Query("SELECT s.name FROM SubType s WHERE s.id=:id and s.type.id=:typeId")
 //    String findNameByIdAndTypeId(Long id, Long typeId);
