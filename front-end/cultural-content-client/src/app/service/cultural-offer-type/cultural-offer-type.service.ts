@@ -10,7 +10,7 @@ export class CulturalOfferTypeService {
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMjczODI0LCJleHAiOjE2MTAyNzU2MjR9.l2VMKP3vPVSVZ1pBXZGJ3oFXp5D9wdesl0xHHMkVHEw27cQ9P8A1fC1DWNGOUbut5F7AIslUezt_V48_c0-YwQ',
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMzg1MjE4LCJleHAiOjE2MTAzODcwMTh9.Vv1gXj_vBv9YW_05zSM2iCE-tHDYeC9EifCTO1h9zlkJC5dcTNvpTQaFVWFk68oNOvN9i9VLWAYPA1-Ilf_buw',
   });
 
   constructor(private http: HttpClient) { }
@@ -31,7 +31,7 @@ export class CulturalOfferTypeService {
 
   updateType(req: CulturalOfferType): Observable<CulturalOfferType>{
     return this.http.put<CulturalOfferType>
-      (environment.api_url + `/types/${req._id}`, req ,{headers:this.headers});
+      (environment.api_url + `/types/${req.id}`, req ,{headers:this.headers});
   }
 
   deleteType(type_id: any): Observable<void>{

@@ -77,7 +77,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
     this.curentPage = this.typePage.totalPages - 1;
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
-        let req: CulturalOfferType = {_id:1, name: result};
+        let req: CulturalOfferType = {id:1, name: result};
         this.typeService.saveType(req)
             .subscribe((response) => {
               this.loadCulturalOfferTypes();
@@ -95,9 +95,12 @@ export class CulturalOfferTypePageComponent implements OnInit {
       panelClass : "mat-elevation-z8",
       data: {id: updatedType.id, name: updatedType.name}
     });
+    //bolje sort na back
+    this.curentPage = this.typePage.totalPages - 1;
+
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
-        let req: CulturalOfferType = {_id: result.id, name: result.name};
+        let req: CulturalOfferType = {id: result.id, name: result.name};
         this.typeService.updateType(req)
             .subscribe((response) => {
               this.loadCulturalOfferTypes();
