@@ -1,25 +1,16 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <a href="http://localhost:4200/" mat-icon-button>
+  <button routerLink="/" mat-button>
+    <a mat-icon-button>
       <mat-icon>public</mat-icon>
-    </a>
-</button>
-<span>Cultural offers</span>
-<span class="example-spacer"></span>
-  <button mat-button>
-    <a style="margin-right: 40px;" mat-icon-button
-            aria-label="Example icon-button with heart icon"
-            href="http://localhost:4200/culturalOfferTypes">TYPES
-      <mat-icon>category</mat-icon>
-    </a>
+    </a>Cultural offers
   </button>
-
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+  <button mat-raised-button routerLink="/subscriptions">My Subscriptions</button>
+  
+  <span class="example-spacer"></span>
+  <button mat-button routerLink="/culturalOfferTypes">Manage Types<mat-icon>category</mat-icon></button>
+  <button mat-button routerLink="/login">Login</button>
+  <button mat-button routerLink="/register">Register</button>
+  <button mat-raised-button color="warn" routerLink="/logout">Logout</button>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
