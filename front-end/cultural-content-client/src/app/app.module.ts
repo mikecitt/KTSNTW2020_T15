@@ -33,6 +33,7 @@ import { CreateTypeFormComponent } from './create-type-form/create-type-form.com
 import { UpdateTypeFormComponent } from './update-type-form/update-type-form.component';
 import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     CreateTypeFormComponent,
     UpdateTypeFormComponent,
     ConfirmDeleteComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
