@@ -47,8 +47,8 @@ public class AuthenticationController {
     return service.activate(token);
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/login", produces = MediaType.TEXT_PLAIN_VALUE)
-  public ResponseEntity<String> login(@RequestBody @Valid AccountLoginRequest request) {
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody @Valid AccountLoginRequest request) {
     return service.login(request);
   }
 }
