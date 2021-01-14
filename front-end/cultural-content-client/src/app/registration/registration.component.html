@@ -1,0 +1,36 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+      <mat-card-header>
+        <mat-card-title>Registration</mat-card-title>
+      </mat-card-header>
+  
+      <form class="example-form" #registerForm="ngForm" (ngSubmit)="register()" [formGroup]="form">
+  
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input matInput formControlName="username" placeholder="Username">
+            <mat-error>Username must have between 5 and 64 characters.</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input matInput formControlName="email" placeholder="Email">
+            <mat-error>Invalid email format.</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input type="password" matInput formControlName="password" placeholder="Password">
+            <mat-error>Password must have between 6 and 64 characters.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input type="password" matInput formControlName="rePassword" [errorStateMatcher]="matcher" placeholder="Repeat password">
+            <mat-error *ngIf="registerForm.hasError('notSame')">Passwords are not matching.</mat-error>
+        </mat-form-field>
+  
+        </mat-card-content>
+  
+        <button type="submit" [disabled]="!registerForm.form.valid" mat-flat-button color="primary" class="btn-block">Register</button>
+  
+      </form>
+    </mat-card>
+  </div>

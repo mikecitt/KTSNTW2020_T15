@@ -10,13 +10,13 @@ import { Validators } from '@angular/forms';
 })
 export class CreateTypeFormComponent implements OnInit {
 
-  name = new FormControl('',[Validators.required, Validators.minLength(4)]);
+  name: FormControl;
 
   constructor(
     public dialogRef: MatDialogRef<CreateTypeFormComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: CulturalOfferType
-    ) {}
-
+    ) {
+      this.name = new FormControl('',[Validators.required, Validators.minLength(4)]);
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
