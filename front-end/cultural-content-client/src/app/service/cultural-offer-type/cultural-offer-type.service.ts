@@ -24,7 +24,7 @@ export class CulturalOfferTypeService {
     return this.http.get<TypePage>(environment.api_url + url);
   }
 
-  saveType(req: CulturalOfferType): Observable<CulturalOfferType>{
+  createType(req: CulturalOfferType): Observable<CulturalOfferType>{
     return this.http.post<CulturalOfferType>
       (environment.api_url + "/types", req,{headers:this.headers});
   }

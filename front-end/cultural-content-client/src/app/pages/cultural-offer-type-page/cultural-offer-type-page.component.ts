@@ -26,7 +26,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
     private typeService: CulturalOfferTypeService, public dialog: MatDialog
   ) { }
 
-  loadCulturalOfferTypes(): void{
+  loadTypes(): void{
     this.typeService
         .getAllPaginated(this.curentPage,this.pageSize).subscribe((res) => {
           this.typePage = res;
@@ -36,16 +36,16 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   getNextType(): void{
     this.curentPage++;
-    this.loadCulturalOfferTypes();
+    this.loadTypes();
   }
 
   getPreviousType():void{
     this.curentPage--;
-    this.loadCulturalOfferTypes();
+    this.loadTypes();
   }
 
   ngOnInit(): void {
-    this.loadCulturalOfferTypes();
+    this.loadTypes();
   }
   deleteType(typeId: any): void{
     console.log(typeId);
@@ -60,7 +60,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
                   this.typeService
                       .deleteType(typeId)
                       .subscribe((response)=>{
-                        this.loadCulturalOfferTypes();
+                        this.loadTypes();
                         alert("Deleted successfully");
                       },
                       (error) => alert(error.error));
@@ -78,9 +78,9 @@ export class CulturalOfferTypePageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
         let req: CulturalOfferType = {id:1, name: result};
-        this.typeService.saveType(req)
+        this.typeService.createType(req)
             .subscribe((response) => {
-              this.loadCulturalOfferTypes();
+              this.loadTypes();
             },
             (error) => {
               alert(error.error)
@@ -103,7 +103,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
         let req: CulturalOfferType = {id: result.id, name: result.name};
         this.typeService.updateType(req)
             .subscribe((response) => {
-              this.loadCulturalOfferTypes();
+              this.loadTypes();
             },
             (error) => {
               alert(error.error)

@@ -53,7 +53,7 @@ export class MapItemComponent implements OnInit, OnChanges {
       container: 'map-mapbox',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [20.426773,44.9979649],   //LNG, LAT
-      zoom: 8
+      zoom: 7
       });
 
     this.mapInitialiezd = true;
