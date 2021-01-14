@@ -28,6 +28,7 @@ import { CulturalOfferTypeListComponent } from './cultural-offer-type-list/cultu
 import { CreateTypeFormComponent } from './create-type-form/create-type-form.component';
 import { UpdateTypeFormComponent } from './update-type-form/update-type-form.component';
 import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
+import { NewsFormComponent } from './news/news-form/news-form.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.componen
     CulturalOfferTypeListComponent,
     CreateTypeFormComponent,
     UpdateTypeFormComponent,
-    ConfirmDeleteComponent
+    ConfirmDeleteComponent,
+    NewsFormComponent
 
   ],
   imports: [
