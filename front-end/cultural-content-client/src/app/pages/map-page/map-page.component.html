@@ -14,10 +14,9 @@
     <div id="map-page">
       <app-map-item
         *ngIf="culturalOffersLocations"
-        [culutralOffers]="culturalOffersLocations"> </app-map-item>
+        [culutralOffers]="culturalOffersLocations"
+        [location]="searchedLocation"> </app-map-item>
     </div>
   </mat-grid-tile>
 
 </mat-grid-list>
-
-<app-news></app-news>

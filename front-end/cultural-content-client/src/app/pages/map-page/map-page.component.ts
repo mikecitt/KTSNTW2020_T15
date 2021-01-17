@@ -18,7 +18,7 @@ export class MapPageComponent implements OnInit {
   culturalOfferTypes: CulturalOfferType[] = [];
   culturalOfferSubTypes: CulturalOfferSubType[] = [];
 
-  selectedType: CulturalOfferType;
+  searchedLocation: string;
 
   constructor(
     private culturalOfferService: CulturalOfferService,
@@ -30,11 +30,6 @@ export class MapPageComponent implements OnInit {
     this.loadCulturalOffers();
     this.loadCulturalOfferTypes();
   }
-
-  // onSelectChange(newSelected: any): void{
-  //   //this.selected = newSelected.value;
-  //   console.log(this.selectedType);
-  // }
 
   loadCulturalOffers(): void{
     this.culturalOfferService
@@ -54,16 +49,20 @@ export class MapPageComponent implements OnInit {
         .subscribe(res => this.culturalOfferSubTypes = res);
   }
 
-  applyFilter(filterReq: FilterRequest): void{
-    console.log("Cathced event")
+  applyFilter(filterReq: any): void{
+    this.findLocation(filterReq.location);
     this.culturalOfferService
-        .filterCulturalOffers(filterReq)
+        .filterCulturalOffers(filterReq.request)
         .subscribe(res => this.culturalOffersLocations = res.map(offer => offer.location));
-    // this.culturalOffersLocations = [];
   }
 
   resetFilter(reset: string): void{
     this.loadCulturalOffers();
+  }
+
+  findLocation(location: string){
+    // console.log(location);
+    this.searchedLocation = location;
   }
 
 }

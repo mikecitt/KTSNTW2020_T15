@@ -48,7 +48,6 @@ export class CulturalOfferTypePageComponent implements OnInit {
     this.loadTypes();
   }
   deleteType(typeId: any): void{
-    console.log(typeId);
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
       width: '300px',
       panelClass : "mat-elevation-z8",

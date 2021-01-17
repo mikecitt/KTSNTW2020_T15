@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { CulturalOfferTypeService } from 'src/app/service/cultural-offer-type/cultural-offer-type.service';
+import { By } from '@angular/platform-browser';
 
 import { CulturalOfferTypePageComponent } from './cultural-offer-type-page.component';
+import { DebugElement } from '@angular/core';
 
 describe('CulturalOfferTypePageComponent', () => {
   let component: CulturalOfferTypePageComponent;
@@ -52,5 +54,15 @@ describe('CulturalOfferTypePageComponent', () => {
 
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
+    fixture.whenStable()
+           .then( () => {
+              expect(component.culturalOfferTypes.length).toBe(3);
+              fixture.detectChanges();
+              let elements: DebugElement[] =
+                fixture.debugElement.queryAll(By.css('tbody tr'));
+              expect(elements.length).toBe(4);
+           });
   });
+
+
 });

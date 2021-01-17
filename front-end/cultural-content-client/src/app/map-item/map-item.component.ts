@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CulturalOfferLocation } from '../model/culutral-offer-location';
 import {environment} from '../../environments/environment.prod'
 import * as Mapboxgl from 'mapbox-gl';
@@ -13,27 +13,29 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   @Input()
   culutralOffers: CulturalOfferLocation[];
+  @Input()
+  location: string;
 
   mapa: Mapboxgl.Map;
   markers: Mapboxgl.Marker[] = [];
-  mapInitialiezd: boolean = false;
+  mapInitialized: boolean = false;
 
   constructor() {  }
 
-  ngOnChanges(): void{
-    if(this.mapInitialiezd){
-      this.markers.forEach((marker) => marker.remove());
-      this.markers = [];
-      this.createMarkers();
-      this.markers.forEach((marker) =>  marker.addTo(this.mapa));
+  ngOnChanges(changes: SimpleChanges): void{
+    if(this.mapInitialized){
+      if(changes['culutralOffers']){
+        this.removeMarkers();
+        this.updateMarkers();
+      }
+      if(changes['location'])
+        this.focusOnLocation();
     }
   }
 
   ngOnInit(): void {
       this.initializeMap();
-      this.createMarkers();
-      this.markers.forEach((marker) =>  marker.addTo(this.mapa));
-
+      this.updateMarkers();
   }
   createMarkers() :void{
 
@@ -56,7 +58,20 @@ export class MapItemComponent implements OnInit, OnChanges {
       zoom: 7
       });
 
-    this.mapInitialiezd = true;
+    this.mapInitialized = true;
+  }
+  updateMarkers(): void{
+    this.createMarkers();
+    //add markers on the map
+    this.markers.forEach((marker) =>  marker.addTo(this.mapa));
+  }
+
+  removeMarkers(): void{
+    this.markers.forEach((marker) => marker.remove());
+    this.markers = [];
+  }
+  focusOnLocation(){
+    console.log(this.location);
   }
 
 }

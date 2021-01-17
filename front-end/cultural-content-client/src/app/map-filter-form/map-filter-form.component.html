@@ -1,7 +1,7 @@
 <mat-card style="width: 800px; height: 60px;">
   <mat-card-content>
     <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill" >
+      <mat-form-field appearance="outline" >
         <mat-label>Select an cultural offer type</mat-label>
         <mat-select [(value)]="selectedType" formControlName="typeName" (selectionChange)="onSelectChange($event)">
 
@@ -9,19 +9,20 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" style="margin-left: 8px;">
+      <mat-form-field appearance="outline" style="margin-left: 8px;">
         <mat-label>Select an cultural offer subtype</mat-label>
         <mat-select [(value)]="selectedSubType" [disabled]="disabled" formControlName="subTypeName">
-
           <mat-option *ngFor="let val of culturalOfferSubTypes" [value]="val">{{val.name}}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit">Apply filter</button>
+      <mat-form-field appearance="standard" style="margin-left: 8px;">
+        <input matInput placeholder="Search" formControlName="searchLocation">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" style="margin-left: 8px;">Apply filter</button>
       <button mat-raised-button color="warn" type="button" (click)="resetFilter()" >Reset</button>
-
     </form>
-
 
   </mat-card-content>
 </mat-card>
