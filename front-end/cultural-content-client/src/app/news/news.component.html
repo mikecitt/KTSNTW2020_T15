@@ -12,7 +12,7 @@
             <p>{{element.text}}</p>
             <div class="row">
                 <p class="date column">{{element.date | date: 'HH:mma dd.MM.YY'}}</p>    
-                <button mat-icon-button class="column right" (click)="deleteNews(element.id)">
+                <button mat-icon-button class="column right" *ngIf="element.id" (click)="deleteNews(element.id)">
                     <mat-icon >remove_circle</mat-icon>
                 </button>
             </div>

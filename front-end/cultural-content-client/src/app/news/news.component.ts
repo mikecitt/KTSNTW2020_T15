@@ -1,10 +1,11 @@
+import { ConfirmDeleteComponent } from './../confirm-delete/confirm-delete.component';
 import { NewsFormComponent } from './news-form/news-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SubsriptionService } from './../service/subscription/subsription.service';
 import { NewsPage } from './../model/news-page';
 import { NewsService } from './../service/news/news.service';
 import { Component, DebugElement, OnInit } from '@angular/core';
-import { NewsResponse } from '../model/news-response';
+import { News } from '../model/news';
 
 @Component({
   selector: 'app-news',
@@ -13,8 +14,13 @@ import { NewsResponse } from '../model/news-response';
 })
 export class NewsComponent implements OnInit {
 
-  news: NewsResponse[] = [];
   newsPage: NewsPage;
+  newsToAdd: News = {
+    text: "",
+    date: new Date(),
+    images: []
+
+  };
 
   private culturalOfferId: number = 1001;
   public currentNewsPage: number;
@@ -39,7 +45,18 @@ export class NewsComponent implements OnInit {
   }
 
   deleteNews(id:number):void{
-    this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent,{
+      width: '300px',
+      panelClass : "mat-elevation-z8",
+      data: {}
+    })
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
+        alert("Deleted news successfuly");
+      }
+    })
+    
     
   }
 
@@ -59,14 +76,30 @@ export class NewsComponent implements OnInit {
 
   openCreateNewsDialog(): void{
     const dialogRef = this.dialog.open(NewsFormComponent, {
-      width: '250px',
-      // data: {name: this.name, animal: this.animal}
+      width: '400px',
+      data: this.newsToAdd,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
+      if(result.operation == "add") this.addNews();
+      else if(result.operation == "cancel") this.cancelAdding();
     });
+  }
+
+  addNews():void{
+    this.newsToAdd.date = new Date();
+    this.newsService.addNews(this.culturalOfferId, this.newsToAdd).subscribe((response) => {
+      this.loadNews();
+    });
+  }
+
+  cancelAdding():void{
+    this.newsToAdd = {
+      text: "",
+      date: new Date(),
+      images: []
+    };
   }
 
 }
