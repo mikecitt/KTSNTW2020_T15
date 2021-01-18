@@ -2,7 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { CulturalOfferLocation } from '../model/culutral-offer-location';
 import {environment} from '../../environments/environment.prod'
 import * as Mapboxgl from 'mapbox-gl';
-
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Geocoder } from '../model/geocoder';
 
 @Component({
   selector: 'app-map-item',
@@ -20,7 +21,7 @@ export class MapItemComponent implements OnInit, OnChanges {
   markers: Mapboxgl.Marker[] = [];
   mapInitialized: boolean = false;
 
-  constructor() {  }
+  constructor(private httpClient: HttpClient) {  }
 
   ngOnChanges(changes: SimpleChanges): void{
     if(this.mapInitialized){
@@ -55,7 +56,7 @@ export class MapItemComponent implements OnInit, OnChanges {
       container: 'map-mapbox',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [20.426773,44.9979649],   //LNG, LAT
-      zoom: 7
+      zoom: 5.5
       });
 
     this.mapInitialized = true;
@@ -71,7 +72,22 @@ export class MapItemComponent implements OnInit, OnChanges {
     this.markers = [];
   }
   focusOnLocation(){
-    console.log(this.location);
+    this.location = this.capitalize(this.location);
+    let api_url = `https://api.mapbox.com/geocoding/v5/mapbox.places/
+                    ${this.location}.json?access_token=${environment.mapboxKey}`;
+
+    let response = this.httpClient.get<Geocoder>(api_url);
+
+    response.subscribe(geo => {
+      if(geo.features[0]){
+        this.mapa.setCenter(geo.features[0].bbox.slice(0,2) as [number, number]);
+        this.mapa.setZoom(8);
+      }
+    });
+  }
+
+  capitalize = (s: string) => {
+    return s.charAt(0).toUpperCase() + s.slice(1)
   }
 
 }
