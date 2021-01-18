@@ -9,13 +9,33 @@
     </mat-card-header>
     <mat-card-content *ngIf="newsPage">
         <mat-card class="drop-shadow" *ngFor="let element of newsPage.content">
-            <p>{{element.text}}</p>
+            
             <div class="row">
-                <p class="date column">{{element.date | date: 'HH:mma dd.MM.YY'}}</p>    
+                <p>{{element.text}}</p>
                 <button mat-icon-button class="column right" *ngIf="element.id" (click)="deleteNews(element.id)">
                     <mat-icon >remove_circle</mat-icon>
                 </button>
             </div>
+
+            <mat-carousel  class="carousel"          
+            timings="250ms ease-in"
+            color=primary
+            [proportion]="40"
+            [hideArrows]="false"
+            [hideIndicators]="false"
+            [maintainAspectRatio]="true"
+            maxWidth="auto"
+            >
+                <mat-carousel-slide
+                    
+                    #matCarouselSlide
+                    *ngFor="let slide of slides; let i = index"
+                    [image]="slide.image"
+                    overlayColor="#00000040"
+                    [hideOverlay]="false"
+                ></mat-carousel-slide>
+            </mat-carousel>
+            <p class="date">{{element.date | date: 'HH:mma dd.MM.YY'}}</p>  
         </mat-card>
         <app-pagination-bar class="centered" [hasPrev]="!newsPage.first" [hasNext]="!newsPage.last"
           [currentPage]="currentNewsPage" (navigatePrevEvent)="getPreviousNews()" (navigateNextEvent)="getNextNews()">

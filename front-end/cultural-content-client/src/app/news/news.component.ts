@@ -6,6 +6,7 @@ import { NewsPage } from './../model/news-page';
 import { NewsService } from './../service/news/news.service';
 import { Component, DebugElement, OnInit } from '@angular/core';
 import { News } from '../model/news';
+import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 
 @Component({
   selector: 'app-news',
@@ -21,6 +22,7 @@ export class NewsComponent implements OnInit {
     images: []
 
   };
+  slides = [{image: 'https://mdbootstrap.com/img/Photos/Slides/img%20(130).jpg'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'},{image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}];
 
   private culturalOfferId: number = 1001;
   public currentNewsPage: number;
@@ -56,8 +58,6 @@ export class NewsComponent implements OnInit {
         alert("Deleted news successfuly");
       }
     })
-    
-    
   }
 
   subscribe():void{
