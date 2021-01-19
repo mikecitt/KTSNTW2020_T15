@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +56,7 @@ public class TypeService {
   public TypeResponse create(TypeRequest typeRequest){
     if(repository.findByName(typeRequest.getName()) != null)
       throw new TypeAlreadyExistsException("Cultural offer type with given name already exists");
-    Type type = mapper.map(typeRequest, Type.class);
+    Type type = new Type(typeRequest.getName());
 
     return convertToDTO(repository.save(type));
   }

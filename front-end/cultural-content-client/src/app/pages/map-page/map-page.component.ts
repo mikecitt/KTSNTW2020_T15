@@ -6,6 +6,7 @@ import { CulturalOfferSubType} from 'src/app/model/culutral-offer-subType';
 import { CulturalOfferTypeService} from 'src/app/service/cultural-offer-type/cultural-offer-type.service';
 import { CulturalOfferSubTypeService } from 'src/app/service/cultural-offer-subtype/cultural-offer-sub-type.service';
 import { FilterRequest } from 'src/app/model/filter-request';
+import { CulturalOfferResponse } from 'src/app/model/cultural-offer-response';
 
 @Component({
   selector: 'app-map-page',
@@ -14,11 +15,11 @@ import { FilterRequest } from 'src/app/model/filter-request';
 })
 export class MapPageComponent implements OnInit {
 
-  culturalOffersLocations: CulturalOfferLocation[];
-  culturalOfferTypes: CulturalOfferType[] = [];
-  culturalOfferSubTypes: CulturalOfferSubType[] = [];
+  culturalOfferLocations: CulturalOfferLocation[];
+  types: CulturalOfferType[] = [];
+  subTypes: CulturalOfferSubType[] = [];
 
-  selectedType: CulturalOfferType;
+  searchedLocation: string;
 
   constructor(
     private culturalOfferService: CulturalOfferService,
@@ -31,39 +32,38 @@ export class MapPageComponent implements OnInit {
     this.loadCulturalOfferTypes();
   }
 
-  // onSelectChange(newSelected: any): void{
-  //   //this.selected = newSelected.value;
-  //   console.log(this.selectedType);
-  // }
-
   loadCulturalOffers(): void{
     this.culturalOfferService
-        .getAll()
+        .getLocations()
         .subscribe(res =>
-          this.culturalOffersLocations = res.map(offer => offer.location)
+          this.culturalOfferLocations = res
         )
   }
   loadCulturalOfferTypes(): void{
     this.culturalOfferTypeService
         .getAll()
-        .subscribe(res => this.culturalOfferTypes = res)
+        .subscribe(res => this.types = res)
   }
   loadSubTypes(typeId: any): void{
+    console.log(this.culturalOfferLocations);
     this.culturalOfferSubTypeService
         .getAll(typeId)
-        .subscribe(res => this.culturalOfferSubTypes = res);
+        .subscribe(res => this.subTypes = res);
   }
 
-  applyFilter(filterReq: FilterRequest): void{
-    console.log("Cathced event")
+  applyFilter(filterReq: any): void{
+    this.findLocation(filterReq.location);
     this.culturalOfferService
-        .filterCulturalOffers(filterReq)
-        .subscribe(res => this.culturalOffersLocations = res.map(offer => offer.location));
-    // this.culturalOffersLocations = [];
+        .filterCulturalOffers(filterReq.request)
+        .subscribe(res => this.culturalOfferLocations = res);
   }
 
   resetFilter(reset: string): void{
     this.loadCulturalOffers();
+  }
+
+  findLocation(location: string){
+    this.searchedLocation = location;
   }
 
 }

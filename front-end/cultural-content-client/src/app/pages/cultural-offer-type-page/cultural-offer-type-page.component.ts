@@ -19,14 +19,21 @@ export class CulturalOfferTypePageComponent implements OnInit {
   culturalOfferSubTypes: CulturalOfferSubType[];
 
   typePage: TypePage;
-  curentPage: number = 0;
-  pageSize: number = 5;
+  curentPage: number;
+  pageSize: number;
 
   constructor(
-    private typeService: CulturalOfferTypeService, public dialog: MatDialog
-  ) { }
+    private typeService: CulturalOfferTypeService, public dialog: MatDialog)
+  {
+    this.curentPage = 0;
+    this.pageSize = 5;
+  }
 
-  loadCulturalOfferTypes(): void{
+  ngOnInit(): void {
+    this.loadTypes();
+  }
+
+  loadTypes(): void{
     this.typeService
         .getAllPaginated(this.curentPage,this.pageSize).subscribe((res) => {
           this.typePage = res;
@@ -36,36 +43,33 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   getNextType(): void{
     this.curentPage++;
-    this.loadCulturalOfferTypes();
+    this.loadTypes();
   }
 
   getPreviousType():void{
     this.curentPage--;
-    this.loadCulturalOfferTypes();
+    this.loadTypes();
   }
 
-  ngOnInit(): void {
-    this.loadCulturalOfferTypes();
-  }
   deleteType(typeId: any): void{
-    console.log(typeId);
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
       width: '300px',
       panelClass : "mat-elevation-z8",
       data: {}
     });
-    dialogRef.afterClosed()
-             .subscribe(result =>{
-                if(result){
-                  this.typeService
-                      .deleteType(typeId)
-                      .subscribe((response)=>{
-                        this.loadCulturalOfferTypes();
-                        alert("Deleted successfully");
-                      },
-                      (error) => alert(error.error));
-                }
-             })
+    dialogRef
+      .afterClosed()
+      .subscribe(result =>{
+        if(result){
+          this.typeService
+              .deleteType(typeId)
+              .subscribe((response)=>{
+                this.loadTypes();
+                alert("Deleted successfully");
+              },
+              (error) => alert(error.error));
+        }
+      })
   }
 
   openCreateDialog(event:any){
@@ -77,10 +81,10 @@ export class CulturalOfferTypePageComponent implements OnInit {
     this.curentPage = this.typePage.totalPages - 1;
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
-        let req: CulturalOfferType = {_id:1, name: result};
-        this.typeService.saveType(req)
+        let req: CulturalOfferType = {id:1, name: result};
+        this.typeService.createType(req)
             .subscribe((response) => {
-              this.loadCulturalOfferTypes();
+              this.loadTypes();
             },
             (error) => {
               alert(error.error)
@@ -95,12 +99,15 @@ export class CulturalOfferTypePageComponent implements OnInit {
       panelClass : "mat-elevation-z8",
       data: {id: updatedType.id, name: updatedType.name}
     });
+    //bolje sort na back
+    this.curentPage = this.typePage.totalPages - 1;
+
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
-        let req: CulturalOfferType = {_id: result.id, name: result.name};
+        let req: CulturalOfferType = {id: result.id, name: result.name};
         this.typeService.updateType(req)
             .subscribe((response) => {
-              this.loadCulturalOfferTypes();
+              this.loadTypes();
             },
             (error) => {
               alert(error.error)

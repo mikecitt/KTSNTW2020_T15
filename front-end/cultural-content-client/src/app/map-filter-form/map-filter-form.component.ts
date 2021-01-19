@@ -14,7 +14,7 @@ import { CulturalOfferSubTypeService } from 'src/app/service/cultural-offer-subt
 export class MapFilterFormComponent implements OnInit {
 
   @Output()
-  applyFilterEvent = new EventEmitter<FilterRequest>();
+  applyFilterEvent = new EventEmitter<any>();
   @Output()
   resetFilterEvent = new EventEmitter<string>();
   @Output()
@@ -27,7 +27,8 @@ export class MapFilterFormComponent implements OnInit {
 
   filterForm = new FormGroup({
     typeName:new FormControl(''),
-    subTypeName: new FormControl('')
+    subTypeName: new FormControl(''),
+    searchLocation: new FormControl('')
   });
 
   selectedType: CulturalOfferType;
@@ -52,10 +53,9 @@ export class MapFilterFormComponent implements OnInit {
     // }
     filterReq = {
       subTypeName: this.filterForm.value.subTypeName.name == undefined ? "" : this.filterForm.value.subTypeName.name,
-      typeName: this.filterForm.value.typeName.name == undefined ? "" : this.filterForm.value.typeName.name
+      typeName: this.filterForm.value.typeName.name == undefined ? "" : this.filterForm.value.typeName.name,
     }
-
-    this.applyFilterEvent.emit(filterReq);
+    this.applyFilterEvent.emit({ "request": filterReq, "location": this.filterForm.value.searchLocation});
   }
 
   onSelectChange(newSelected: any): void{
@@ -68,7 +68,7 @@ export class MapFilterFormComponent implements OnInit {
   }
 
   resetFilter(): void{
-    this.filterForm.reset({typeName: '', subTypeName: ''});
+    this.filterForm.reset({typeName: '', subTypeName: '', searchLocation: ''});
     this.disabled = true;
     this.resetFilterEvent.emit("RESET");
   }

@@ -1,4 +1,4 @@
 export interface CulturalOfferType {
-  _id?: any;
+  id?: any;
   name: string;
 }
