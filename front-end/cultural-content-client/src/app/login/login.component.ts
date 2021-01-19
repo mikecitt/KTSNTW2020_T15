@@ -79,13 +79,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     let formObj = this.form.getRawValue();
-    this.authService.login(formObj).subscribe((data) => {
-      //nece da vrati ovde normalan response
-      console.log(data);
-      //localStorage.setItem("token", data.token);
-      this.form.reset();
-      this.loginForm.resetForm();
-      //this.router.navigate(['']);
-    });
+    this.authService.login(formObj).subscribe(
+      (data) => {
+        //nece da vrati ovde normalan response
+        //console.log(data);
+        localStorage.setItem('token', data.token);
+        this.form.reset();
+        this.loginForm.resetForm();
+        this.router.navigate(['']);
+      },
+      (err) => {
+        console.log(err.error);
+      }
+    );
   }
 }
