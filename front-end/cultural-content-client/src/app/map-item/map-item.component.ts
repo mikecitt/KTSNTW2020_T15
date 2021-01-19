@@ -13,7 +13,7 @@ import { Geocoder } from '../model/geocoder';
 export class MapItemComponent implements OnInit, OnChanges {
 
   @Input()
-  culutralOffers: CulturalOfferLocation[];
+  culturalOffers: CulturalOfferLocation[];
   @Input()
   location: string;
 
@@ -25,7 +25,7 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void{
     if(this.mapInitialized){
-      if(changes['culutralOffers']){
+      if(changes['culturalOffers']){
         this.removeMarkers();
         this.updateMarkers();
       }
@@ -40,11 +40,11 @@ export class MapItemComponent implements OnInit, OnChanges {
   }
   createMarkers() :void{
 
-    this.culutralOffers.forEach(location => {
+    this.culturalOffers.forEach(offer => {
       const marker = new Mapboxgl.Marker({
         draggable: false
-      }).setLngLat([location.longitude, location.latitude])
-        .setPopup(new Mapboxgl.Popup().setHTML(`<h1 style="background-color:powderblue;">${location.address}</h1>`));
+      }).setLngLat([offer.location.longitude, offer.location.latitude])
+        .setPopup(new Mapboxgl.Popup().setHTML(`<h1 style="background-color:powderblue;">${offer.name}</h1>`));
 
       this.markers.push(marker);
     });

@@ -49,7 +49,7 @@ describe('CulturalOfferTypePageComponent', () => {
     dialog = TestBed.inject(MatDialog);
   });
 
-  it('should fetch the types list on init', async () => {
+  it('should fetch the type list on init', async () => {
     component.ngOnInit();
 
     expect(typeService.getAllPaginated).toHaveBeenCalled();
@@ -58,11 +58,56 @@ describe('CulturalOfferTypePageComponent', () => {
            .then( () => {
               expect(component.culturalOfferTypes.length).toBe(3);
               fixture.detectChanges();
-              let elements: DebugElement[] =
-                fixture.debugElement.queryAll(By.css('tbody tr'));
-              expect(elements.length).toBe(4);
+              let tr = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+              expect(tr.length).toBe(4);
            });
   });
 
+  it('should go to next page in table', async () => {
+    component.getNextType();
+
+    expect(component.curentPage).toBe(1);
+    expect(typeService.getAllPaginated).toHaveBeenCalled();
+
+    fixture.whenStable()
+      .then( () => {
+        expect(component.culturalOfferTypes.length).toBe(3);
+        fixture.detectChanges();
+        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+        // let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
+        expect(elements.length).toBe(4);
+      })
+  });
+
+  it('should go to previous page in table', async () => {
+    component.curentPage = 1;
+    component.getPreviousType();
+
+    expect(component.curentPage).toBe(0);
+    expect(typeService.getAllPaginated).toHaveBeenCalled();
+
+    fixture.whenStable()
+      .then( () => {
+        expect(component.culturalOfferTypes.length).toBe(3);
+        fixture.detectChanges();
+        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+        //  let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
+        expect(elements.length).toBe(4);
+      })
+  });
+
+  it('should call delete type', async () => {
+    component.deleteType(1);
+    //expect(dialog.)
+    fixture.whenStable()
+      .then(() => {
+        fixture.detectChanges();
+
+        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'mat-dialog-container').nativeElement;
+        expect(elements.length).toBe(1);
+      });
+
+
+  });
 
 });

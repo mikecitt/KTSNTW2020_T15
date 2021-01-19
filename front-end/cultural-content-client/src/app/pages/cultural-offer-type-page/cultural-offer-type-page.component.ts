@@ -19,12 +19,19 @@ export class CulturalOfferTypePageComponent implements OnInit {
   culturalOfferSubTypes: CulturalOfferSubType[];
 
   typePage: TypePage;
-  curentPage: number = 0;
-  pageSize: number = 5;
+  curentPage: number;
+  pageSize: number;
 
   constructor(
-    private typeService: CulturalOfferTypeService, public dialog: MatDialog
-  ) { }
+    private typeService: CulturalOfferTypeService, public dialog: MatDialog)
+  {
+    this.curentPage = 0;
+    this.pageSize = 5;
+  }
+
+  ngOnInit(): void {
+    this.loadTypes();
+  }
 
   loadTypes(): void{
     this.typeService
@@ -44,27 +51,25 @@ export class CulturalOfferTypePageComponent implements OnInit {
     this.loadTypes();
   }
 
-  ngOnInit(): void {
-    this.loadTypes();
-  }
   deleteType(typeId: any): void{
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
       width: '300px',
       panelClass : "mat-elevation-z8",
       data: {}
     });
-    dialogRef.afterClosed()
-             .subscribe(result =>{
-                if(result){
-                  this.typeService
-                      .deleteType(typeId)
-                      .subscribe((response)=>{
-                        this.loadTypes();
-                        alert("Deleted successfully");
-                      },
-                      (error) => alert(error.error));
-                }
-             })
+    dialogRef
+      .afterClosed()
+      .subscribe(result =>{
+        if(result){
+          this.typeService
+              .deleteType(typeId)
+              .subscribe((response)=>{
+                this.loadTypes();
+                alert("Deleted successfully");
+              },
+              (error) => alert(error.error));
+        }
+      })
   }
 
   openCreateDialog(event:any){

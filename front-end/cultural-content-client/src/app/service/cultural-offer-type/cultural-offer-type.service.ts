@@ -10,7 +10,7 @@ export class CulturalOfferTypeService {
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwMzg1MjE4LCJleHAiOjE2MTAzODcwMTh9.Vv1gXj_vBv9YW_05zSM2iCE-tHDYeC9EifCTO1h9zlkJC5dcTNvpTQaFVWFk68oNOvN9i9VLWAYPA1-Ilf_buw',
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjExMDcxMzQ0LCJleHAiOjE2MTEwNzMxNDR9.50qHQGXIOGA446hB9omqwd2gDkNYj9wSqwZ56LnsOsSsmNvjSUglJoVH7yQxCyzs5eyTUoNVKA9I88pfH1YWXA',
   });
 
   constructor(private http: HttpClient) { }
