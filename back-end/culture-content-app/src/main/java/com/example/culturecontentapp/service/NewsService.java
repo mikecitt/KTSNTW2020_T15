@@ -48,7 +48,7 @@ public class NewsService {
     CulturalOffer offer = offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
     News news = mapper.map(newsRequest, News.class);
     offer.addNews(news);
-    handlePublishingNewsEvent(offerId, news, offer.getName());
+    // handlePublishingNewsEvent(offerId, news, offer.getName()); TODO izgleda da antivirus zeza
     return new ResponseEntity<>(convertToNewsResponse(repository.save(news)), HttpStatus.CREATED);
     
   }

@@ -1,8 +1,12 @@
+import { ConfirmDeleteComponent } from './../confirm-delete/confirm-delete.component';
+import { NewsFormComponent } from './news-form/news-form.component';
+import { MatDialog } from '@angular/material/dialog';
 import { SubsriptionService } from './../service/subscription/subsription.service';
 import { NewsPage } from './../model/news-page';
 import { NewsService } from './../service/news/news.service';
 import { Component, DebugElement, OnInit } from '@angular/core';
-import { NewsResponse } from '../model/news-response';
+import { News } from '../model/news';
+import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 
 @Component({
   selector: 'app-news',
@@ -11,8 +15,14 @@ import { NewsResponse } from '../model/news-response';
 })
 export class NewsComponent implements OnInit {
 
-  news: NewsResponse[] = [];
   newsPage: NewsPage;
+  newsToAdd: News = {
+    text: "",
+    date: new Date(),
+    images: []
+
+  };
+  slides = [{image: 'https://mdbootstrap.com/img/Photos/Slides/img%20(130).jpg'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'},{image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}];
 
   private culturalOfferId: number = 1001;
   public currentNewsPage: number;
@@ -20,7 +30,8 @@ export class NewsComponent implements OnInit {
 
   constructor(
     private newsService:NewsService,
-    private subService:SubsriptionService
+    private subService:SubsriptionService,
+    public dialog: MatDialog
   ) {
     this.currentNewsPage = 0;
    }
@@ -36,8 +47,17 @@ export class NewsComponent implements OnInit {
   }
 
   deleteNews(id:number):void{
-    this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
-    
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent,{
+      width: '300px',
+      panelClass : "mat-elevation-z8",
+      data: {}
+    })
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
+        alert("Deleted news successfuly");
+      }
+    })
   }
 
   subscribe():void{
@@ -52,6 +72,55 @@ export class NewsComponent implements OnInit {
   getPreviousNews(): void{
     this.currentNewsPage--;
     this.loadNews();
+  }
+
+  openCreateNewsDialog(): void{
+    const dialogRef = this.dialog.open(NewsFormComponent, {
+      width: '400px',
+      data: {type: 'add', news: this.newsToAdd},
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.operation == "add") this.addNews();
+      else if(result.operation == "cancel") this.cancelAdding();
+    });
+  }
+
+  addNews():void{
+    this.newsToAdd.date = new Date();
+    this.newsService.addNews(this.culturalOfferId, this.newsToAdd).subscribe((response) => {
+      this.loadNews();
+    });
+  }
+
+  cancelAdding():void{
+    this.newsToAdd = {
+      text: "",
+      date: new Date(),
+      images: []
+    };
+  }
+
+  openUpdateNewsDialog(): void{
+    const dialogRef = this.dialog.open(NewsFormComponent, {
+      width: '400px',
+      data: {type: 'update', news: this.newsToAdd},
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.operation == "update") this.updateNews();
+      else if(result.operation == "cancel") this.cancelUpdating();
+    });
+  }
+
+  updateNews(): void{
+    console.log("update");
+  }
+
+  cancelUpdating(): void{
+    console.log("cancel update");
   }
 
 }
