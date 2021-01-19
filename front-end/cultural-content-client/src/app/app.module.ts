@@ -1,5 +1,5 @@
-import { SubsriptionService } from './service/subscription/subsription.service';
-import { NewsService } from './service/news/news.service';
+import { SubsriptionService } from './services/subscription/subsription.service';
+import { NewsService } from './services/news/news.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -12,30 +12,30 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from './material-module';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
-import { MapPageComponent } from './pages/map-page/map-page.component';
-import { RegistrationComponent } from './registration/registration.component';
-import { MapItemComponent } from './map-item/map-item.component';
-import { CulturalOfferService } from './service/cultural-offer/cultural-offer.service'
+import { NavigationBarComponent } from './core/navigation-bar/navigation-bar.component';
+import { MapPageComponent } from './modules/cultural-offer/map-page/map-page.component';
+import { RegistrationComponent } from './modules/registration/registration.component';
+import { MapItemComponent } from './modules/cultural-offer/map-item/map-item.component';
+import { CulturalOfferService } from './services/cultural-offer/cultural-offer.service'
 import { MatGridListModule } from '@angular/material/grid-list';
-import { CulturalOfferTypeService } from './service/cultural-offer-type/cultural-offer-type.service';
-import { CulturalOfferSubTypeService } from './service/cultural-offer-subtype/cultural-offer-sub-type.service';
-import { MapFilterFormComponent } from './map-filter-form/map-filter-form.component';
+import { CulturalOfferTypeService } from './services/cultural-offer-type/cultural-offer-type.service';
+import { CulturalOfferSubTypeService } from './services/cultural-offer-subtype/cultural-offer-sub-type.service';
+import { MapFilterFormComponent } from './modules/cultural-offer/map-filter-form/map-filter-form.component';
 import { MatCardModule } from '@angular/material/card';
-import { NewsComponent } from './news/news.component';
-import { PaginationBarComponent } from './pagination-bar/pagination-bar.component';
-import { HttpErrorInterceptor } from './helpers/http-error.interceptor';
-import { CulturalOfferTypePageComponent } from './pages/cultural-offer-type-page/cultural-offer-type-page.component';
-import { CulturalOfferTypeListComponent } from './cultural-offer-type-list/cultural-offer-type-list.component';
-import { CreateTypeFormComponent } from './create-type-form/create-type-form.component';
-import { UpdateTypeFormComponent } from './update-type-form/update-type-form.component';
-import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.component';
-import { NewsFormComponent } from './news/news-form/news-form.component';
+import { NewsComponent } from './modules/news/news.component';
+import { PaginationBarComponent } from './core/pagination-bar/pagination-bar.component';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { CulturalOfferTypePageComponent } from './modules/cultural-offer-type/cultural-offer-type-page/cultural-offer-type-page.component';
+import { CulturalOfferTypeListComponent } from './modules/cultural-offer-type/cultural-offer-type-list/cultural-offer-type-list.component';
+import { CreateTypeFormComponent } from './modules/cultural-offer-type/create-type-form/create-type-form.component';
+import { UpdateTypeFormComponent } from './modules/cultural-offer-type/update-type-form/update-type-form.component';
+import { ConfirmDeleteComponent } from './core/confirm-delete/confirm-delete.component';
+import { NewsFormComponent } from './modules/news/news-form/news-form.component';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
+import { LoginComponent } from './modules/login/login.component';
 
 @NgModule({
   declarations: [
