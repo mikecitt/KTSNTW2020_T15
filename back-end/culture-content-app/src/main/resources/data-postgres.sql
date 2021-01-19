@@ -27,6 +27,9 @@ INSERT INTO Location (id, address, latitude, longitude) VALUES
 INSERT INTO Location (id, address, latitude, longitude) VALUES
     (1003, 'Bg Arena', 44.8141499, 20.4191007);
 
+INSERT INTO Location (id, address, latitude, longitude) VALUES
+    (1004, 'Arena pula', 44.8854538, 13.7460958);
+
 INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
     (1001, 'Najveci festival u regionu', 1001, 'Exit festival', 1001);
 
@@ -35,6 +38,9 @@ INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALU
 
 INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
     (1003, 'Najveci festival u regionu',1003 , 'Koncert Zdravko colic', 1002);
+
+INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
+    (1004, '2Cellos', 1004, 'Koncert 2 Cellos', 1002);
 
 INSERT INTO Review (id, comment, rating, user_id, culturaloffer_id) VALUES
     (1001, 'extra', 5, 1001, 1001);
