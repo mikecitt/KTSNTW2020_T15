@@ -1,11 +1,13 @@
 package com.example.culturecontentapp.storage;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
@@ -37,6 +39,28 @@ public class FileStorageService implements StorageService {
 
       return originalFilename;
     } catch (IOException e) {
+      throw new StorageException("Failed to store file");
+    }
+  }
+
+  @Override
+  public String store(String encodedImage) {
+    try {
+      byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+
+      String originalFilename = java.util.UUID.randomUUID() + ".png";
+
+      Path destinationFile = this.root.resolve(Paths.get(originalFilename)).normalize().toAbsolutePath();
+      if (!destinationFile.getParent().equals(this.root.toAbsolutePath())) {
+        throw new StorageException("Cannot store file outside current directory");
+      }
+
+      try (FileOutputStream output = new FileOutputStream(destinationFile.toFile())) {
+        output.write(decodedImage);
+      }
+
+      return originalFilename;
+    } catch (Exception e) {
       throw new StorageException("Failed to store file");
     }
   }
