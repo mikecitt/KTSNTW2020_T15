@@ -35,6 +35,7 @@ import { ConfirmDeleteComponent } from './confirm-delete/confirm-delete.componen
 import { NewsFormComponent } from './news/news-form/news-form.component';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -51,9 +52,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     CreateTypeFormComponent,
     UpdateTypeFormComponent,
     ConfirmDeleteComponent,
-    NewsFormComponent,
-
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginComponent,
+    NewsFormComponent
   ],
   imports: [
     BrowserModule,

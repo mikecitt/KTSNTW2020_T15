@@ -19,6 +19,7 @@ import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.model.VerificationToken;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.AccountRegisterRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.AccountRegisterResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.repository.VerificationTokenRepository;
@@ -120,7 +121,7 @@ public class AuthenticationService {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<String> login(AccountLoginRequest request) {
+  public ResponseEntity<AccountLoginResponse> login(AccountLoginRequest request) {
     Authentication authentication = authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
@@ -130,7 +131,9 @@ public class AuthenticationService {
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
         .signWith(SignatureAlgorithm.HS512, SECREY_KEY).compact();
 
-    return new ResponseEntity<>(token, HttpStatus.OK);
+    AccountLoginResponse accountLoginResponse = new AccountLoginResponse(token);
+
+    return new ResponseEntity<>(accountLoginResponse, HttpStatus.OK);
   }
 
 }
