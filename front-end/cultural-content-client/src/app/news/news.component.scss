@@ -2,7 +2,7 @@ mat-card::ng-deep.mat-card-header-text {
     width: 70%;
 }
 mat-card{
-    width: 35%;
+    width: 50%;
 }
 
 mat-card-header{
@@ -43,4 +43,8 @@ mat-card-header{
 .date{
     font-weight: lighter;
     font-style: italic;
+}
+
+.carousel{
+    margin-bottom: 5px;
 }

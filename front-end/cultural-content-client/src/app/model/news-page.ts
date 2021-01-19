@@ -1,7 +1,7 @@
-import { NewsResponse } from "./news-response";
+import { News } from "./news";
 
 export interface NewsPage {
-    content: NewsResponse[],
+    content: News[],
     totalElements: number,
     first: boolean,
     last: boolean,
