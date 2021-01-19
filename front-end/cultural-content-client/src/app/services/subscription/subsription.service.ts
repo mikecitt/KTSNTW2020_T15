@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SubsriptionService {
+export class SubscriptionService {
   private readonly path = "http://localhost:8080/api/subscriptions";
   private readonly ht = new HttpHeaders({
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwOTg2MDUxLCJleHAiOjE2MTA5ODc4NTF9.40hAKqQUq1LXT8dY6Q64DTx_hQ98eebfVlhtmcs5ErfHyEdChCcU9gLKFNw5AkevQOWUuvKT0jVYHKZsTlzWmA'});
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2MTEwODIwNjQsImV4cCI6MTYxMTA4Mzg2NH0.XuOghOrv2FqK6yF90du8kJC-P9nZx8ASUC9Hjrj3FE2JF7DpDy1IPGAugMXiDigiu8fI9z_8ozNMK8PibLFOqw'});
   
   constructor(private http:HttpClient) { }
 

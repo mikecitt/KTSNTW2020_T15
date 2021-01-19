@@ -1,5 +1,3 @@
-import { SubsriptionService } from './services/subscription/subsription.service';
-import { NewsService } from './services/news/news.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -78,8 +76,6 @@ import { LoginComponent } from './modules/login/login.component';
     CulturalOfferService,
     CulturalOfferTypeService,
     CulturalOfferSubTypeService,
-    NewsService,
-    SubsriptionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,

@@ -1,7 +1,7 @@
 import { ConfirmDeleteComponent } from '../../core/confirm-delete/confirm-delete.component';
 import { NewsFormComponent } from './news-form/news-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { SubsriptionService } from '../../services/subscription/subsription.service';
+import { SubscriptionService } from '../../services/subscription/subsription.service';
 import { NewsPage } from '../../models/news-page';
 import { NewsService } from '../../services/news/news.service';
 import { Component, DebugElement, OnInit } from '@angular/core';
@@ -30,7 +30,7 @@ export class NewsComponent implements OnInit {
 
   constructor(
     private newsService:NewsService,
-    private subService:SubsriptionService,
+    private subService:SubscriptionService,
     public dialog: MatDialog
   ) {
     this.currentNewsPage = 0;
@@ -54,8 +54,12 @@ export class NewsComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result =>{
       if(result){
-        this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
-        alert("Deleted news successfuly");
+        this.newsService.deleteNews(id).subscribe((res) => {
+          if(res){
+            this.loadNews();
+            alert("Deleted news successfuly");
+          }
+        });
       }
     })
   }
