@@ -77,7 +77,7 @@ export class NewsComponent implements OnInit {
   openCreateNewsDialog(): void{
     const dialogRef = this.dialog.open(NewsFormComponent, {
       width: '400px',
-      data: this.newsToAdd,
+      data: {type: 'add', news: this.newsToAdd},
       disableClose: true
     });
 
@@ -100,6 +100,27 @@ export class NewsComponent implements OnInit {
       date: new Date(),
       images: []
     };
+  }
+
+  openUpdateNewsDialog(): void{
+    const dialogRef = this.dialog.open(NewsFormComponent, {
+      width: '400px',
+      data: {type: 'update', news: this.newsToAdd},
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.operation == "update") this.updateNews();
+      else if(result.operation == "cancel") this.cancelUpdating();
+    });
+  }
+
+  updateNews(): void{
+    console.log("update");
+  }
+
+  cancelUpdating(): void{
+    console.log("cancel update");
   }
 
 }

@@ -11,7 +11,7 @@ import { News } from 'src/app/model/news';
 export class NewsFormComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<NewsFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: News
+    @Inject(MAT_DIALOG_DATA) public data: NewsFormData
     ){
       
     }
@@ -27,4 +27,9 @@ export class NewsFormComponent implements OnInit {
     this.dialogRef.close({operation: 'cancel'})
   }
 
+}
+
+export interface NewsFormData {
+  type: string,
+  news: News
 }
