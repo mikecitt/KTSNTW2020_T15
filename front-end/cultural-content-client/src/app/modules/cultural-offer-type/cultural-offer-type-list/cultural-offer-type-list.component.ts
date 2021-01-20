@@ -40,7 +40,7 @@ export class CulturalOfferTypeListComponent implements OnInit {
   }
 
   createType(): void{
-    this.onCreateTypeEvent.emit("dldkls");
+    this.onCreateTypeEvent.emit("create");
   }
 
   deleteType(element: any): void{
