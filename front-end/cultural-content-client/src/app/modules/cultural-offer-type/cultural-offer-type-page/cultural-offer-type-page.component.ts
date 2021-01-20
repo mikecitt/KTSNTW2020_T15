@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CulturalOfferType} from '../../../models/cultural-offer-type';
 import { CulturalOfferSubType} from '../../../models/culutral-offer-subType';
-import { CulturalOfferTypeService } from '../../../services/cultural-offer-type/cultural-offer-type.service';
+import { CulturalOfferTypeService } from '../../../services';
 import { CreateTypeFormComponent } from '../create-type-form/create-type-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateTypeFormComponent } from 'src/app/modules/cultural-offer-type/update-type-form/update-type-form.component';

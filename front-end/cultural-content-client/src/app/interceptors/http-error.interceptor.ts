@@ -26,7 +26,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             // let error =  typeof err.error !== "string" ? err.error : err.error.error;
             let errorMessage;
             if(typeof err.error === "string") errorMessage = err.error;
-            else if(typeof err.erorr == null) errorMessage = err.message;
+            else if(err.erorr == null) errorMessage = err.message;
             else errorMessage = err.error.error
 
             this.snackBar.openSnackBar(errorMessage,'','red-snackbar');

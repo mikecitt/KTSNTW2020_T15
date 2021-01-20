@@ -2,7 +2,7 @@
 
     <mat-card-header>
         <mat-card-title *ngIf="data.type == 'add'">Add news</mat-card-title>
-
+        <mat-card-title *ngIf="data.type == 'update'">Update news</mat-card-title>
     </mat-card-header>
     <mat-form-field class="example-full-width">
         <mat-label>Text</mat-label>
@@ -12,9 +12,13 @@
         <mat-label>Date</mat-label>
         <input matInput disabled value="{{data.news.date  | date:'MM/dd/yy'}}">
     </mat-form-field>
-    <div class="buttons">
-        <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+    <div class="buttons" *ngIf="data.type == 'add'">
+        <button mat-raised-button color="warn" (click)="cancelAdd()">Cancel</button>
         <button mat-raised-button color="primary" (click)="add()">Add</button>    
+    </div>
+    <div class="buttons" *ngIf="data.type == 'update'">
+        <button mat-raised-button color="warn" (click)="cancelUpdate()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="update()">Update</button>    
     </div>
     
 </div>

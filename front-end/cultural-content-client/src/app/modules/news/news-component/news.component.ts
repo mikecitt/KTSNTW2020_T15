@@ -5,9 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubscriptionService } from '../../../services/subscription/subsription.service';
 import { NewsPage } from '../../../models/news-page';
 import { NewsService } from '../../../services/news/news.service';
-import { Component, DebugElement, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { News } from '../../../models/news';
-import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 
 @Component({
   selector: 'app-news',
@@ -89,7 +88,7 @@ export class NewsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result.operation == "add") this.addNews();
-      else if(result.operation == "cancel") this.clearNewsForm();
+      else if(result.operation == "cancelAdd") this.clearNewsForm();
     });
   }
 
@@ -110,25 +109,33 @@ export class NewsComponent implements OnInit {
     };
   }
 
-  openUpdateNewsDialog(): void{
+  openUpdateNewsDialog(news : News): void{
+    let newsToUpdate = {...news};
     const dialogRef = this.dialog.open(NewsFormComponent, {
       width: '400px',
-      data: {type: 'update', news: this.newsToAdd},
+      data: {type: 'update', news: newsToUpdate},
       disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.operation == "update") this.updateNews();
-      else if(result.operation == "cancel") this.cancelUpdating();
+      if(result.operation == "update") this.updateNews(news, newsToUpdate);
     });
   }
 
-  updateNews(): void{
+  updateNews(news: News, updatedNews: News): void{
     console.log("update");
+    console.log(updatedNews);
+    updatedNews.date = new Date();
+    this.newsService.updateNews(updatedNews).subscribe((response) => {
+      this.loadNews();
+      this.snackBar.openSnackBar("News successfuly updated",'','green-snackbar');
+    });
+
   }
 
-  cancelUpdating(): void{
+  cancelUpdating(news :News): void{
     console.log("cancel update");
+    console.log(news);
   }
 
 }
