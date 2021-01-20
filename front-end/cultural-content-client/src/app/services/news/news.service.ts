@@ -13,7 +13,7 @@ export class NewsService {
 
   private readonly path = "http://localhost:8080/api/news/";
   private readonly ht = new HttpHeaders({
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjExMTYxNjI0LCJleHAiOjE2MTExNjM0MjR9.fn5WNwaCdbWvc0KCNyr4W5dRMY6vaaLjgRrqShtPGpkUq5Wye6JmfIrV90LhURZ9t5ZauRW4ipHEBrVGk_wDaQ'});
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjExMTY0NDU1LCJleHAiOjE2MTExNjYyNTV9.2tYMUULxLxnkdW5Gkm3kMym-y3GrDdnzsmjShdDEMn0jBqh2p6ydacEIPVEI7NKDkvAqIvJwhdu4G3IVXOLbFQ'});
   
   constructor(private http:HttpClient) { }
 

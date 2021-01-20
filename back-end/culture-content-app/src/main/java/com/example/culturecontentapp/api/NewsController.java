@@ -1,5 +1,6 @@
 package com.example.culturecontentapp.api;
 
+import javax.validation.Valid;
 
 import com.example.culturecontentapp.payload.request.NewsRequest;
 import com.example.culturecontentapp.payload.response.NewsResponse;
@@ -35,13 +36,13 @@ public class NewsController {
   
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("/{offerId}")
-  public ResponseEntity<NewsResponse> create(@RequestBody NewsRequest newsRequest, @PathVariable Long offerId){
+  public ResponseEntity<NewsResponse> create(@RequestBody @Valid NewsRequest newsRequest, @PathVariable Long offerId){
     return service.create(newsRequest, offerId);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{id}")
-  public ResponseEntity<NewsResponse> update(@RequestBody NewsRequest newsRequest, @PathVariable Long id){
+  public ResponseEntity<NewsResponse> update(@RequestBody @Valid NewsRequest newsRequest, @PathVariable Long id){
     return service.update(newsRequest, id);
   }
 
