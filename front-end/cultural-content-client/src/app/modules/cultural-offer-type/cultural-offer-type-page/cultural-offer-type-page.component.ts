@@ -61,36 +61,39 @@ export class CulturalOfferTypePageComponent implements OnInit {
       .afterClosed()
       .subscribe(result =>{
         if(result){
-          this.typeService
-              .deleteType(typeId)
-              .subscribe((response)=>{
-                this.loadTypes();
-                alert("Deleted successfully");
-              },
-              (error) => alert(error.error));
+          this.afterDeleteClosed(typeId);
         }
       })
   }
+  afterDeleteClosed(typeId: any){
+    this.typeService
+        .deleteType(typeId)
+        .subscribe(()=>{
+          this.loadTypes();
+          alert("Deleted successfully");
+        });
+  }
 
-  openCreateDialog(event:any){
+  openCreateDialog(event: any){
     const dialogRef = this.dialog.open(CreateTypeFormComponent, {
       width: '300px',
       panelClass : "mat-elevation-z8",
       data: {_id: 1, name: ""}
     });
     this.curentPage = this.typePage.totalPages - 1;
-    dialogRef.afterClosed().subscribe(result => {
-      if(result != undefined){
-        let req: CulturalOfferType = {id:1, name: result};
-        this.typeService.createType(req)
-            .subscribe((response) => {
-              this.loadTypes();
-            },
-            (error) => {
-              alert(error.error)
-            });
+    dialogRef.afterClosed().subscribe(name => {
+      if(name != undefined){
+        this.afterCreateClosed(name);
       }
     });
+  }
+
+  afterCreateClosed(name: any){
+    let req: CulturalOfferType = {id:1, name: name};
+    this.typeService.createType(req)
+        .subscribe(() => {
+          this.loadTypes();
+        });
   }
 
   openUpdateDialog(updatedType:any):void {
