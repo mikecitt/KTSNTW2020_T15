@@ -1,11 +1,12 @@
-import { ConfirmDeleteComponent } from '../../core/confirm-delete/confirm-delete.component';
-import { NewsFormComponent } from './news-form/news-form.component';
+import { SnackBarComponent } from './../../../core/snack-bar/snack-bar.component';
+import { ConfirmDeleteComponent } from '../../../core/confirm-delete/confirm-delete.component';
+import { NewsFormComponent } from '../news-form/news-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { SubscriptionService } from '../../services/subscription/subsription.service';
-import { NewsPage } from '../../models/news-page';
-import { NewsService } from '../../services/news/news.service';
+import { SubscriptionService } from '../../../services/subscription/subsription.service';
+import { NewsPage } from '../../../models/news-page';
+import { NewsService } from '../../../services/news/news.service';
 import { Component, DebugElement, OnInit } from '@angular/core';
-import { News } from '../../models/news';
+import { News } from '../../../models/news';
 import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 
 @Component({
@@ -31,7 +32,8 @@ export class NewsComponent implements OnInit {
   constructor(
     private newsService:NewsService,
     private subService:SubscriptionService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: SnackBarComponent
   ) {
     this.currentNewsPage = 0;
    }
@@ -55,17 +57,17 @@ export class NewsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result =>{
       if(result){
         this.newsService.deleteNews(id).subscribe((res) => {
-          if(res){
-            this.loadNews();
-            alert("Deleted news successfuly");
-          }
+          this.loadNews();
+          this.snackBar.openSnackBar("News deleted successfuly",'','green-snackbar');
         });
       }
     })
   }
 
   subscribe():void{
-    this.subService.subscribeToOffer(this.culturalOfferId).subscribe(() => {});
+    this.subService.subscribeToOffer(this.culturalOfferId).subscribe((res) => {
+      this.snackBar.openSnackBar("Successfuly subscribed",'','green-snackbar');
+    });
   }
 
   getNextNews(): void{
@@ -87,7 +89,7 @@ export class NewsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result.operation == "add") this.addNews();
-      else if(result.operation == "cancel") this.cancelAdding();
+      else if(result.operation == "cancel") this.clearNewsForm();
     });
   }
 
@@ -95,10 +97,12 @@ export class NewsComponent implements OnInit {
     this.newsToAdd.date = new Date();
     this.newsService.addNews(this.culturalOfferId, this.newsToAdd).subscribe((response) => {
       this.loadNews();
+      this.clearNewsForm();
+      this.snackBar.openSnackBar("News successfuly added",'','green-snackbar');
     });
   }
 
-  cancelAdding():void{
+  clearNewsForm():void{
     this.newsToAdd = {
       text: "",
       date: new Date(),
