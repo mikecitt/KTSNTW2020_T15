@@ -18,6 +18,8 @@ public class FileStorageService implements StorageService {
 
   private final Path root = Paths.get("src/main/resources/static/uploads");
 
+  private static String notSupportedResponse = "Storage file is not supported";
+
   @Override
   public String store(MultipartFile file) {
     try {
@@ -44,11 +46,13 @@ public class FileStorageService implements StorageService {
   }
 
   @Override
-  public String store(String encodedImage) {
-    try {
-      byte[] decodedImage = Base64.getDecoder().decode(encodedImage);
+  public String store(String base64Image) {
+    checkFileType(base64Image);
+    String extension = getExtension(base64Image);
+    byte[] decodedImage = getDecodedImage(base64Image);
 
-      String originalFilename = java.util.UUID.randomUUID() + ".png";
+    try {
+      String originalFilename = java.util.UUID.randomUUID() + "." + extension;
 
       Path destinationFile = this.root.resolve(Paths.get(originalFilename)).normalize().toAbsolutePath();
       if (!destinationFile.getParent().equals(this.root.toAbsolutePath())) {
@@ -85,6 +89,42 @@ public class FileStorageService implements StorageService {
       Files.createDirectories(root);
     } catch (IOException e) {
       throw new StorageException("Could not initialize storage");
+    }
+  }
+
+  private String getExtension(String base64Image) {
+    String extension = null;
+
+    try {
+      extension = base64Image.substring(base64Image.indexOf("/") + 1, base64Image.indexOf(";"));
+
+      if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
+        throw new StorageException(notSupportedResponse);
+      }
+    } catch (IndexOutOfBoundsException ex) {
+      throw new StorageException("Storage file is not valid");
+    }
+
+    return extension;
+  }
+
+  private byte[] getDecodedImage(String base64Image) {
+    try {
+      String encodedImage = base64Image.substring(base64Image.indexOf(",") + 1);
+
+      return Base64.getDecoder().decode(encodedImage);
+    } catch (IllegalArgumentException ex) {
+      throw new StorageException("Storage file is not valid");
+    } catch (IndexOutOfBoundsException ex) {
+      throw new StorageException(notSupportedResponse);
+    }
+  }
+
+  private void checkFileType(String base64Image) {
+    String fileType = base64Image.substring(base64Image.indexOf(":") + 1, base64Image.indexOf("/"));
+
+    if (!fileType.equals("image")) {
+      throw new StorageException(notSupportedResponse);
     }
   }
 }

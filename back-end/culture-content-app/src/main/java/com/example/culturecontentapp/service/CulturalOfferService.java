@@ -46,8 +46,7 @@ public class CulturalOfferService {
     this.modelMapper = modelMapper;
   }
 
-  public ResponseEntity<NewCulturalOfferResponse> insert(Long subTypeId, NewCulturalOfferRequest request,
-      MultipartFile[] files) {
+  public ResponseEntity<NewCulturalOfferResponse> insert(Long subTypeId, NewCulturalOfferRequest request) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findByName(request.getName());
 
@@ -62,10 +61,8 @@ public class CulturalOfferService {
     }
 
     Set<String> fileNames = new HashSet<>();
-    for (MultipartFile file : files) {
-      if (!file.isEmpty()) {
-        fileNames.add(storageService.store(file));
-      }
+    for (String image : request.getImages()) {
+      fileNames.add(storageService.store(image));
     }
 
     CulturalOffer culturalOffer = modelMapper.map(request, CulturalOffer.class);
@@ -134,12 +131,12 @@ public class CulturalOfferService {
         HttpStatus.OK);
   }
 
-  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll(){
+  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll() {
     List<CulturalOffer> culturalOffers = repository.findAll();
     return new ResponseEntity<>(
-            culturalOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class))
-                    .collect(Collectors.toList()),
-            HttpStatus.OK);
+        culturalOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class))
+            .collect(Collectors.toList()),
+        HttpStatus.OK);
   }
 
   public ResponseEntity<SelectCulturalOfferResponse> selectById(Long id) {
