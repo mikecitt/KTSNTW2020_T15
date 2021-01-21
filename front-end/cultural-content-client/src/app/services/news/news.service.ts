@@ -13,7 +13,8 @@ export class NewsService {
 
   private readonly path = 'http://localhost:8080/api/news/';
   private readonly ht = new HttpHeaders({
-    Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwOTg5NjkxLCJleHAiOjE2MTA5OTE0OTF9.Mr8lbyHOvYPbK-Ol30jmAq-mbh7Gkl-8xbGtwmNeZteuZC0B8yGGEVDwKC7P8avFLTTefdU2-Cv39iu0ctmSXg'});
+
+  Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwOTg5NjkxLCJleHAiOjE2MTA5OTE0OTF9.Mr8lbyHOvYPbK-Ol30jmAq-mbh7Gkl-8xbGtwmNeZteuZC0B8yGGEVDwKC7P8avFLTTefdU2-Cv39iu0ctmSXg'});
 
   constructor(private http: HttpClient) { }
 
@@ -33,5 +34,8 @@ export class NewsService {
     return this.http.post<News>(environment.api_url + '/news/' + culturalOfferId, newsToAdd, {headers : this.ht});
   }
 
+  updateNews(newsToUpdate: News): Observable<News>{
+    return this.http.put<News>(environment.api_url + "/news/" + newsToUpdate.id, newsToUpdate, {headers: this.ht});
+  }
 
 }

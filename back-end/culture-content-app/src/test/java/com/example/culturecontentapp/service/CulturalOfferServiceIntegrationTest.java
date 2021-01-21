@@ -73,14 +73,14 @@ public class CulturalOfferServiceIntegrationTest {
         public void insert_ThrowsAlreadyExsistsException_WhenNameAlreadyExsits() {
                 NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_EXISTS,
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                service.insert(CULTURAL_OFFER_SUBTYPE, request, new MultipartFile[0]);
+                service.insert(CULTURAL_OFFER_SUBTYPE, request);
         }
 
         @Test(expected = SubTypeNotFoundException.class)
         public void insert_ThrowsSubTypeNotFound_WhenSubTypeNotExists() {
                 NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                service.insert(CULTURAL_OFFER_SUBTYPE_NOT_EXISTS, request, new MultipartFile[0]);
+                service.insert(CULTURAL_OFFER_SUBTYPE_NOT_EXISTS, request);
         }
 
         @Test
@@ -88,8 +88,7 @@ public class CulturalOfferServiceIntegrationTest {
         public void insert_InsertsCulturalOfferSuccessfully() {
                 NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                ResponseEntity<NewCulturalOfferResponse> response = service.insert(CULTURAL_OFFER_SUBTYPE, request,
-                                new MultipartFile[0]);
+                ResponseEntity<NewCulturalOfferResponse> response = service.insert(CULTURAL_OFFER_SUBTYPE, request);
                 assertEquals(request.getName(), response.getBody().getName());
                 assertEquals(request.getDescription(), response.getBody().getDescription());
                 assertEquals(request.getLocation(), response.getBody().getLocation());

@@ -1,5 +1,3 @@
-import { SubsriptionService } from './services/subscription/subsription.service';
-import { NewsService } from './services/news/news.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -24,7 +22,7 @@ import { CulturalOfferTypeService } from './services/cultural-offer-type/cultura
 import { CulturalOfferSubTypeService } from './services/cultural-offer-subtype/cultural-offer-sub-type.service';
 import { MapFilterFormComponent } from './modules/cultural-offer/map-filter-form/map-filter-form.component';
 import { MatCardModule } from '@angular/material/card';
-import { NewsComponent } from './modules/news/news.component';
+import { NewsComponent } from './modules/news/news-component/news.component';
 import { PaginationBarComponent } from './core/pagination-bar/pagination-bar.component';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { CulturalOfferTypePageComponent } from './modules/cultural-offer-type/cultural-offer-type-page/cultural-offer-type-page.component';
@@ -36,6 +34,7 @@ import { NewsFormComponent } from './modules/news/news-form/news-form.component'
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 import { LoginComponent } from './modules/login/login.component';
+import { SnackBarComponent } from './core/snack-bar/snack-bar.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,8 @@ import { LoginComponent } from './modules/login/login.component';
     ConfirmDeleteComponent,
     PageNotFoundComponent,
     LoginComponent,
-    NewsFormComponent
+    NewsFormComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -78,8 +78,7 @@ import { LoginComponent } from './modules/login/login.component';
     CulturalOfferService,
     CulturalOfferTypeService,
     CulturalOfferSubTypeService,
-    NewsService,
-    SubsriptionService,
+    SnackBarComponent,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,

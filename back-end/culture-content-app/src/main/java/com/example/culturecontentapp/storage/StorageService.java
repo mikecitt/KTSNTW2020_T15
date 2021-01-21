@@ -6,6 +6,8 @@ public interface StorageService {
 
   String store(MultipartFile file);
 
+  String store(String base64Image);
+
   void delete(String fileName);
 
   void deleteAll();
