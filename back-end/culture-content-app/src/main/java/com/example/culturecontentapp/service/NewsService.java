@@ -15,6 +15,7 @@ import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
 import com.example.culturecontentapp.repository.NewsRepository;
 import com.example.culturecontentapp.repository.UserRepository;
+import com.example.culturecontentapp.storage.FileStorageService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,19 +35,24 @@ public class NewsService {
   private final UserRepository userRepository;
   ApplicationEventPublisher eventPublisher;
   private final ModelMapper mapper;
+  private final FileStorageService storageService;
 //
   @Autowired
-  public NewsService(NewsRepository repository, CulturalOfferRepository offerRepository, UserRepository userRepository, ModelMapper mapper, ApplicationEventPublisher eventPublisher) {
+  public NewsService(NewsRepository repository, CulturalOfferRepository offerRepository, UserRepository userRepository, ModelMapper mapper, ApplicationEventPublisher eventPublisher, FileStorageService storageService) {
     this.repository = repository;
     this.offerRepository = offerRepository;
     this.userRepository = userRepository;
     this.mapper = mapper;
     this.eventPublisher = eventPublisher;
+    this.storageService = storageService;
   }
 
   public ResponseEntity<NewsResponse> create(NewsRequest newsRequest, Long offerId){
     CulturalOffer offer = offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
     News news = mapper.map(newsRequest, News.class);
+    // for(String s : newsRequest.getImages()){
+
+    // }
     offer.addNews(news);
     // handlePublishingNewsEvent(offerId, news, offer.getName()); TODO izgleda da antivirus zeza
     return new ResponseEntity<>(convertToNewsResponse(repository.save(news)), HttpStatus.CREATED);
