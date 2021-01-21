@@ -10,7 +10,7 @@
   <button mat-button routerLink="/culturalOfferTypes">Manage Types<mat-icon>category</mat-icon></button>
   <button mat-button routerLink="/login">Login</button>
   <button mat-button routerLink="/register">Register</button>
-  <button mat-raised-button color="warn" routerLink="/logout">Logout</button>
+  <button mat-raised-button color="warn" (click)="logout()">Logout</button>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
