@@ -16,6 +16,7 @@ import { News } from '../../../models/news';
 export class NewsComponent implements OnInit {
 
   newsPage: NewsPage;
+  selectedImages: string[];
   newsToAdd: News = {
     text: "",
     date: new Date(),
@@ -87,6 +88,7 @@ export class NewsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(this.newsToAdd.images);
       if(result.operation == "add") this.addNews();
       else if(result.operation == "cancelAdd") this.clearNewsForm();
     });

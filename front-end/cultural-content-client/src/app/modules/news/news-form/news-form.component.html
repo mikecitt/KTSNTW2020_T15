@@ -8,6 +8,9 @@
         <mat-label>Text</mat-label>
         <textarea matInput [(ngModel)]="data.news.text"></textarea>
     </mat-form-field>
+
+    <input type="file" multiple  (change)="filesChanged($event)"/>
+
     <mat-form-field class="example-full-width">
         <mat-label>Date</mat-label>
         <input matInput disabled value="{{data.news.date  | date:'MM/dd/yy'}}">
