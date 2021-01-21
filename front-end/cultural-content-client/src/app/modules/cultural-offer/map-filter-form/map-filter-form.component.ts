@@ -26,8 +26,8 @@ export class MapFilterFormComponent implements OnInit {
   culturalOfferSubTypes: CulturalOfferSubType[] = [];
 
   filterForm = new FormGroup({
-    typeName:new FormControl(''),
-    subTypeName: new FormControl(''),
+    type:new FormControl(''),
+    subType: new FormControl(''),
     searchLocation: new FormControl('')
   });
 
@@ -35,9 +35,7 @@ export class MapFilterFormComponent implements OnInit {
   selectedSubType: CulturalOfferSubType;
   disabled: boolean = true;
 
-  constructor(
-    private culturalOfferSubTypeService: CulturalOfferSubTypeService
-    ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -45,15 +43,9 @@ export class MapFilterFormComponent implements OnInit {
   onSubmit():void{
     let filterReq: FilterRequest;
 
-    // if(this.filterForm.value == undefined){
-    //   filterReq = {
-    //     subTypeName: "",
-    //     typeName: ""
-    //   }
-    // }
     filterReq = {
-      subTypeName: this.filterForm.value.subTypeName.name == undefined ? "" : this.filterForm.value.subTypeName.name,
-      typeName: this.filterForm.value.typeName.name == undefined ? "" : this.filterForm.value.typeName.name,
+      subTypeName: this.filterForm.value.subType.name == undefined ? "" : this.filterForm.value.subType.name,
+      typeName: this.filterForm.value.type.name == undefined ? "" : this.filterForm.value.type.name,
     }
     this.applyFilterEvent.emit({ "request": filterReq, "location": this.filterForm.value.searchLocation});
   }
@@ -63,12 +55,12 @@ export class MapFilterFormComponent implements OnInit {
       this.culturalOfferSubTypes = [];
       return;
     }
-    this.getSubTypesEvent.emit(this.filterForm.value.typeName.id);
+    this.getSubTypesEvent.emit(this.filterForm.value.type.id);
     this.disabled = false;
   }
 
   resetFilter(): void{
-    this.filterForm.reset({typeName: '', subTypeName: '', searchLocation: ''});
+    this.filterForm.reset({type: '', subType: '', searchLocation: ''});
     this.disabled = true;
     this.resetFilterEvent.emit("RESET");
   }
