@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { map } from 'rxjs/operators';
+import { UserService } from '../user/user.service';
+import { Router } from '@angular/router';
 
 export interface RegistrationForm {
   email: string;
@@ -14,11 +18,27 @@ export interface LoginForm {
   password: string;
 }
 
+interface LoginResponse {
+  token?: string;
+  email: string;
+  role: string;
+}
+
+const COOKIE_NAME = 'token';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+
+  private access_token = 'null';
+
+  constructor(private http: HttpClient, private cookieService: CookieService, private userService: UserService, private router: Router) {
+    this.access_token = cookieService.get(COOKIE_NAME);
+    if(!this.access_token) {
+      userService.setupUser(null);
+    }
+  }
 
   register(registration: RegistrationForm) {
     return this.http.post<any>(
@@ -28,10 +48,31 @@ export class AuthService {
   }
 
   login(login: LoginForm) {
-    return this.http.post<any>(`${environment.api_url}/auth/login`, login);
+    return this.http.post<LoginResponse>(`${environment.api_url}/auth/login`, login).pipe(map((res) => {
+      console.log(res);
+      this.access_token = res.token!;
+      this.cookieService.set(COOKIE_NAME, this.access_token);
+      delete res.token;
+      res.role = 'ROLE_' + res.role;
+      this.userService.setupUser(res);
+      this.router.navigate(['/']);
+    }));
+  }
+
+  logout() {
+    this.cookieService.delete(COOKIE_NAME);
+    this.userService.setupUser(null);
+    this.router.navigate(['/']);
   }
 
   storeToken(token: string) {
     localStorage.setItem('token', token);
+  }
+
+  isLoggedIn() {
+    if (!localStorage.getItem('token')) {
+      return false;
+    }
+    return true;
   }
 }

@@ -15,7 +15,6 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -83,13 +82,13 @@ export class LoginComponent implements OnInit {
       (data) => {
         //nece da vrati ovde normalan response
         //console.log(data);
-        localStorage.setItem('token', data.token);
-        this.form.reset();
-        this.loginForm.resetForm();
-        this.router.navigate(['']);
+        //localStorage.setItem('token', data.token);
+        //this.form.reset();
+        //this.loginForm.resetForm();
+        //this.router.navigate(['']);
       },
       (err) => {
-        console.log(err.error);
+        //console.log(err.error);
       }
     );
   }
