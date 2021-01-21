@@ -1,3 +1,6 @@
+import { SnackBarComponent } from './../core/snack-bar/snack-bar.component';
+import { Injectable } from '@angular/core';
+import { NewsComponent } from './../modules/news/news-component/news.component';
 import {
 HttpEvent,
 HttpInterceptor,
@@ -9,23 +12,26 @@ HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
+@Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
+
+    constructor(private snackBar: SnackBarComponent) {}
     
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request)
     .pipe(
         retry(1),
-        catchError((error: any) => {
-        let errorMessage = '';
-        if (error.error instanceof ErrorEvent) {
-            // client-side error
-            errorMessage = `Error: ${error.error.message}`;
-        } else {
-            // server-side error
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.error}`;
-        }
-        window.alert(errorMessage);
-        return throwError(errorMessage);
+        catchError(err => {
+           
+            // let error =  typeof err.error !== "string" ? err.error : err.error.error;
+            let errorMessage;
+            if(typeof err.error === "string") errorMessage = err.error;
+            else if(err.error == null) errorMessage = err.message;
+            else if(err.error instanceof Array) errorMessage = err.error[0].defaultMessage;
+            else errorMessage = err.error.error
+
+            this.snackBar.openSnackBar(errorMessage,'','red-snackbar');
+            return throwError(errorMessage);
         })
     )
     }

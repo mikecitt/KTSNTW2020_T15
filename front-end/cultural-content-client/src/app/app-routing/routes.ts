@@ -1,6 +1,6 @@
 import {Routes } from '@angular/router';
 import { LoginComponent } from '../modules/login/login.component';
-import { NewsComponent } from '../modules/news/news.component';
+import { NewsComponent } from '../modules/news/news-component/news.component';
 import { PageNotFoundComponent } from '../modules/page-not-found/page-not-found.component';
 import { CulturalOfferTypePageComponent } from '../modules/cultural-offer-type/cultural-offer-type-page/cultural-offer-type-page.component';
 import { MapPageComponent } from '../modules/cultural-offer/map-page/map-page.component';

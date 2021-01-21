@@ -10,6 +10,8 @@ import { News } from 'src/app/models/news';
 })
 export class NewsFormComponent implements OnInit {
 
+
+
   constructor(public dialogRef: MatDialogRef<NewsFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: NewsFormData
     ){
@@ -19,12 +21,34 @@ export class NewsFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  update(): void{
+    this.dialogRef.close({operation: 'update'})
+  }
+
   add(): void{
     this.dialogRef.close({operation: 'add'})
   }
 
-  cancel(): void{
-    this.dialogRef.close({operation: 'cancel'})
+  cancelAdd(): void{
+    this.dialogRef.close({operation: 'cancelAdd'})
+  }
+
+  cancelUpdate(): void{
+    this.dialogRef.close({operation: 'cancelUpdate'})
+  }
+
+  filesChanged(element : any): void{
+    var self = this;
+    let files= element.target.files;
+    Array.from(files).forEach(function(file){
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        self.data.news.images.push(reader.result as string);
+        
+      }
+      reader.readAsDataURL(file as Blob);
+      
+    })
   }
 
 }

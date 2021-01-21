@@ -19,6 +19,10 @@ mat-card-header{
     right:0;
 }
 
+.title{
+    font-size: 30px;
+}
+
 .column {
     display: table-cell;
 }
@@ -47,4 +51,8 @@ mat-card-header{
 
 .carousel{
     margin-bottom: 5px;
+}
+
+.add-button{
+    margin: 10px;
 }

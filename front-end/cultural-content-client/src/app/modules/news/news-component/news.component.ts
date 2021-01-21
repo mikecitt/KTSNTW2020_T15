@@ -1,12 +1,12 @@
-import { ConfirmDeleteComponent } from '../../core/confirm-delete/confirm-delete.component';
-import { NewsFormComponent } from './news-form/news-form.component';
+import { SnackBarComponent } from './../../../core/snack-bar/snack-bar.component';
+import { ConfirmDeleteComponent } from '../../../core/confirm-delete/confirm-delete.component';
+import { NewsFormComponent } from '../news-form/news-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { SubsriptionService } from '../../services/subscription/subsription.service';
-import { NewsPage } from '../../models/news-page';
-import { NewsService } from '../../services/news/news.service';
-import { Component, DebugElement, OnInit } from '@angular/core';
-import { News } from '../../models/news';
-import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
+import { SubscriptionService } from '../../../services/subscription/subsription.service';
+import { NewsPage } from '../../../models/news-page';
+import { NewsService } from '../../../services/news/news.service';
+import { Component, OnInit } from '@angular/core';
+import { News } from '../../../models/news';
 
 @Component({
   selector: 'app-news',
@@ -16,6 +16,7 @@ import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 export class NewsComponent implements OnInit {
 
   newsPage: NewsPage;
+  selectedImages: string[];
   newsToAdd: News = {
     text: "",
     date: new Date(),
@@ -30,8 +31,9 @@ export class NewsComponent implements OnInit {
 
   constructor(
     private newsService:NewsService,
-    private subService:SubsriptionService,
-    public dialog: MatDialog
+    private subService:SubscriptionService,
+    public dialog: MatDialog,
+    private snackBar: SnackBarComponent
   ) {
     this.currentNewsPage = 0;
    }
@@ -54,14 +56,18 @@ export class NewsComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result =>{
       if(result){
-        this.newsService.deleteNews(id).subscribe(() => {this.loadNews()});
-        alert("Deleted news successfuly");
+        this.newsService.deleteNews(id).subscribe((res) => {
+          this.loadNews();
+          this.snackBar.openSnackBar("News deleted successfuly",'','green-snackbar');
+        });
       }
     })
   }
 
   subscribe():void{
-    this.subService.subscribeToOffer(this.culturalOfferId).subscribe(() => {});
+    this.subService.subscribeToOffer(this.culturalOfferId).subscribe((res) => {
+      this.snackBar.openSnackBar("Successfuly subscribed",'','green-snackbar');
+    });
   }
 
   getNextNews(): void{
@@ -82,8 +88,9 @@ export class NewsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(this.newsToAdd.images);
       if(result.operation == "add") this.addNews();
-      else if(result.operation == "cancel") this.cancelAdding();
+      else if(result.operation == "cancelAdd") this.clearNewsForm();
     });
   }
 
@@ -91,10 +98,12 @@ export class NewsComponent implements OnInit {
     this.newsToAdd.date = new Date();
     this.newsService.addNews(this.culturalOfferId, this.newsToAdd).subscribe((response) => {
       this.loadNews();
+      this.clearNewsForm();
+      this.snackBar.openSnackBar("News successfuly added",'','green-snackbar');
     });
   }
 
-  cancelAdding():void{
+  clearNewsForm():void{
     this.newsToAdd = {
       text: "",
       date: new Date(),
@@ -102,25 +111,33 @@ export class NewsComponent implements OnInit {
     };
   }
 
-  openUpdateNewsDialog(): void{
+  openUpdateNewsDialog(news : News): void{
+    let newsToUpdate = {...news};
     const dialogRef = this.dialog.open(NewsFormComponent, {
       width: '400px',
-      data: {type: 'update', news: this.newsToAdd},
+      data: {type: 'update', news: newsToUpdate},
       disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.operation == "update") this.updateNews();
-      else if(result.operation == "cancel") this.cancelUpdating();
+      if(result.operation == "update") this.updateNews(news, newsToUpdate);
     });
   }
 
-  updateNews(): void{
+  updateNews(news: News, updatedNews: News): void{
     console.log("update");
+    console.log(updatedNews);
+    updatedNews.date = new Date();
+    this.newsService.updateNews(updatedNews).subscribe((response) => {
+      this.loadNews();
+      this.snackBar.openSnackBar("News successfuly updated",'','green-snackbar');
+    });
+
   }
 
-  cancelUpdating(): void{
+  cancelUpdating(news :News): void{
     console.log("cancel update");
+    console.log(news);
   }
 
 }

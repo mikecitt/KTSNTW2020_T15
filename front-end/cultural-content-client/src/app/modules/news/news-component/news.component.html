@@ -1,10 +1,11 @@
 <mat-card >
     <mat-card-header>
         <button mat-raised-button id="sub-button" (click)="subscribe()" >Subscribe</button>
-        <button mat-icon-button (click)="openCreateNewsDialog()">
-            <mat-icon >add_box</mat-icon>
+        <button mat-mini-fab class="add-button" color="primary" (click)="openCreateNewsDialog()">
+            <mat-icon >add</mat-icon>
         </button>
-        <mat-card-title class="centered">News</mat-card-title>
+        
+        <mat-card-title class="title">News</mat-card-title>
 
     </mat-card-header>
     <mat-card-content *ngIf="newsPage">
@@ -12,9 +13,14 @@
             
             <div class="row">
                 <p>{{element.text}}</p>
-                <button mat-icon-button class="column right" *ngIf="element.id" (click)="deleteNews(element.id)">
-                    <mat-icon >remove_circle</mat-icon>
-                </button>
+                <div class="column right">
+                    <button mat-icon-button color="warn" *ngIf="element.id" (click)="deleteNews(element.id)">
+                        <mat-icon >delete</mat-icon>
+                    </button>
+                    <button mat-icon-button  (click)="openUpdateNewsDialog(element)">
+                        <mat-icon >launch</mat-icon>
+                    </button>
+                </div>
             </div>
 
             <mat-carousel  class="carousel"          
