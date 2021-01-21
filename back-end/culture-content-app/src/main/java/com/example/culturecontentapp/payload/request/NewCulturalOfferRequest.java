@@ -22,6 +22,9 @@ public class NewCulturalOfferRequest {
   @JsonProperty("location")
   private String location;
 
+  @JsonProperty("images")
+  private String[] images;
+
   protected NewCulturalOfferRequest() {
 
   }
@@ -42,5 +45,9 @@ public class NewCulturalOfferRequest {
 
   public String getLocation() {
     return this.location;
+  }
+
+  public String[] getImages() {
+    return this.images;
   }
 }
