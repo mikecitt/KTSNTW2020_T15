@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
-import { of } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
 import { CulturalOfferTypeService } from 'src/app/services/cultural-offer-type/cultural-offer-type.service';
 import { By } from '@angular/platform-browser';
 
@@ -25,8 +25,8 @@ describe('CulturalOfferTypePageComponent', () => {
                          .and.returnValue(of({}))
     };
     let dialogMock = {
-      open : jasmine.createSpy('open'),
-      afterClosed : jasmine.createSpy('afterClosed')
+      open : jasmine.createSpy('open').and.returnValue({ afterClosed : of({}), close: null }),
+      // afterClosed : jasmine.createSpy('afterClosed').and.returnValue(of({}))
     };
 
 
@@ -98,14 +98,16 @@ describe('CulturalOfferTypePageComponent', () => {
 
   it('should call delete type', async () => {
     component.deleteType(1);
-    //expect(dialog.)
-    fixture.whenStable()
-      .then(() => {
-        fixture.detectChanges();
+    fixture.detectChanges();
+    expect(dialog.open).toHaveBeenCalled();
 
-        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'mat-dialog-container').nativeElement;
-        expect(elements.length).toBe(1);
-      });
+    // fixture.whenStable()
+    //   .then(() => {
+    //     fixture.detectChanges();
+
+    //     let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'mat-dialog-container').nativeElement;
+    //     expect(elements.length).toBe(1);
+    //   });
 
 
   });

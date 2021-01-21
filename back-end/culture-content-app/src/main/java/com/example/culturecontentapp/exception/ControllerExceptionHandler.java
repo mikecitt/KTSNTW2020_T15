@@ -45,8 +45,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleTypeAlreadyExistsException(TypeAlreadyExistsException ex, WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
+
   @ExceptionHandler(TypeHasSubTypesException.class)
-  protected ResponseEntity<Object> handleTypeHasSubTypeException(TypeHasSubTypesException ex, WebRequest request){
+  protected ResponseEntity<Object> handleTypeHasSubTypeException(TypeHasSubTypesException ex, WebRequest request) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
@@ -75,7 +76,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(StorageException.class)
   protected ResponseEntity<Object> handleStorageException(StorageException ex, WebRequest request) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(NewsNotFoundException.class)
