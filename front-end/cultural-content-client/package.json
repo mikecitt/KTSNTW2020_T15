@@ -27,6 +27,8 @@
     "@types/mapbox-gl": "^2.0.2",
     "mapbox-geocoding": "^0.1.5",
     "mapbox-gl": "^2.0.1",
+    "ngx-cookie-service": "^11.0.2",
+    "ngx-webstorage-service": "^4.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.10.2"

@@ -3,5 +3,6 @@ export * from './subscription/subsription.service'
 export * from '../interceptors/http-error.interceptor'
 export * from './auth/auth.service';
 export * from './cultural-offer-type/cultural-offer-type.service'
+export * from './user/user.service';
 export * from './cultural-offer-subtype/cultural-offer-sub-type.service'
 export * from './cultural-offer/cultural-offer.service'
