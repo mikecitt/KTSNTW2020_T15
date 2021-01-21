@@ -98,14 +98,14 @@ public class CulturalOfferServiceIntegrationTest {
         public void update_ThrowsNotFoundException_WhenIdNotExists() {
                 EditCulturalOfferRequest request = new EditCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                service.update(CULTURAL_OFFER_ID_NOT_EXISTS, request, new MultipartFile[0]);
+                service.update(CULTURAL_OFFER_ID_NOT_EXISTS, request);
         }
 
         @Test(expected = CulturalOfferAlreadyExistsException.class)
         public void update_ThrowsAlreadyExsitsException_WhenDifferentNameAlreadyExists() {
                 EditCulturalOfferRequest request = new EditCulturalOfferRequest("Sea Dance festival1",
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                service.update(CULTURAL_OFFER_ID_EXISTS, request, new MultipartFile[0]);
+                service.update(CULTURAL_OFFER_ID_EXISTS, request);
         }
 
         @Test
@@ -113,8 +113,7 @@ public class CulturalOfferServiceIntegrationTest {
         public void update_UpdatesSuccessfully() {
                 EditCulturalOfferRequest request = new EditCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
                                 CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                ResponseEntity<EditCulturalOfferResponse> response = service.update(CULTURAL_OFFER_ID_EXISTS, request,
-                                new MultipartFile[0]);
+                ResponseEntity<EditCulturalOfferResponse> response = service.update(CULTURAL_OFFER_ID_EXISTS, request);
                 assertEquals(request.getName(), response.getBody().getName());
                 assertEquals(request.getDescription(), response.getBody().getDescription());
                 assertEquals(request.getLocation(), response.getBody().getLocation());
