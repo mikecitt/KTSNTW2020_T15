@@ -16,6 +16,18 @@ export class NavigationBarComponent implements OnInit {
     this.role = this.userService.getRole();
   }
 
+  get isAuthorized() {
+    return this.userService.getRole() != null;
+  }
+
+  get isAdmin() {
+    return this.userService.getRole() == 'ROLE_ADMIN';
+  }
+
+  get isUser() {
+    return this.userService.getRole() == 'ROLE_USER';
+  }
+
   logout() {
     this.role = null!;
     this.authService.logout();

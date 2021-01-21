@@ -64,15 +64,4 @@ export class AuthService {
     this.userService.setupUser(null);
     this.router.navigate(['/']);
   }
-
-  storeToken(token: string) {
-    localStorage.setItem('token', token);
-  }
-
-  isLoggedIn() {
-    if (!localStorage.getItem('token')) {
-      return false;
-    }
-    return true;
-  }
 }
