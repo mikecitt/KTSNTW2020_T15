@@ -34,8 +34,8 @@ public class CulturalOfferController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
   public ResponseEntity<NewCulturalOfferResponse> insert(@RequestParam Long subTypeId,
-      @RequestPart("request") @Valid NewCulturalOfferRequest request, @RequestPart("files") MultipartFile[] files) {
-    return service.insert(subTypeId, request, files);
+      @RequestBody @Valid NewCulturalOfferRequest request) {
+    return service.insert(subTypeId, request);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -62,7 +62,7 @@ public class CulturalOfferController {
   }
 
   @GetMapping("/all")
-  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll(){
+  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll() {
     return service.selectAll();
   }
 
