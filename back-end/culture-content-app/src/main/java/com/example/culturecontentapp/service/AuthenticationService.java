@@ -131,7 +131,9 @@ public class AuthenticationService {
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
         .signWith(SignatureAlgorithm.HS512, SECREY_KEY).compact();
 
-    AccountLoginResponse accountLoginResponse = new AccountLoginResponse(token);
+    String role = authentication.getAuthorities().iterator().next().getAuthority();
+    AccountLoginResponse accountLoginResponse = new AccountLoginResponse(token, role.substring(role.indexOf("_") + 1),
+        request.getEmail());
 
     return new ResponseEntity<>(accountLoginResponse, HttpStatus.OK);
   }
