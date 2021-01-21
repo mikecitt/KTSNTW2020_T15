@@ -38,17 +38,6 @@ export class MapItemComponent implements OnInit, OnChanges {
       this.initializeMap();
       this.updateMarkers();
   }
-  createMarkers() :void{
-
-    this.culturalOffers.forEach(offer => {
-      const marker = new Mapboxgl.Marker({
-        draggable: false
-      }).setLngLat([offer.location.longitude, offer.location.latitude])
-        .setPopup(new Mapboxgl.Popup().setHTML(`<h1 style="background-color:powderblue;">${offer.name}</h1>`));
-
-      this.markers.push(marker);
-    });
-  }
   initializeMap(): void{
     (Mapboxgl as any).accessToken = environment.mapboxKey;
 
@@ -61,6 +50,18 @@ export class MapItemComponent implements OnInit, OnChanges {
 
     this.mapInitialized = true;
   }
+
+  createMarkers() :void{
+    this.culturalOffers.forEach(offer => {
+      const marker = new Mapboxgl.Marker({
+        draggable: false
+      }).setLngLat([offer.location.longitude, offer.location.latitude])
+        .setPopup(new Mapboxgl.Popup().setHTML(`<h1 style="background-color:powderblue;">${offer.name}</h1>`));
+
+      this.markers.push(marker);
+    });
+  }
+
   updateMarkers(): void{
     this.createMarkers();
     //add markers on the map
@@ -82,7 +83,7 @@ export class MapItemComponent implements OnInit, OnChanges {
       if(geo.features[0]){
         this.mapa.setCenter(geo.features[0].bbox.slice(0,2) as [number, number]);
         this.mapa.setZoom(8);
-      }
+      } //mozda error staviti
     });
   }
 
