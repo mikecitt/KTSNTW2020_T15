@@ -119,13 +119,13 @@ describe('MapPageComponent', () => {
     expect(subTypeService.getAll).toHaveBeenCalledWith(1);
     expect(component.subTypes.length).toBe(2);
 
-    expect(component.subTypes[0]._id).toBe(1);
+    expect(component.subTypes[0].id).toBe(1);
     expect(component.subTypes[0].name).toBe('podtip1');
-    expect(component.subTypes[0].type_id).toBe(1);
+    expect(component.subTypes[0].type.id).toBe(1);
 
-    expect(component.subTypes[1]._id).toBe(2);
+    expect(component.subTypes[1].id).toBe(2);
     expect(component.subTypes[1].name).toBe('podtip2');
-    expect(component.subTypes[1].type_id).toBe(1);
+    expect(component.subTypes[1].type.id).toBe(1);
 
     // open options dialog  valjda je angular istestirao select
     // const matSelect = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
