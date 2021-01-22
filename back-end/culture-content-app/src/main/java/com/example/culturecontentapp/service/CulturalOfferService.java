@@ -113,7 +113,9 @@ public class CulturalOfferService {
       throw new CulturalOfferNotFoundException(notFoundResponseMessage);
     }
 
-    repository.delete(culturalOfferEntity.get());
+    CulturalOffer culturalOffer = culturalOfferEntity.get();
+    culturalOffer.getImages().forEach(storageService::delete);
+    repository.delete(culturalOffer);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
