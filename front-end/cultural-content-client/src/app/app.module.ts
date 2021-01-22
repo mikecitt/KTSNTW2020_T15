@@ -35,6 +35,8 @@ import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 import { LoginComponent } from './modules/login/login.component';
 import { SnackBarComponent } from './core/snack-bar/snack-bar.component';
+import { SubtypeListComponent } from './modules/cultural-offer-subtype/subtype-list/subtype-list.component';
+import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-form/subtype-form.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { SnackBarComponent } from './core/snack-bar/snack-bar.component';
     PageNotFoundComponent,
     LoginComponent,
     NewsFormComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    SubtypeListComponent,
+    SubtypeFormComponent
   ],
   imports: [
     BrowserModule,

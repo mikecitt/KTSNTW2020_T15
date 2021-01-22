@@ -1,0 +1,44 @@
+
+  <mat-card-header>
+    <mat-card-title style="font-size: 30px;">Offer sub types</mat-card-title>
+    <button mat-mini-fab color="primary" aria-label="Example icon button with a delete icon"
+          [disabled]="typeId == undefined"  style="margin-left: 160px;" (click)="createSubType()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-header>
+
+  <div  >
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Type column -->
+      <ng-container matColumnDef="type.name">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.type.name}} </td>
+      </ng-container>
+
+      <!-- Options Column -->
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef> Options </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="deleteSubType(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button type="button" (click)="updateSubType(element)">
+            <mat-icon>launch</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+  </div>
+

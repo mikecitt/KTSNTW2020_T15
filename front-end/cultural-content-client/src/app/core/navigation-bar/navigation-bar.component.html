@@ -4,13 +4,13 @@
       <mat-icon>public</mat-icon>
     </a>Cultural offers
   </button>
-  <button mat-raised-button routerLink="/subscriptions">My Subscriptions</button>
+  <button mat-raised-button *ngIf="isUser" routerLink="/subscriptions">My Subscriptions</button>
   
   <span class="example-spacer"></span>
-  <button mat-button routerLink="/culturalOfferTypes">Manage Types<mat-icon>category</mat-icon></button>
-  <button mat-button routerLink="/login">Login</button>
-  <button mat-button routerLink="/register">Register</button>
-  <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  <button mat-button *ngIf="isAdmin" routerLink="/culturalOfferTypes">Manage Types<mat-icon>category</mat-icon></button>
+  <button mat-button *ngIf="!isAuthorized" routerLink="/login">Login</button>
+  <button mat-button *ngIf="!isAuthorized" routerLink="/register">Register</button>
+  <button mat-raised-button *ngIf="isAuthorized" color="warn" (click)="logout()">Logout</button>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

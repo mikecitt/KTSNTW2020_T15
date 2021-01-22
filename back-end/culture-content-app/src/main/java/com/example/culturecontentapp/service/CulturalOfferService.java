@@ -25,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CulturalOfferService {
@@ -73,8 +72,7 @@ public class CulturalOfferService {
     return new ResponseEntity<>(modelMapper.map(culturalOffer, NewCulturalOfferResponse.class), HttpStatus.CREATED);
   }
 
-  public ResponseEntity<EditCulturalOfferResponse> update(Long id, EditCulturalOfferRequest request,
-      MultipartFile[] files) {
+  public ResponseEntity<EditCulturalOfferResponse> update(Long id, EditCulturalOfferRequest request) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
 
@@ -92,10 +90,8 @@ public class CulturalOfferService {
     modelMapper.map(request, culturalOffer);
 
     Set<String> fileNames = new HashSet<>();
-    for (MultipartFile file : files) {
-      if (!file.isEmpty()) {
-        fileNames.add(storageService.store(file));
-      }
+    for (String image : request.getImages()) {
+      fileNames.add(storageService.store(image));
     }
 
     if (!fileNames.isEmpty()) {
@@ -117,7 +113,9 @@ public class CulturalOfferService {
       throw new CulturalOfferNotFoundException(notFoundResponseMessage);
     }
 
-    repository.delete(culturalOfferEntity.get());
+    CulturalOffer culturalOffer = culturalOfferEntity.get();
+    culturalOffer.getImages().forEach(storageService::delete);
+    repository.delete(culturalOffer);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

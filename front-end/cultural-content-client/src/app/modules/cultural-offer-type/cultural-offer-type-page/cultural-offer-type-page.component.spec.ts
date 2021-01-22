@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 
 import { CulturalOfferTypePageComponent } from './cultural-offer-type-page.component';
 import { DebugElement } from '@angular/core';
+import { TypePage } from 'src/app/models/type-page';
 
 describe('CulturalOfferTypePageComponent', () => {
   let component: CulturalOfferTypePageComponent;
@@ -14,9 +15,18 @@ describe('CulturalOfferTypePageComponent', () => {
   let dialog: any;
 
   beforeEach(async () => {
+    const typesMock = {
+      content: [
+        {id: 1, name: "tip1"},
+        {id:2, name: "tip2"},
+        {id: 3, name: "tip3"}
+      ],
+      totalElements: 3
+    }
+
     let typeServiceMock = {
       getAllPaginated : jasmine.createSpy('getAllPaginated')
-                         .and.returnValue(of({content: [{},{},{}], totalElements:3 })),
+                         .and.returnValue(of(typesMock)),
       deleteType: jasmine.createSpy('deleteType')
                          .and.returnValue(of()),
       createType: jasmine.createSpy('createType')
@@ -25,10 +35,10 @@ describe('CulturalOfferTypePageComponent', () => {
                          .and.returnValue(of({}))
     };
     let dialogMock = {
-      open : jasmine.createSpy('open').and.returnValue({ afterClosed : of({}), close: null }),
-      // afterClosed : jasmine.createSpy('afterClosed').and.returnValue(of({}))
+      open : jasmine.createSpy('open').and.returnValue({
+         afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({}) ), close: null
+        })
     };
-
 
     await TestBed.configureTestingModule({
       declarations: [ CulturalOfferTypePageComponent ],
@@ -38,7 +48,6 @@ describe('CulturalOfferTypePageComponent', () => {
       ]
     });
     //.compileComponents();
-
   });
 
   beforeEach(() => {
@@ -66,7 +75,7 @@ describe('CulturalOfferTypePageComponent', () => {
   it('should go to next page in table', async () => {
     component.getNextType();
 
-    expect(component.curentPage).toBe(1);
+    expect(component.curentPageType).toBe(1);
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
     fixture.whenStable()
@@ -80,10 +89,10 @@ describe('CulturalOfferTypePageComponent', () => {
   });
 
   it('should go to previous page in table', async () => {
-    component.curentPage = 1;
+    component.curentPageType = 1;
     component.getPreviousType();
 
-    expect(component.curentPage).toBe(0);
+    expect(component.curentPageType).toBe(0);
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
     fixture.whenStable()
@@ -101,14 +110,29 @@ describe('CulturalOfferTypePageComponent', () => {
     fixture.detectChanges();
     expect(dialog.open).toHaveBeenCalled();
 
-    // fixture.whenStable()
-    //   .then(() => {
-    //     fixture.detectChanges();
+    fixture.whenStable()
+      .then(() => {
+        fixture.detectChanges();
+        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+        expect(elements.length).toBe(1);
+      });
+    expect(typeService.deleteType).toHaveBeenCalled();
+    expect(typeService.getAllPaginated).toHaveBeenCalled();
+  });
 
-    //     let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'mat-dialog-container').nativeElement;
-    //     expect(elements.length).toBe(1);
-    //   });
+  it('should open create dialog', async ()=>{
+    component.openCreateDialog("Whatever");
+    fixture.detectChanges();
+    expect(dialog.open).toHaveBeenCalled();
 
+    fixture.whenStable()
+      .then(() => {
+        fixture.detectChanges();
+        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+        expect(elements.length).toBe(1);
+      });
+    expect(typeService.createType).toHaveBeenCalled();
+    expect(typeService.getAllPaginated).toHaveBeenCalled();
 
   });
 
