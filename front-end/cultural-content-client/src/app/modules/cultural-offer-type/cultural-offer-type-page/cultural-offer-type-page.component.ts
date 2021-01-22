@@ -120,6 +120,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
     this.typeService.createType(req)
         .subscribe(() => {
           this.loadTypes();
+          this.snackBar.openSnackBar("Created successfully", "", "green-snackbar");
         });
   }
 

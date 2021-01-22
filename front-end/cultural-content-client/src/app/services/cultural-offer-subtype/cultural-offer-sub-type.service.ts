@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CulturalOfferSubType } from 'src/app/models/culutral-offer-subType';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { SubTypePage } from 'src/app/models/type-page';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CulturalOfferSubTypeService {
   headers: HttpHeaders;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      'Authorization': 'Bearer ' + cookieService.get('token'),
     });
    }
 
@@ -32,13 +33,19 @@ export class CulturalOfferSubTypeService {
   }
 
   updateSubType(req: CulturalOfferSubType): Observable<CulturalOfferSubType>{
+    const params: HttpParams = new HttpParams()
+      .append('typeId', req.type.id);
+
     return this.http.put<CulturalOfferSubType>
-      (environment.api_url + `/sub-types/${req.id}?typeId=${req.type.id}`, req, {headers: this.headers});
+      (environment.api_url + `/sub-types/${req.id}`, req, {headers: this.headers, params: params});
   }
 
   deleteSubType(subType: CulturalOfferSubType): Observable<void>{
+    const params: HttpParams = new HttpParams()
+        .append('typeId', subType.type.id);
+
     return this.http.delete<void>
-      (environment.api_url + `/sub-types/${subType.id}?typeId=${subType.type.id}`, {headers: this.headers});
+      (environment.api_url + `/sub-types/${subType.id}`, {headers: this.headers, params: params});
   }
 
 }
