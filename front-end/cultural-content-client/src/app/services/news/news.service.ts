@@ -13,22 +13,22 @@ export class NewsService {
 
   private readonly path = 'http://localhost:8080/api/news/';
   private readonly ht = new HttpHeaders({
+    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+  });
 
-  Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjEwOTg5NjkxLCJleHAiOjE2MTA5OTE0OTF9.Mr8lbyHOvYPbK-Ol30jmAq-mbh7Gkl-8xbGtwmNeZteuZC0B8yGGEVDwKC7P8avFLTTefdU2-Cv39iu0ctmSXg'});
-
-  constructor(private http: HttpClient) { }
+  constructor(private http:HttpClient) { }
 
   getAll(culturalOfferId: number, page: number, limit: number): Observable<NewsPage>{
     const params: HttpParams = new HttpParams()
         .append('page', page.toString())
         .append('size', limit.toString());
+    return this.http.get<NewsPage>(this.path + "culturalOffer/" + culturalOfferId, {headers: this.ht, params : params});
+  }
 
+  deleteNews(newsId:number):Observable<{}>{
     return this.http.get<NewsPage>(this.path + 'culturalOffer/' + culturalOfferId, {headers: this.ht, params});
   }
 
-  deleteNews(newsId: number): Observable<{}>{
-    return this.http.delete(this.path + newsId, {headers: this.ht});
-  }
 
   addNews(culturalOfferId: number, newsToAdd: News): Observable<News>{
     return this.http.post<News>(environment.api_url + '/news/' + culturalOfferId, newsToAdd, {headers : this.ht});

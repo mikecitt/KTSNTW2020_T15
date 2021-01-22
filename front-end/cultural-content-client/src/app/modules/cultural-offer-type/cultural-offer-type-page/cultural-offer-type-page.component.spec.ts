@@ -75,7 +75,7 @@ describe('CulturalOfferTypePageComponent', () => {
   it('should go to next page in table', async () => {
     component.getNextType();
 
-    expect(component.curentPage).toBe(1);
+    expect(component.curentPageType).toBe(1);
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
     fixture.whenStable()
@@ -89,10 +89,10 @@ describe('CulturalOfferTypePageComponent', () => {
   });
 
   it('should go to previous page in table', async () => {
-    component.curentPage = 1;
+    component.curentPageType = 1;
     component.getPreviousType();
 
-    expect(component.curentPage).toBe(0);
+    expect(component.curentPageType).toBe(0);
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
     fixture.whenStable()

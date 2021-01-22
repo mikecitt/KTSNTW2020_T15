@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CulturalOfferType} from '../../../models/cultural-offer-type';
 import { CulturalOfferSubType} from '../../../models/culutral-offer-subType';
-import { CulturalOfferTypeService } from '../../../services';
+import { CulturalOfferTypeService,  CulturalOfferSubTypeService } from '../../../services';
 import { CreateTypeFormComponent } from '../create-type-form/create-type-form.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UpdateTypeFormComponent } from 'src/app/modules/cultural-offer-type/update-type-form/update-type-form.component';
 import { ConfirmDeleteComponent } from 'src/app/core/confirm-delete/confirm-delete.component';
-import { TypePage } from 'src/app/models/type-page';
+import { SubTypePage, TypePage } from 'src/app/models/type-page';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-cultural-offer-type-page',
@@ -17,15 +18,22 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   culturalOfferTypes: CulturalOfferType[];
   culturalOfferSubTypes: CulturalOfferSubType[];
-
-  typePage: TypePage;
-  curentPage: number;
   pageSize: number;
 
+  curentType: number;
+  typePage: TypePage;
+  curentPageType: number;
+
+  subTypePage: SubTypePage;
+  curentPageSubType: number;
+
   constructor(
-    private typeService: CulturalOfferTypeService, public dialog: MatDialog)
+    private typeService: CulturalOfferTypeService, public dialog: MatDialog,
+    public snackBar: SnackBarComponent,
+    private subTypeService: CulturalOfferSubTypeService)
   {
-    this.curentPage = 0;
+    this.curentPageType = 0;
+    this.curentPageSubType = 0;
     this.pageSize = 5;
   }
 
@@ -35,20 +43,39 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   loadTypes(): void{
     this.typeService
-        .getAllPaginated(this.curentPage,this.pageSize).subscribe((res) => {
+        .getAllPaginated(this.curentPageType,this.pageSize).subscribe((res) => {
           this.typePage = res;
-          this.culturalOfferTypes = res.content
+          this.culturalOfferTypes = res.content;
+        });
+  }
+  loadSubTypes(typeId: number){
+    this.curentType = typeId;
+    this.subTypeService
+        .getAllPaginated(this.curentPageSubType, this.pageSize,typeId)
+        .subscribe( (res) => {
+          this.subTypePage = res;
+          this.culturalOfferSubTypes = res.content
         });
   }
 
   getNextType(): void{
-    this.curentPage++;
+    this.curentPageType++;
     this.loadTypes();
   }
 
   getPreviousType():void{
-    this.curentPage--;
+    this.curentPageType--;
     this.loadTypes();
+  }
+
+  getNextSubType(): void{
+    this.curentPageSubType++;
+    this.loadSubTypes(this.curentType);
+  }
+
+  getPreviousSubType(): void{
+    this.curentPageSubType--;
+    this.loadSubTypes(this.curentType);
   }
 
   deleteType(typeId: any): void{
@@ -70,7 +97,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
         .deleteType(typeId)
         .subscribe(()=>{
           this.loadTypes();
-          alert("Deleted successfully");
+          this.snackBar.openSnackBar("Deleted successfully", "", "green-snackbar");
         });
   }
 
@@ -80,7 +107,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
       panelClass : "mat-elevation-z8",
       data: {_id: 1, name: ""}
     });
-    this.curentPage = this.typePage.totalPages - 1;
+    this.curentPageType = this.typePage.totalPages - 1;
     dialogRef.afterClosed().subscribe(name => {
       if(name != undefined){
         this.afterCreateClosed(name);
@@ -103,7 +130,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
       data: {id: updatedType.id, name: updatedType.name}
     });
     //bolje sort na back
-    this.curentPage = this.typePage.totalPages - 1;
+    this.curentPageType = this.typePage.totalPages - 1;
 
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined){
@@ -111,9 +138,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
         this.typeService.updateType(req)
             .subscribe((response) => {
               this.loadTypes();
-            },
-            (error) => {
-              alert(error.error)
+              this.loadSubTypes(response.id);
             });
       }
     });

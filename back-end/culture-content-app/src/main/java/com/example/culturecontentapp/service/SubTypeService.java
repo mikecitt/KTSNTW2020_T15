@@ -40,9 +40,9 @@ public class SubTypeService {
   }
 
   public Page<SubTypeResponse> findAll(Long typeId, Pageable pageable){
-    List<SubType> subTypes = repository.findAllByTypeId(typeId,pageable);
+    Page<SubType> subTypes = repository.findAllByTypeId(typeId,pageable);
 //    List<SubType> subTypes = repository.findByTypeId(typeId);
-    return new PageImpl<>(toTypeDto(subTypes));
+    return new PageImpl<>(subTypes.map(sub -> mapper.map(sub, SubTypeResponse.class)).toList(), subTypes.getPageable(), subTypes.getTotalElements());
   }
 
   public List<SubTypeResponse> findAll(Long typeId){
@@ -63,7 +63,7 @@ public class SubTypeService {
     if(type == null)
       throw new TypeNotFoundException("Chosen type doesn't exist");
 
-    SubType subType = mapper.map(typeRequest, SubType.class);
+    SubType subType = mapper.map(typeRequest, SubType.class);   //ovde bi trealo da pukne jer mu saljemo id
     subType.setType(type);
 
     return convertToDTO(repository.save(subType));

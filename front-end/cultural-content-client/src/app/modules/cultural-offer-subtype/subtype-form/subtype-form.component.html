@@ -1,0 +1,17 @@
+<h1 mat-dialog-title *ngIf="data.formType == 'CREATE' ">Create subtype</h1>
+<h1 mat-dialog-title *ngIf="data.formType == 'UPDATE' ">Update subtype</h1>
+
+<div mat-dialog-content>
+  <mat-form-field [formGroup]= "form">
+    <input id="name" placeholder="SubType name" matInput formControlName="name" required>
+    <mat-error>
+      Name must be at least 4 characters long.
+    </mat-error>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button style="margin-left: 85px;" mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button color="primary" type="button" [disabled]="form.invalid"
+         (click)="onSaveClick()">Save</button>
+</div>
