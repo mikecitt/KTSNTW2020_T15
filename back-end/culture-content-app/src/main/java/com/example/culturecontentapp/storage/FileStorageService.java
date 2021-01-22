@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileStorageService implements StorageService {
 
-  private final Path root = Paths.get("src/images");
+  private final Path root = Paths.get("src/main/java/com/example/culturecontentapp/images");
 
   private static String notSupportedResponse = "Storage file is not supported";
 

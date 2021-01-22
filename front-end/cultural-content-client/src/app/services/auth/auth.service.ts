@@ -4,8 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs/operators';
-import { UserService } from '../user/user.service';
 import { Router } from '@angular/router';
+import { UserService } from '../user/user.service';
 
 export interface RegistrationForm {
   email: string;

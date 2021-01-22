@@ -30,7 +30,6 @@ export class NewsService {
     return this.http.delete(this.path+ newsId, {headers: this.ht});
   }
 
-
   addNews(culturalOfferId: number, newsToAdd: News): Observable<News>{
     return this.http.post<News>(environment.api_url + '/news/' + culturalOfferId, newsToAdd, {headers : this.ht});
   }
