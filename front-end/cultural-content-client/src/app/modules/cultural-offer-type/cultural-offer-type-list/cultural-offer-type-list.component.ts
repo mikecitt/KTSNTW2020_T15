@@ -20,7 +20,10 @@ export class CulturalOfferTypeListComponent implements OnInit {
   onDeleteTypeEvent = new EventEmitter<any>();
   @Output()
   onUpdateTypeEvent = new EventEmitter<any>();
+  @Output()
+  onRowClickEvent = new EventEmitter<any>();
 
+  selectedRowIndex = -1;
 
   displayedColumns: string[] = ['name', 'options'];
 
@@ -49,6 +52,10 @@ export class CulturalOfferTypeListComponent implements OnInit {
 
   updateType(element: any): void{
     this.onUpdateTypeEvent.emit(element);
+  }
+
+  onRowClick(element: any){
+    this.onRowClickEvent.emit(element.id);
   }
 
 }

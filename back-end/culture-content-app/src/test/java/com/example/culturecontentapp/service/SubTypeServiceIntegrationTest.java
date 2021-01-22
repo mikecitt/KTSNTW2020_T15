@@ -64,7 +64,7 @@ public class SubTypeServiceIntegrationTest {
         SubTypeRequest newTypeRequest = new SubTypeRequest(NEW_SUBTYPE_NAME);
         SubTypeResponse createdSubType = service.create(newTypeRequest,DB_TYPE_ID);
 
-        Long typeId = createdSubType.getTypeId();
+        Long typeId = createdSubType.getType().getId();
         assertEquals(NEW_SUBTYPE_NAME, createdSubType.getName());
         assertEquals(DB_TYPE_ID, typeId);
         assertEquals(BEFORE_CREATE + 1, (long) repository.countAllByTypeId(typeId));

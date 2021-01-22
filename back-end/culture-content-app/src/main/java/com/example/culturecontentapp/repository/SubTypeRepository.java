@@ -1,6 +1,7 @@
 package com.example.culturecontentapp.repository;
 
 import com.example.culturecontentapp.model.SubType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ public interface SubTypeRepository extends JpaRepository<SubType, Long> {
 
     Long countAllByTypeId(Long id);
 
-    List<SubType> findAllByTypeId(Long id, Pageable pageable);
+    Page<SubType> findAllByTypeId(Long id, Pageable pageable);
 
     SubType findByIdAndTypeId(Long id, Long typeId);
 

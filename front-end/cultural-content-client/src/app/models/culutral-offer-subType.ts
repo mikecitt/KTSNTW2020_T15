@@ -1,5 +1,7 @@
+import { CulturalOfferType } from "./cultural-offer-type";
+
 export interface CulturalOfferSubType{
-  _id?: any;
+  id?: any;
   name: string;
-  type_id: any;
+  type: CulturalOfferType;
 }
