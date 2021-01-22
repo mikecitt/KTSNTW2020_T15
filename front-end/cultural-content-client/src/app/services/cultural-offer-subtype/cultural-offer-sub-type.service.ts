@@ -4,15 +4,16 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { SubTypePage } from 'src/app/models/type-page';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CulturalOfferSubTypeService {
   headers: HttpHeaders;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      'Authorization': 'Bearer ' + cookieService.get('token'),
     });
    }
 

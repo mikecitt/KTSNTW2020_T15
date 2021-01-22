@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { News } from 'src/app/models/news';
 import { environment } from 'src/environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class NewsService {
 
   private readonly path = 'http://localhost:8080/api/news/';
   private readonly ht = new HttpHeaders({
-    'Authorization': 'Bearer ' + localStorage.getItem('token') 
+    'Authorization': 'Bearer ' + this.cookieService.get('token')
   });
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private cookieService: CookieService) { }
 
   getAll(culturalOfferId: number, page: number, limit: number): Observable<NewsPage>{
     const params: HttpParams = new HttpParams()
@@ -26,7 +27,7 @@ export class NewsService {
   }
 
   deleteNews(newsId:number):Observable<{}>{
-    return this.http.get<NewsPage>(this.path + 'culturalOffer/' + culturalOfferId, {headers: this.ht, params});
+    return this.http.delete(this.path+ newsId, {headers: this.ht});
   }
 
 
