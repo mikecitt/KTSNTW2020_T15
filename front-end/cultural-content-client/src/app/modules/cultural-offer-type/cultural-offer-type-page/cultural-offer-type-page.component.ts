@@ -86,8 +86,8 @@ export class CulturalOfferTypePageComponent implements OnInit {
     });
     dialogRef
       .afterClosed()
-      .subscribe(result =>{
-        if(result){
+      .subscribe(confirmed =>{
+        if(confirmed){
           this.afterDeleteClosed(typeId);
         }
       })
