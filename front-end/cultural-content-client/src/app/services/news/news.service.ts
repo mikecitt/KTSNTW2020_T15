@@ -13,9 +13,14 @@ export class NewsService {
 
   private readonly path = 'http://localhost:8080/api/news/';
   private readonly ht = new HttpHeaders({
+<<<<<<< HEAD
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjExMjUxMDk0LCJleHAiOjE2MTEyNTI4OTR9.GXFQAtKia1FR_FEeoyEIutiuNPNZkUdPChYM7NXmQeqgU5l_ZBbtrsw4SXIFGstw-yqTUjB-Jj01yzX92woUDQ'});
+  
+=======
     'Authorization': 'Bearer ' + localStorage.getItem('token') 
   });
 
+>>>>>>> main
   constructor(private http:HttpClient) { }
 
   getAll(culturalOfferId: number, page: number, limit: number): Observable<NewsPage>{

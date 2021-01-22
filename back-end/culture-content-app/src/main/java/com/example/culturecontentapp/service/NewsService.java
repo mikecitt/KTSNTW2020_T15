@@ -2,7 +2,7 @@ package com.example.culturecontentapp.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import com.example.culturecontentapp.event.OnNewsCreatedEvent;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
@@ -21,7 +21,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,13 +49,20 @@ public class NewsService {
   public ResponseEntity<NewsResponse> create(NewsRequest newsRequest, Long offerId){
     CulturalOffer offer = offerRepository.findById(offerId).orElseThrow(() -> new CulturalOfferNotFoundException("Cultural offer doesn't exist"));
     News news = mapper.map(newsRequest, News.class);
-    // for(String s : newsRequest.getImages()){
-
-    // }
+    handleStoringImages(news);
     offer.addNews(news);
     // handlePublishingNewsEvent(offerId, news, offer.getName()); TODO izgleda da antivirus zeza
     return new ResponseEntity<>(convertToNewsResponse(repository.save(news)), HttpStatus.CREATED);
     
+  }
+
+  private void handleStoringImages(News news){
+    ArrayList<String> imageList = new ArrayList<>();
+    for(String image : news.getImages()){
+      imageList.add(storageService.store(image));
+    }
+    news.getImages().clear();
+    news.getImages().addAll(imageList);
   }
 
   private void handlePublishingNewsEvent(Long offerId, News news, String offerName){
