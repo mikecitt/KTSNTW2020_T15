@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,8 +28,8 @@ public class SubTypeRepositoryIntegrationTest {
 
     @Test
     public void testFindAllByTypeId(){
-        List<SubType> subTypeList = repository.findAllByTypeId(DB_TYPE_ID, PageRequest.of(SB_PAGEABLE_PAGE,SB_PAGEABLE_SIZE));
-        assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS,subTypeList.size());
+        Page<SubType> subTypeList = repository.findAllByTypeId(DB_TYPE_ID, PageRequest.of(SB_PAGEABLE_PAGE,SB_PAGEABLE_SIZE));
+        assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS,subTypeList.getContent().size());
     }
 
     @Test

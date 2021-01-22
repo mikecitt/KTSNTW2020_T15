@@ -7,13 +7,14 @@ import { TypePage } from 'src/app/models/type-page';
 
 @Injectable()
 export class CulturalOfferTypeService {
+  headers: HttpHeaders;
 
-  headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-  });
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    });
+   }
 
   getAll(): Observable<CulturalOfferType[]>{
     return this.http.get<CulturalOfferType[]>(environment.api_url + "/types/all");
