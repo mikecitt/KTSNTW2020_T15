@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,8 +40,8 @@ public class CulturalOfferController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{id}")
   public ResponseEntity<EditCulturalOfferResponse> update(@PathVariable Long id,
-      @RequestPart("request") @Valid EditCulturalOfferRequest request, @RequestPart("files") MultipartFile[] files) {
-    return service.update(id, request, files);
+      @RequestBody @Valid EditCulturalOfferRequest request) {
+    return service.update(id, request);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")

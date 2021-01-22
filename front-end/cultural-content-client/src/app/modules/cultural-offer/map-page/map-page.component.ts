@@ -45,7 +45,6 @@ export class MapPageComponent implements OnInit {
         .subscribe(res => this.types = res)
   }
   loadSubTypes(typeId: any): void{
-    console.log(this.culturalOfferLocations);
     this.culturalOfferSubTypeService
         .getAll(typeId)
         .subscribe(res => this.subTypes = res);

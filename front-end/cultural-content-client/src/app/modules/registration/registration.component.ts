@@ -39,6 +39,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RegistrationComponent implements OnInit {
   form: FormGroup;
+  loading = false;
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -98,9 +99,11 @@ export class RegistrationComponent implements OnInit {
   register() {
     let formObj = this.form.getRawValue();
     delete formObj['rePassword'];
+    this.loading = true;
 
     this.authService.register(formObj).subscribe(
       (data) => {
+        this.loading = false;
         this.form.reset();
         this.registerForm.resetForm();
         let snackBarRef = this._snackBar.open(
@@ -117,6 +120,7 @@ export class RegistrationComponent implements OnInit {
         });
       },
       (err) => {
+        this.loading = false;
         this._snackBar.open(err.error, 'Try Again', {
           duration: 0,
           horizontalPosition: this.horizontalPosition,
