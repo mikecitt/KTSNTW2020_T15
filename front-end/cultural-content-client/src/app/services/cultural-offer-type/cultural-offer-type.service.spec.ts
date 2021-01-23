@@ -12,7 +12,7 @@ describe('CulturalOfferTypeService', () => {
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
 
-  let path: string = 'http://localhost:8080/api';
+  const path: string = 'http://localhost:8080/api';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
