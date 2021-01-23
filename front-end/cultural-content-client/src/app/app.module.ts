@@ -16,7 +16,7 @@ import { NavigationBarComponent } from './core/navigation-bar/navigation-bar.com
 import { MapPageComponent } from './modules/cultural-offer/map-page/map-page.component';
 import { RegistrationComponent } from './modules/registration/registration.component';
 import { MapItemComponent } from './modules/cultural-offer/map-item/map-item.component';
-import { CulturalOfferService } from './services/cultural-offer/cultural-offer.service'
+import { CulturalOfferService } from './services/cultural-offer/cultural-offer.service';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CulturalOfferTypeService } from './services/cultural-offer-type/cultural-offer-type.service';
 import { CulturalOfferSubTypeService } from './services/cultural-offer-subtype/cultural-offer-sub-type.service';
@@ -37,6 +37,9 @@ import { LoginComponent } from './modules/login/login.component';
 import { SnackBarComponent } from './core/snack-bar/snack-bar.component';
 import { SubtypeListComponent } from './modules/cultural-offer-subtype/subtype-list/subtype-list.component';
 import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-form/subtype-form.component';
+import { NewCulturalOfferDialogComponent } from './modules/cultural-offer/new-cultural-offer-dialog/new-cultural-offer-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-f
     NewsFormComponent,
     SnackBarComponent,
     SubtypeListComponent,
-    SubtypeFormComponent
+    SubtypeFormComponent,
+    NewCulturalOfferDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +81,8 @@ import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-f
     MatCardModule,
     ReactiveFormsModule,
     MatCarouselModule.forRoot(),
+    MatDialogModule,
+    NgxMatFileInputModule,
   ],
   providers: [
     CulturalOfferService,
@@ -86,8 +92,8 @@ import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-f
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
