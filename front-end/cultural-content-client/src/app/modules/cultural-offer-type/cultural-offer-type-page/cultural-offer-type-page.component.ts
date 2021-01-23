@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CulturalOfferType} from '../../../models/cultural-offer-type';
+import { CulturalOfferType, TypeDialogData} from '../../../models/cultural-offer-type';
 import { CulturalOfferSubType} from '../../../models/culutral-offer-subType';
 import { CulturalOfferTypeService,  CulturalOfferSubTypeService } from '../../../services';
-import { CreateTypeFormComponent } from '../create-type-form/create-type-form.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UpdateTypeFormComponent } from 'src/app/modules/cultural-offer-type/update-type-form/update-type-form.component';
 import { ConfirmDeleteComponent } from 'src/app/core/confirm-delete/confirm-delete.component';
 import { SubTypePage, TypePage } from 'src/app/models/type-page';
 import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
+import { TypeFormComponent } from '../type-form/type-form.component';
 
 @Component({
   selector: 'app-cultural-offer-type-page',
@@ -101,16 +100,28 @@ export class CulturalOfferTypePageComponent implements OnInit {
         });
   }
 
-  openCreateDialog(event: any){
-    const dialogRef = this.dialog.open(CreateTypeFormComponent, {
+  openDialog(data: TypeDialogData): MatDialogRef<TypeFormComponent>{
+    const dialogRef = this.dialog.open(TypeFormComponent, {
       width: '300px',
       panelClass : "mat-elevation-z8",
-      data: {_id: 1, name: ""}
+      data: data
     });
+    return dialogRef;
+  }
+
+  openCreateDialog(event: any){
+    let dialogData : TypeDialogData = {
+      formType: 'CREATE',
+      type: {
+        id: 0,
+        name: ''
+      }
+    }
+    const dialogRef = this.openDialog(dialogData);
     this.curentPageType = this.typePage.totalPages - 1;
-    dialogRef.afterClosed().subscribe(name => {
-      if(name != undefined){
-        this.afterCreateClosed(name);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.afterCreateClosed(result.name);
       }
     });
   }
@@ -125,18 +136,19 @@ export class CulturalOfferTypePageComponent implements OnInit {
   }
 
   openUpdateDialog(updatedType:any):void {
-    const dialogRef = this.dialog.open(UpdateTypeFormComponent, {
-      width: '300px',
-      panelClass : "mat-elevation-z8",
-      data: {id: updatedType.id, name: updatedType.name}
-    });
+    let dialogData : TypeDialogData = {
+      formType: 'UPDATE',
+      type: {
+        id: updatedType.id,
+        name: updatedType.name
+      }
+    };
+    const dialogRef = this.openDialog(dialogData);
     //bolje sort na back
     this.curentPageType = this.typePage.totalPages - 1;
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result != undefined){
-        let req: CulturalOfferType = {id: result.id, name: result.name};
-        this.typeService.updateType(req)
+    dialogRef.afterClosed().subscribe((result: CulturalOfferType) => {
+      if(result){
+        this.typeService.updateType(result)
             .subscribe((response) => {
               this.loadTypes();
               this.loadSubTypes(response.id);
