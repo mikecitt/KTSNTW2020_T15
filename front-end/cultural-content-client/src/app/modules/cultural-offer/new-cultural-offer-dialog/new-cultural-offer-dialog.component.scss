@@ -1,0 +1,23 @@
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.titleIcon {
+  margin-right: 7px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.formTitleIcon {
+  margin-right: 4px;
+}
+
+.formField {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}

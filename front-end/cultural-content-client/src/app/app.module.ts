@@ -37,6 +37,9 @@ import { LoginComponent } from './modules/login/login.component';
 import { SnackBarComponent } from './core/snack-bar/snack-bar.component';
 import { SubtypeListComponent } from './modules/cultural-offer-subtype/subtype-list/subtype-list.component';
 import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-form/subtype-form.component';
+import { NewCulturalOfferDialogComponent } from './modules/cultural-offer/new-cultural-offer-dialog/new-cultural-offer-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { MapItemOverviewComponent } from './modules/cultural-offer/map-item-overview/map-item-overview.component';
 import { DynamicComponentService } from './services/dynamic-component.service';
 import { StarRatingComponent } from './modules/star-rating/star-rating.component';
@@ -62,6 +65,7 @@ import { StarRatingComponent } from './modules/star-rating/star-rating.component
     SnackBarComponent,
     SubtypeListComponent,
     SubtypeFormComponent,
+    NewCulturalOfferDialogComponent,
     MapItemOverviewComponent,
     StarRatingComponent,
   ],
@@ -82,6 +86,8 @@ import { StarRatingComponent } from './modules/star-rating/star-rating.component
     MatCardModule,
     ReactiveFormsModule,
     MatCarouselModule.forRoot(),
+    MatDialogModule,
+    NgxMatFileInputModule,
   ],
   providers: [
     CulturalOfferService,
