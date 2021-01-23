@@ -6,13 +6,16 @@ import { By } from '@angular/platform-browser';
 
 import { CulturalOfferTypePageComponent } from './cultural-offer-type-page.component';
 import { DebugElement } from '@angular/core';
-import { TypePage } from 'src/app/models/type-page';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
+import { CulturalOfferSubTypeService } from 'src/app/services';
 
 describe('CulturalOfferTypePageComponent', () => {
   let component: CulturalOfferTypePageComponent;
   let fixture: ComponentFixture<CulturalOfferTypePageComponent>;
   let typeService: any;
   let dialog: any;
+  let snackBar: SnackBarComponent;
+  let subTypeService: CulturalOfferSubTypeService;
 
   beforeEach(async () => {
     const typesMock = {
@@ -22,7 +25,14 @@ describe('CulturalOfferTypePageComponent', () => {
         {id: 3, name: "tip3"}
       ],
       totalElements: 3
-    }
+    };
+    const subTypesMock = {
+      content: [
+        {id: 1, name: 'podtip1'},
+        {id: 1, name: 'podtip2'}
+      ],
+      totalElements: 2
+    };
 
     let typeServiceMock = {
       getAllPaginated : jasmine.createSpy('getAllPaginated')
@@ -34,17 +44,28 @@ describe('CulturalOfferTypePageComponent', () => {
       updateType: jasmine.createSpy('updateType')
                          .and.returnValue(of({}))
     };
+
+    let subTypeServiceMock = {
+      getAllPaginated: jasmine.createSpy('getAllPaginated').and.returnValue(of(subTypesMock))
+    };
+
     let dialogMock = {
       open : jasmine.createSpy('open').and.returnValue({
          afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({}) ), close: null
         })
     };
 
+    let snackBarMock = {
+      openSnackBar: jasmine.createSpy('openSnackBar')
+    };
+
     await TestBed.configureTestingModule({
       declarations: [ CulturalOfferTypePageComponent ],
       providers : [
         {provide: CulturalOfferTypeService, useValue: typeServiceMock},
-        {provide: MatDialog, useValue: dialogMock}
+        {provide: MatDialog, useValue: dialogMock},
+        {provide: SnackBarComponent, useValue: snackBarMock},
+        {provide: CulturalOfferSubTypeService, useValue: subTypeServiceMock}
       ]
     });
     //.compileComponents();
@@ -56,6 +77,8 @@ describe('CulturalOfferTypePageComponent', () => {
     fixture.detectChanges();
     typeService = TestBed.inject(CulturalOfferTypeService);
     dialog = TestBed.inject(MatDialog);
+    snackBar = TestBed.inject(SnackBarComponent);
+    subTypeService = TestBed.inject(CulturalOfferSubTypeService);
   });
 
   it('should fetch the type list on init', async () => {

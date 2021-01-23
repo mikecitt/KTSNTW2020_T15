@@ -1,10 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CulturalOfferType } from 'src/app/models/cultural-offer-type';
 import { CulturalOfferTypeListComponent } from './cultural-offer-type-list.component';
 
 describe('CulturalOfferTypeListComponent', () => {
   let component: CulturalOfferTypeListComponent;
   let fixture: ComponentFixture<CulturalOfferTypeListComponent>;
+
+  const typesMock : CulturalOfferType[] = [
+    {
+      id: 1,
+      name: 'tip1'
+    },
+    {
+      id:2,
+      name: 'tip2'
+    }
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,13 +35,20 @@ describe('CulturalOfferTypeListComponent', () => {
   });
 
   it('should assign type list to dataSource', async() => {
+    component.offerTypes = typesMock;
     component.ngOnInit();
     expect(component.dataSource).toBeDefined();
+    expect(component.dataSource.data.length).toBe(2);
+    expect(component.dataSource.data).toEqual(typesMock);
   });
 
   it('should assign type list to dataSource on changes', async() => {
+    component.offerTypes = typesMock;
+    // fixture.detectChanges();
     component.ngOnChanges();
     expect(component.dataSource).toBeDefined();
+    expect(component.dataSource.data.length).toBe(2);
+    expect(component.dataSource.data).toEqual(typesMock);
   });
 
   it('should emit on click create', async () =>{

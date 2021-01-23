@@ -2,7 +2,9 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { CulturalOfferType } from 'src/app/models/cultural-offer-type';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
+import { CulturalOfferSubType } from 'src/app/models/culutral-offer-subType';
 import { CulturalOfferTypeService, CulturalOfferService, CulturalOfferSubTypeService } from 'src/app/services';
 
 import { MapPageComponent } from './map-page.component';
@@ -26,7 +28,7 @@ describe('MapPageComponent', () => {
         }
       }
     ];
-    const types = [
+    const types: CulturalOfferType[] = [
       {
         id: 1,
         name: 'tip1'
@@ -36,16 +38,22 @@ describe('MapPageComponent', () => {
         name: 'tip2'
       }
     ];
-    const subTypes = [
+    const subTypes: CulturalOfferSubType[] = [
       {
-        _id: 1,
+        id: 1,
         name: 'podtip1',
-        type_id: 1
+        type:{
+          id: 1,
+          name: 'tip1'
+        }
       },
       {
-        _id: 2,
+        id: 2,
         name: 'podtip2',
-        type_id:1
+        type: {
+          id: 1,
+          name: 'tip1'
+        }
       }
     ];
 
@@ -119,24 +127,15 @@ describe('MapPageComponent', () => {
     expect(subTypeService.getAll).toHaveBeenCalledWith(1);
     expect(component.subTypes.length).toBe(2);
 
-    expect(component.subTypes[0]._id).toBe(1);
+    expect(component.subTypes[0].id).toBe(1);
     expect(component.subTypes[0].name).toBe('podtip1');
-    expect(component.subTypes[0].type_id).toBe(1);
+    expect(component.subTypes[0].type.id).toBe(1);
+    expect(component.subTypes[0].type.name).toBe('tip1');
 
-    expect(component.subTypes[1]._id).toBe(2);
+    expect(component.subTypes[1].id).toBe(2);
     expect(component.subTypes[1].name).toBe('podtip2');
-    expect(component.subTypes[1].type_id).toBe(1);
-
-    // open options dialog  valjda je angular istestirao select
-    // const matSelect = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
-    // matSelect.click();
-    // fixture.detectChanges();
-    // fixture.whenStable()
-    //       .then( () => {
-    //         const matOption: DebugElement[] = fixture.debugElement.query(By.css('.mat-option')).nativeElement;
-    //         // matOption.click();
-    //         expect(matOption.length).toBeGreaterThan(0);
-    //       });
+    expect(component.subTypes[1].type.id).toBe(1);
+    expect(component.subTypes[1].type.name).toBe('tip1');
   });
 
   it('should filter cultural offer on applyFilter', async()=>{

@@ -51,10 +51,6 @@ export class MapFilterFormComponent implements OnInit {
   }
 
   onSelectChange(newSelected: any): void{
-    if(newSelected.value == ""){
-      this.culturalOfferSubTypes = [];
-      return;
-    }
     this.getSubTypesEvent.emit(this.filterForm.value.type.id);
     this.disabled = false;
   }
