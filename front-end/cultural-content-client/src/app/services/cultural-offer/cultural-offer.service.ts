@@ -13,25 +13,25 @@ export class CulturalOfferService {
 
   constructor(private http: HttpClient) {}
 
-  getLocations(): Observable<CulturalOfferLocation[]> {
+  getLocations(): Observable<CulturalOfferResponse[]> {
     let ht = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization:
         'eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2MDk2ODIwODUsImV4cCI6MTYwOTY4Mzg4NX0.TYRQh3jehALCqTnP6ld_tSq9HUT_t-rBeBIqXibCWe_32V1Yn4TK4tqxuNkOCAzRg4TuhUzlVIRyeaWeIs650Q',
     });
-    return this.http.get<CulturalOfferLocation[]>(this.path + '/all', {
+
+    return this.http.get<CulturalOfferResponse[]>(this.path + '/all', {
       headers: ht,
     });
   }
   filterCulturalOffers(
     filterReq: FilterRequest
-  ): Observable<CulturalOfferLocation[]> {
-    return this.http.get<CulturalOfferLocation[]>(
+  ): Observable<CulturalOfferResponse[]> {
+    return this.http.get<CulturalOfferResponse[]>(
       this.path +
         `/search?culturalOfferName=&subTypeName=${filterReq.subTypeName}&typeName=${filterReq.typeName}`
     );
   }
-
   getMapboxLocations(value: string): Observable<Geocoder> {
     return this.http.get<Geocoder>(
       `https://api.mapbox.com/geocoding/v5/mapbox.places/

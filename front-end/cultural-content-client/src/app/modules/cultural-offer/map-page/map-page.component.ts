@@ -16,7 +16,7 @@ import { NewCulturalOfferDialogComponent } from '../new-cultural-offer-dialog/ne
   styleUrls: ['./map-page.component.scss'],
 })
 export class MapPageComponent implements OnInit {
-  culturalOfferLocations: CulturalOfferLocation[];
+  culturalOfferLocations: CulturalOfferResponse[];
   types: CulturalOfferType[] = [];
   subTypes: CulturalOfferSubType[] = [];
 
