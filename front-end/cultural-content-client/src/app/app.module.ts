@@ -27,8 +27,6 @@ import { PaginationBarComponent } from './core/pagination-bar/pagination-bar.com
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { CulturalOfferTypePageComponent } from './modules/cultural-offer-type/cultural-offer-type-page/cultural-offer-type-page.component';
 import { CulturalOfferTypeListComponent } from './modules/cultural-offer-type/cultural-offer-type-list/cultural-offer-type-list.component';
-import { CreateTypeFormComponent } from './modules/cultural-offer-type/create-type-form/create-type-form.component';
-import { UpdateTypeFormComponent } from './modules/cultural-offer-type/update-type-form/update-type-form.component';
 import { ConfirmDeleteComponent } from './core/confirm-delete/confirm-delete.component';
 import { NewsFormComponent } from './modules/news/news-form/news-form.component';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
@@ -40,6 +38,7 @@ import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-f
 import { MapItemOverviewComponent } from './modules/cultural-offer/map-item-overview/map-item-overview.component';
 import { DynamicComponentService } from './services/dynamic-component.service';
 import { StarRatingComponent } from './modules/star-rating/star-rating.component';
+import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-form.component';
 
 @NgModule({
   declarations: [
@@ -53,8 +52,6 @@ import { StarRatingComponent } from './modules/star-rating/star-rating.component
     PaginationBarComponent,
     CulturalOfferTypePageComponent,
     CulturalOfferTypeListComponent,
-    CreateTypeFormComponent,
-    UpdateTypeFormComponent,
     ConfirmDeleteComponent,
     PageNotFoundComponent,
     LoginComponent,
@@ -64,6 +61,7 @@ import { StarRatingComponent } from './modules/star-rating/star-rating.component
     SubtypeFormComponent,
     MapItemOverviewComponent,
     StarRatingComponent,
+    TypeFormComponent,
   ],
   imports: [
     BrowserModule,

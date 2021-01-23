@@ -3,8 +3,10 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import * as Mapboxgl from 'mapbox-gl';
+import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
 import { Geocoder } from 'src/app/models/geocoder';
+import { DynamicComponentService } from 'src/app/services/dynamic-component.service';
 import { environment } from 'src/environments/environment';
 import { MapItemComponent } from './map-item.component';
 
@@ -13,16 +15,27 @@ describe('MapItemComponent', () => {
   let fixture: ComponentFixture<MapItemComponent>;
   let httpMock: HttpTestingController;
   let mapa: Mapboxgl.Map;
+  let dynamicsService: DynamicComponentService;
 
-  const culturalOffersMock: CulturalOfferLocation[] = [
+  const culturalOffersMock: CulturalOfferResponse[] = [
     {
-      id: 1,
-      name: 'Exit',
+      _id: 1,
+      name: 'Kulturna ponuda',
+      description: '',
       location: {
-        address: 'Novi Sad',
-        longitude: 20.0,
-        latitude: 20.0
-      }
+        address: 'Beograd',
+        latitude: 20.0,
+        longitude: 20.0
+      },
+      subType:{
+        id: 1,
+        name: '',
+        type:{
+          id: 1,
+          name: ''
+        }
+      },
+      images: []
     }
   ];
 
@@ -39,6 +52,10 @@ describe('MapItemComponent', () => {
   };
 
   beforeEach(async () => {
+    const dynamicsServiceMock = {
+      injectComponent: jasmine.createSpy('injectComponent')
+    }
+
     const mapaMock = {
       setCenter: jasmine.createSpy('setCenter'),
       setZoom: jasmine.createSpy('setZoom')
@@ -49,6 +66,7 @@ describe('MapItemComponent', () => {
       declarations: [ MapItemComponent ],
       providers: [
         { provide : Mapboxgl.Map, useValue: mapaMock},
+        { provide: DynamicComponentService, useValue: dynamicsServiceMock}
       ]
     }).compileComponents();
 
@@ -62,6 +80,7 @@ describe('MapItemComponent', () => {
     fixture.detectChanges();
     httpMock = TestBed.inject(HttpTestingController);
     mapa = TestBed.inject(Mapboxgl.Map);
+    dynamicsService = TestBed.inject(DynamicComponentService);
     fixture.detectChanges();
 
   });
