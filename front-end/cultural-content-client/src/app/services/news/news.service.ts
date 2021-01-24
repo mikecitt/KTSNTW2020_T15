@@ -1,8 +1,7 @@
 import { NewsPage } from '../../models/news-page';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient,  HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { News } from 'src/app/models/news';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';

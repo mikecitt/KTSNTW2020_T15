@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/services';
 import { SnackBarComponent } from './../../../core/snack-bar/snack-bar.component';
 import { ConfirmDeleteComponent } from '../../../core/confirm-delete/confirm-delete.component';
 import { NewsFormComponent } from '../news-form/news-form.component';
@@ -5,9 +6,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubscriptionService } from '../../../services/subscription/subsription.service';
 import { NewsPage } from '../../../models/news-page';
 import { NewsService } from '../../../services/news/news.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { News } from '../../../models/news';
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
@@ -15,17 +16,20 @@ import { News } from '../../../models/news';
 })
 export class NewsComponent implements OnInit {
 
+  @Input() 
+  culturalOfferId: number;
+  role: string;
+  email: string;
+  environment = environment;
   newsPage: NewsPage;
   selectedImages: string[];
+  isSubscribed: boolean;
   newsToAdd: News = {
     text: "",
     date: new Date(),
     images: []
 
   };
-  slides = [{image: 'https://mdbootstrap.com/img/Photos/Slides/img%20(130).jpg'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'},{image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}, {image: 'https://gsr.dev/material2-carousel/assets/demo.png'}];
-
-  private culturalOfferId: number = 1001;
   public currentNewsPage: number;
   private newsLimit: number = 2;
 
@@ -33,12 +37,33 @@ export class NewsComponent implements OnInit {
     private newsService:NewsService,
     private subService:SubscriptionService,
     public dialog: MatDialog,
-    private snackBar: SnackBarComponent
+    private snackBar: SnackBarComponent,
+    private userService: UserService
   ) {
     this.currentNewsPage = 0;
    }
 
-  ngOnInit(): void {
+   
+
+   ngOnInit(): void {
+     this.role = this.userService.getRole();
+     this.email = this.userService.getEmail();
+     this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res)});
+   }
+ 
+   get isAuthorized() {
+     return this.userService.getRole() != null;
+   }
+ 
+   get isAdmin() {
+     return this.userService.getRole() == 'ROLE_ADMIN';
+   }
+ 
+   get isUser() {
+     return this.userService.getRole() == 'ROLE_USER';
+   }
+
+  ngOnChanges() {
     this.loadNews();
   }
 
@@ -66,7 +91,15 @@ export class NewsComponent implements OnInit {
 
   subscribe():void{
     this.subService.subscribeToOffer(this.culturalOfferId).subscribe((res) => {
+      this.isSubscribed = true;
       this.snackBar.openSnackBar("Successfuly subscribed",'','green-snackbar');
+    });
+  }
+
+  unsubscribe():void{
+    this.subService.unsubscribeFromOffer(this.culturalOfferId).subscribe((res) => {
+      this.isSubscribed = false;
+      this.snackBar.openSnackBar("Successfuly unsubscribed",'','green-snackbar');
     });
   }
 

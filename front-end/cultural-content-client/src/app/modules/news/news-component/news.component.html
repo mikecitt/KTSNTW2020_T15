@@ -1,7 +1,8 @@
 <mat-card >
     <mat-card-header>
-        <button mat-raised-button id="sub-button" (click)="subscribe()" >Subscribe</button>
-        <button mat-mini-fab class="add-button" color="primary" (click)="openCreateNewsDialog()">
+        <button mat-raised-button *ngIf="isUser && !isSubscribed" id="sub-button" (click)="subscribe()">Subscribe</button>
+        <button mat-raised-button *ngIf="isUser && isSubscribed" id="sub-button" (click)="unsubscribe()">Unubscribe</button>
+        <button mat-mini-fab *ngIf="isAdmin" class="add-button" color="primary" (click)="openCreateNewsDialog()">
             <mat-icon >add</mat-icon>
         </button>
         
@@ -14,10 +15,10 @@
             <div class="row">
                 <p>{{element.text}}</p>
                 <div class="column right">
-                    <button mat-icon-button color="warn" *ngIf="element.id" (click)="deleteNews(element.id)">
+                    <button mat-icon-button color="warn" *ngIf="element.id && isAdmin" (click)="deleteNews(element.id)">
                         <mat-icon >delete</mat-icon>
                     </button>
-                    <button mat-icon-button  (click)="openUpdateNewsDialog(element)">
+                    <button mat-icon-button *ngIf="isAdmin" (click)="openUpdateNewsDialog(element)">
                         <mat-icon >launch</mat-icon>
                     </button>
                 </div>
@@ -35,8 +36,8 @@
                 <mat-carousel-slide
                     
                     #matCarouselSlide
-                    *ngFor="let slide of slides; let i = index"
-                    [image]="slide.image"
+                    *ngFor="let image of element.images; let i = index"
+                    [image]="environment.uploads_url + image"
                     overlayColor="#00000040"
                     [hideOverlay]="false"
                 ></mat-carousel-slide>

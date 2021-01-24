@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -15,5 +16,13 @@ export class SubscriptionService {
 
   subscribeToOffer(culturalOfferId: number): Observable<{}>{
     return this.http.post(this.path + '?id=' + culturalOfferId , null, {headers: this.ht});
+  }
+
+  unsubscribeFromOffer(culturalOfferId: number): Observable<{}>{
+    return this.http.delete(environment.api_url + "/subscriptions?id=" + culturalOfferId);
+  }
+
+  isSubscribed(culturalOfferId: number): Observable<boolean>{
+    return this.http.get<boolean>(environment.api_url + "/subscriptions/" + culturalOfferId);
   }
 }
