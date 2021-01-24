@@ -59,6 +59,12 @@ export class AuthService {
     }));
   }
 
+  resendActivation(email: string) {
+    return this.http.get<any>(
+      `${environment.api_url}/auth/resend?email=${email}`
+    );
+  }
+
   logout() {
     this.cookieService.delete(COOKIE_NAME);
     this.userService.setupUser(null);
