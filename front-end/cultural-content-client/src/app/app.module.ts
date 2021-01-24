@@ -43,6 +43,7 @@ import { DynamicComponentService } from './services/dynamic-component.service';
 import { StarRatingComponent } from './modules/star-rating/star-rating.component';
 import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-form.component';
 import { ResendActivationComponent } from './modules/resend-activation/resend-activation.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,11 @@ import { ResendActivationComponent } from './modules/resend-activation/resend-ac
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     },
     DynamicComponentService,
   ],

@@ -70,4 +70,12 @@ export class AuthService {
     this.userService.setupUser(null);
     this.router.navigate(['/']);
   }
+
+  tokenIsPresent() {
+    return this.access_token != undefined && this.access_token != null;
+  }
+
+  getToken() {
+    return this.access_token;
+  }
 }
