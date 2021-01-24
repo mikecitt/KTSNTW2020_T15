@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class EditCulturalOfferResponse {
+public class CulturalOfferResponse {
 
   @JsonProperty("id")
   private Long id;
@@ -16,7 +16,7 @@ public class EditCulturalOfferResponse {
   private String description;
 
   @JsonProperty("location")
-  private String location;
+  private CulturalOfferLocationResponse location;
 
   @JsonProperty("images")
   private Set<String> images;
@@ -24,7 +24,7 @@ public class EditCulturalOfferResponse {
   @JsonProperty("subType")
   private SubTypeResponse subType;
 
-  protected EditCulturalOfferResponse() {
+  protected CulturalOfferResponse() {
 
   }
 
@@ -40,7 +40,7 @@ public class EditCulturalOfferResponse {
     return this.description;
   }
 
-  public String getLocation() {
+  public CulturalOfferLocationResponse getLocation() {
     return this.location;
   }
 

@@ -2,11 +2,8 @@ package com.example.culturecontentapp.api;
 
 import javax.validation.Valid;
 
-import com.example.culturecontentapp.payload.request.EditCulturalOfferRequest;
-import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
-import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.SelectCulturalOfferResponse;
+import com.example.culturecontentapp.payload.request.CulturalOfferRequest;
+import com.example.culturecontentapp.payload.response.CulturalOfferResponse;
 import com.example.culturecontentapp.service.CulturalOfferService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/cultural-offer")
 public class CulturalOfferController {
@@ -32,15 +28,15 @@ public class CulturalOfferController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
-  public ResponseEntity<NewCulturalOfferResponse> insert(@RequestParam Long subTypeId,
-      @RequestBody @Valid NewCulturalOfferRequest request) {
+  public ResponseEntity<CulturalOfferResponse> insert(@RequestParam Long subTypeId,
+      @RequestBody @Valid CulturalOfferRequest request) {
     return service.insert(subTypeId, request);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{id}")
-  public ResponseEntity<EditCulturalOfferResponse> update(@PathVariable Long id,
-      @RequestBody @Valid EditCulturalOfferRequest request) {
+  public ResponseEntity<CulturalOfferResponse> update(@PathVariable Long id,
+      @RequestBody @Valid CulturalOfferRequest request) {
     return service.update(id, request);
   }
 
@@ -51,22 +47,22 @@ public class CulturalOfferController {
   }
 
   @GetMapping
-  public ResponseEntity<Page<SelectCulturalOfferResponse>> select(Pageable pageable) {
+  public ResponseEntity<Page<CulturalOfferResponse>> select(Pageable pageable) {
     return service.select(pageable);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<SelectCulturalOfferResponse> selectById(@PathVariable Long id) {
+  public ResponseEntity<CulturalOfferResponse> selectById(@PathVariable Long id) {
     return service.selectById(id);
   }
 
   @GetMapping("/all")
-  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll() {
+  public ResponseEntity<List<CulturalOfferResponse>> selectAll() {
     return service.selectAll();
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(@RequestParam String culturalOfferName,
+  public ResponseEntity<List<CulturalOfferResponse>> searchAndFilter(@RequestParam String culturalOfferName,
       @RequestParam String subTypeName, @RequestParam String typeName) {
     return service.searchAndFilter(culturalOfferName, subTypeName, typeName);
   }

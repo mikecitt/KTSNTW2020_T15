@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Location extends Model{
+public class Location extends Model {
 
     @NotBlank(message = "Name cannot be blank")
     @Column(nullable = false)
@@ -17,7 +17,8 @@ public class Location extends Model{
     @Column(nullable = false)
     private Double longitude;
 
-    public Location() {
+    protected Location() {
+
     }
 
     public String getAddress() {
