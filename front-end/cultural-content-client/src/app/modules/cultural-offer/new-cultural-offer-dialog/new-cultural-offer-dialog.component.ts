@@ -7,6 +7,8 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferType } from 'src/app/models/cultural-offer-type';
 import { CulturalOfferSubType } from 'src/app/models/culutral-offer-subType';
 import { Geocoder, GeoFeature } from 'src/app/models/geocoder';
@@ -24,7 +26,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NewCulturalOfferDialogComponent implements OnInit {
   fileMultiple = true;
-  fileAccept = 'image/*';
+  fileAccept = '.png, .jpeg, .jpg';
 
   form: FormGroup;
 
@@ -41,7 +43,8 @@ export class NewCulturalOfferDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private service: CulturalOfferService,
     private typeService: CulturalOfferTypeService,
-    private subTypeService: CulturalOfferSubTypeService
+    private subTypeService: CulturalOfferSubTypeService,
+    public dialogRef: MatDialogRef<NewCulturalOfferDialogComponent>
   ) {
     this.form = this.formBuilder.group({
       name: [
@@ -68,6 +71,14 @@ export class NewCulturalOfferDialogComponent implements OnInit {
       subType: ['', Validators.compose([Validators.required])],
     });
   }
+
+  toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   locationRequired() {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -97,9 +108,30 @@ export class NewCulturalOfferDialogComponent implements OnInit {
     return feature.place_name;
   }
 
-  insert() {
+  async insert() {
     let formObj = this.form.getRawValue();
-    console.log(formObj);
+
+    for (let i = 0; i < formObj.images.length; i++) {
+      if (formObj.images[i] instanceof File) {
+        formObj.images[i] = await this.toBase64(formObj.images[i]);
+      }
+    }
+
+    let subTypeId = formObj.subType.id;
+    delete formObj['subType'];
+
+    formObj.location = {
+      address: formObj.location.place_name,
+      longitude: formObj.location.center[0],
+      latitude: formObj.location.center[1],
+    };
+
+    this.service.insert(formObj, subTypeId).subscribe(
+      (response: CulturalOfferResponse) => {
+        this.dialogRef.close(true);
+      },
+      (error: any) => {}
+    );
   }
 
   typeChanged(selection: any) {

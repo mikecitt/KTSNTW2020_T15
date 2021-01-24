@@ -6,12 +6,14 @@ import { FilterRequest } from 'src/app/models/filter-request';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
 import { Geocoder } from 'src/app/models/geocoder';
 import { environment } from 'src/environments/environment';
+import { CulturalOfferRequest } from 'src/app/models/cultural-offer-request';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CulturalOfferService {
   private readonly path = 'http://localhost:8080/api/cultural-offer';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getLocations(): Observable<CulturalOfferResponse[]> {
     let ht = new HttpHeaders({
@@ -24,6 +26,26 @@ export class CulturalOfferService {
       headers: ht,
     });
   }
+
+  insert(
+    request: CulturalOfferRequest,
+    subTypeId: number
+  ): Observable<CulturalOfferResponse> {
+    console.log(this.cookieService.get('token'));
+    let ht = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.cookieService.get('token')}`,
+    });
+
+    return this.http.post<CulturalOfferResponse>(
+      this.path + `?subTypeId=${subTypeId}`,
+      request,
+      {
+        headers: ht,
+      }
+    );
+  }
+
   filterCulturalOffers(
     filterReq: FilterRequest
   ): Observable<CulturalOfferResponse[]> {

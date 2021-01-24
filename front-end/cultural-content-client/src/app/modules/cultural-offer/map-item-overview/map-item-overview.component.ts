@@ -28,7 +28,5 @@ export class MapItemOverviewComponent implements OnInit {
     this.starRating = rating;
   }
 
-  ngOnInit(): void {
-    console.log(this.offer);
-  }
+  ngOnInit(): void {}
 }
