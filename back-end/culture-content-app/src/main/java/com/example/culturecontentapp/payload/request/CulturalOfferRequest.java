@@ -1,11 +1,13 @@
 package com.example.culturecontentapp.payload.request;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class NewCulturalOfferRequest {
+public class CulturalOfferRequest {
 
   @NotBlank(message = "Name cannot be blank")
   @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
@@ -17,19 +19,20 @@ public class NewCulturalOfferRequest {
   @JsonProperty("description")
   private String description;
 
-  @NotBlank(message = "Location cannot be blank")
-  @Size(min = 5, max = 128, message = "Location must be between 5 and 128 characters")
+  @Valid
+  @NotNull(message = "Location is required")
   @JsonProperty("location")
-  private String location;
+  private CulturalOfferLocationRequest location;
 
+  @NotNull(message = "Images are required")
   @JsonProperty("images")
   private String[] images;
 
-  protected NewCulturalOfferRequest() {
+  protected CulturalOfferRequest() {
 
   }
 
-  public NewCulturalOfferRequest(String name, String description, String location) {
+  public CulturalOfferRequest(String name, String description, CulturalOfferLocationRequest location) {
     this.name = name;
     this.description = description;
     this.location = location;
@@ -43,7 +46,7 @@ public class NewCulturalOfferRequest {
     return this.description;
   }
 
-  public String getLocation() {
+  public CulturalOfferLocationRequest getLocation() {
     return this.location;
   }
 

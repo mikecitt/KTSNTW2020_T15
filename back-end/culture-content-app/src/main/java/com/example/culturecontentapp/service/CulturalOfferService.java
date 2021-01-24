@@ -8,11 +8,8 @@ import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
 import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.model.SubType;
-import com.example.culturecontentapp.payload.request.EditCulturalOfferRequest;
-import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
-import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.SelectCulturalOfferResponse;
+import com.example.culturecontentapp.payload.request.CulturalOfferRequest;
+import com.example.culturecontentapp.payload.response.CulturalOfferResponse;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
 import com.example.culturecontentapp.repository.SubTypeRepository;
 import com.example.culturecontentapp.storage.StorageService;
@@ -45,7 +42,7 @@ public class CulturalOfferService {
     this.modelMapper = modelMapper;
   }
 
-  public ResponseEntity<NewCulturalOfferResponse> insert(Long subTypeId, NewCulturalOfferRequest request) {
+  public ResponseEntity<CulturalOfferResponse> insert(Long subTypeId, CulturalOfferRequest request) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findByName(request.getName());
 
@@ -69,10 +66,10 @@ public class CulturalOfferService {
     fileNames.forEach(fileName -> culturalOffer.getImages().add(fileName));
     repository.save(culturalOffer);
 
-    return new ResponseEntity<>(modelMapper.map(culturalOffer, NewCulturalOfferResponse.class), HttpStatus.CREATED);
+    return new ResponseEntity<>(modelMapper.map(culturalOffer, CulturalOfferResponse.class), HttpStatus.CREATED);
   }
 
-  public ResponseEntity<EditCulturalOfferResponse> update(Long id, EditCulturalOfferRequest request) {
+  public ResponseEntity<CulturalOfferResponse> update(Long id, CulturalOfferRequest request) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
 
@@ -102,7 +99,7 @@ public class CulturalOfferService {
 
     repository.save(culturalOffer);
 
-    return new ResponseEntity<>(modelMapper.map(culturalOffer, EditCulturalOfferResponse.class), HttpStatus.OK);
+    return new ResponseEntity<>(modelMapper.map(culturalOffer, CulturalOfferResponse.class), HttpStatus.OK);
   }
 
   public ResponseEntity<Void> delete(Long id) {
@@ -120,42 +117,39 @@ public class CulturalOfferService {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  public ResponseEntity<Page<SelectCulturalOfferResponse>> select(Pageable pageable) {
+  public ResponseEntity<Page<CulturalOfferResponse>> select(Pageable pageable) {
 
     Page<CulturalOffer> culturalOffers = repository.findAll(pageable);
 
     return new ResponseEntity<>(
-        culturalOffers.map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class)),
+        culturalOffers.map(culturalOffer -> modelMapper.map(culturalOffer, CulturalOfferResponse.class)),
         HttpStatus.OK);
   }
 
-  public ResponseEntity<List<SelectCulturalOfferResponse>> selectAll() {
+  public ResponseEntity<List<CulturalOfferResponse>> selectAll() {
     List<CulturalOffer> culturalOffers = repository.findAll();
-    return new ResponseEntity<>(
-        culturalOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class))
-            .collect(Collectors.toList()),
+    return new ResponseEntity<>(culturalOffers.stream()
+        .map(culturalOffer -> modelMapper.map(culturalOffer, CulturalOfferResponse.class)).collect(Collectors.toList()),
         HttpStatus.OK);
   }
 
-  public ResponseEntity<SelectCulturalOfferResponse> selectById(Long id) {
+  public ResponseEntity<CulturalOfferResponse> selectById(Long id) {
 
     Optional<CulturalOffer> culturalOfferEntity = repository.findById(id);
 
     if (!culturalOfferEntity.isPresent()) {
       throw new CulturalOfferNotFoundException(notFoundResponseMessage);
     }
-    return new ResponseEntity<>(modelMapper.map(culturalOfferEntity.get(), SelectCulturalOfferResponse.class),
-        HttpStatus.OK);
+    return new ResponseEntity<>(modelMapper.map(culturalOfferEntity.get(), CulturalOfferResponse.class), HttpStatus.OK);
   }
 
   @Transactional
-  public ResponseEntity<List<SelectCulturalOfferResponse>> searchAndFilter(String offerName, String subTypeName,
+  public ResponseEntity<List<CulturalOfferResponse>> searchAndFilter(String offerName, String subTypeName,
       String typeName) {
     List<CulturalOffer> foundOffers = repository.FindByFilterCriteria(offerName + "%", subTypeName + "%",
         typeName + "%");
-    return new ResponseEntity<>(
-        foundOffers.stream().map(culturalOffer -> modelMapper.map(culturalOffer, SelectCulturalOfferResponse.class))
-            .collect(Collectors.toList()),
+    return new ResponseEntity<>(foundOffers.stream()
+        .map(culturalOffer -> modelMapper.map(culturalOffer, CulturalOfferResponse.class)).collect(Collectors.toList()),
         HttpStatus.OK);
   }
 }
