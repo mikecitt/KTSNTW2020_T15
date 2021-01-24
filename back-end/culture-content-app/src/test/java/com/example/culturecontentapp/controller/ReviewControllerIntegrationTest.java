@@ -4,7 +4,7 @@ import static com.example.culturecontentapp.constants.ReviewConstants.*;
 import static org.junit.Assert.assertEquals;
 
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
-import com.example.culturecontentapp.payload.request.AddReviewRequest;
+import com.example.culturecontentapp.payload.request.ReviewRequest;
 import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.repository.ReviewRepository;
 import com.example.culturecontentapp.service.ReviewService;
