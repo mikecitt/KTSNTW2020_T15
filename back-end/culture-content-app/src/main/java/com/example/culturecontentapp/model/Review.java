@@ -74,4 +74,8 @@ public class Review extends Model {
   public Set<String> getImages() {
     return this.images;
   }
+
+  public void setImages(Set<String> images) {
+    this.images = images;
+  }
 }

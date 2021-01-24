@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ReviewResponse {
+    private Long id;
     private Short rating;
     private String comment;
     private String authorUsername;
@@ -13,11 +14,16 @@ public class ReviewResponse {
         images = new HashSet<>();
     }
 
-    public ReviewResponse(Short rating, String comment, String authorUsername) {
+    public ReviewResponse(Long id, Short rating, String comment, String authorUsername) {
+        this.id = id;
         this.rating = rating;
         this.comment = comment;
         this.authorUsername = authorUsername;
         images = new HashSet<>();
+    }
+
+    public long getId() {
+        return this.id;
     }
 
     public Short getRating() {
@@ -40,7 +46,7 @@ public class ReviewResponse {
         return this.authorUsername;
     }
 
-    public void setAuthorUsername(String author) {
+    public void setAuthorUsername(String authorUsername) {
         this.authorUsername = authorUsername;
     }
 

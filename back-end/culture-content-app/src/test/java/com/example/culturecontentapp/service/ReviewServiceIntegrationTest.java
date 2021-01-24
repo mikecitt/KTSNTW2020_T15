@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
-import com.example.culturecontentapp.payload.request.AddReviewRequest;
-import com.example.culturecontentapp.payload.response.AddReviewResponse;
+import com.example.culturecontentapp.payload.request.ReviewRequest;
+import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.security.jwt.TokenBasedAuthentication;
 
 import org.junit.Test;
@@ -30,7 +30,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import io.jsonwebtoken.Jwts;
 
@@ -88,8 +87,8 @@ public class ReviewServiceIntegrationTest {
     public void testaddReview() {
         login(DB_USER_EMAIL, DB_USER_PASSWORD);
 
-        AddReviewRequest addReviewRequest = new AddReviewRequest(RATING, COMMENT);
-        AddReviewResponse added = reviewService.addReview(OFFER_ID, addReviewRequest, new MultipartFile[0]).getBody();
+        ReviewRequest addReviewRequest = new ReviewRequest(RATING, COMMENT);
+        ReviewResponse added = reviewService.addReview(OFFER_ID, addReviewRequest).getBody();
         assertEquals(addReviewRequest.getComment(), added.getComment());
     }
 
@@ -99,8 +98,8 @@ public class ReviewServiceIntegrationTest {
     public void testaddReviewOfferDoesntExist() {
         login(DB_USER_EMAIL, DB_USER_PASSWORD);
 
-        AddReviewRequest addReviewRequest = new AddReviewRequest(RATING, COMMENT);
-        reviewService.addReview(BAD_OFFER_ID, addReviewRequest, new MultipartFile[0]).getBody();
+        ReviewRequest addReviewRequest = new ReviewRequest(RATING, COMMENT);
+        reviewService.addReview(BAD_OFFER_ID, addReviewRequest);
     }
 
 }
