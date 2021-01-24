@@ -2,7 +2,10 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
+import { CulturalOfferType } from 'src/app/models/cultural-offer-type';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
+import { CulturalOfferSubType } from 'src/app/models/culutral-offer-subType';
 import { CulturalOfferTypeService, CulturalOfferService, CulturalOfferSubTypeService } from 'src/app/services';
 
 import { MapPageComponent } from './map-page.component';
@@ -15,18 +18,28 @@ describe('MapPageComponent', () => {
   let subTypeService: CulturalOfferSubTypeService;
 
   beforeEach(async () => {
-    const locations: CulturalOfferLocation[] = [
+    const culturalOffers: CulturalOfferResponse[] = [
       {
-        id: 1,
+        _id: 1,
         name: 'Kulturna ponuda',
+        description: '',
         location: {
           address: 'Beograd',
           latitude: 20.0,
           longitude: 20.0
-        }
+        },
+        subType:{
+          id: 1,
+          name: '',
+          type:{
+            id: 1,
+            name: ''
+          }
+        },
+        images: []
       }
     ];
-    const types = [
+    const types: CulturalOfferType[] = [
       {
         id: 1,
         name: 'tip1'
@@ -36,24 +49,30 @@ describe('MapPageComponent', () => {
         name: 'tip2'
       }
     ];
-    const subTypes = [
+    const subTypes: CulturalOfferSubType[] = [
       {
-        _id: 1,
+        id: 1,
         name: 'podtip1',
-        type_id: 1
+        type:{
+          id: 1,
+          name: 'tip1'
+        }
       },
       {
-        _id: 2,
+        id: 2,
         name: 'podtip2',
-        type_id:1
+        type: {
+          id: 1,
+          name: 'tip1'
+        }
       }
     ];
 
     let culturalOfferServiceMock = {
       getLocations: jasmine.createSpy('getLocations')
-                    .and.returnValue(of(locations)),
+                    .and.returnValue(of(culturalOffers)),
       filterCulturalOffers: jasmine.createSpy('filterCulturalOffers')
-                            .and.returnValue(of(locations)),
+                            .and.returnValue(of(culturalOffers)),
     };
     let typeServiceMock = {
       getAll: jasmine.createSpy('getAll')
@@ -100,7 +119,7 @@ describe('MapPageComponent', () => {
 
     expect(component.types.length).toBe(2);
 
-    expect(component.culturalOfferLocations[0].id).toBe(1);
+    expect(component.culturalOfferLocations[0]._id).toBe(1);
     expect(component.culturalOfferLocations[0].name).toBe('Kulturna ponuda');
     expect(component.culturalOfferLocations[0].location.address).toBe('Beograd');
     expect(component.culturalOfferLocations[0].location.latitude).toBe(20.0);
@@ -122,21 +141,12 @@ describe('MapPageComponent', () => {
     expect(component.subTypes[0].id).toBe(1);
     expect(component.subTypes[0].name).toBe('podtip1');
     expect(component.subTypes[0].type.id).toBe(1);
+    expect(component.subTypes[0].type.name).toBe('tip1');
 
     expect(component.subTypes[1].id).toBe(2);
     expect(component.subTypes[1].name).toBe('podtip2');
     expect(component.subTypes[1].type.id).toBe(1);
-
-    // open options dialog  valjda je angular istestirao select
-    // const matSelect = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
-    // matSelect.click();
-    // fixture.detectChanges();
-    // fixture.whenStable()
-    //       .then( () => {
-    //         const matOption: DebugElement[] = fixture.debugElement.query(By.css('.mat-option')).nativeElement;
-    //         // matOption.click();
-    //         expect(matOption.length).toBeGreaterThan(0);
-    //       });
+    expect(component.subTypes[1].type.name).toBe('tip1');
   });
 
   it('should filter cultural offer on applyFilter', async()=>{
@@ -153,7 +163,7 @@ describe('MapPageComponent', () => {
     expect(culturalOfferService.filterCulturalOffers).toHaveBeenCalledWith(filterReq.request);
     expect(component.culturalOfferLocations.length).toBe(1);
 
-    expect(component.culturalOfferLocations[0].id).toBe(1);
+    expect(component.culturalOfferLocations[0]._id).toBe(1);
     expect(component.culturalOfferLocations[0].name).toBe('Kulturna ponuda');
     expect(component.culturalOfferLocations[0].location.address).toBe('Beograd');
     expect(component.culturalOfferLocations[0].location.latitude).toBe(20.0);
@@ -166,7 +176,7 @@ describe('MapPageComponent', () => {
     expect(culturalOfferService.getLocations).toHaveBeenCalledWith();
     expect(component.culturalOfferLocations.length).toBe(1);
 
-    expect(component.culturalOfferLocations[0].id).toBe(1);
+    expect(component.culturalOfferLocations[0]._id).toBe(1);
     expect(component.culturalOfferLocations[0].name).toBe('Kulturna ponuda');
     expect(component.culturalOfferLocations[0].location.address).toBe('Beograd');
     expect(component.culturalOfferLocations[0].location.latitude).toBe(20.0);

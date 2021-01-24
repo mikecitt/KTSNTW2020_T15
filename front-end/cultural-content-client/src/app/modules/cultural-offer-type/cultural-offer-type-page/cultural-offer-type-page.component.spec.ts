@@ -8,15 +8,14 @@ import { By } from '@angular/platform-browser';
 
 import { CulturalOfferTypePageComponent } from './cultural-offer-type-page.component';
 import { DebugElement } from '@angular/core';
-import { TypePage } from 'src/app/models/type-page';
 
 describe('CulturalOfferTypePageComponent', () => {
   let component: CulturalOfferTypePageComponent;
   let fixture: ComponentFixture<CulturalOfferTypePageComponent>;
   let typeService: any;
   let dialog: any;
-  let subtypeService: any;
-  let snackbar: SnackBarComponent;
+  let snackBar: SnackBarComponent;
+  let subTypeService: CulturalOfferSubTypeService;
 
   beforeEach(async () => {
     const typesMock = {
@@ -26,7 +25,14 @@ describe('CulturalOfferTypePageComponent', () => {
         {id: 3, name: "tip3"}
       ],
       totalElements: 3
-    }
+    };
+    // const subTypesMock = {
+    //   content: [
+    //     {id: 1, name: 'podtip1'},
+    //     {id: 1, name: 'podtip2'}
+    //   ],
+    //   totalElements: 2
+    // };
 
     const subTypesMock = {
       content: [
@@ -39,7 +45,7 @@ describe('CulturalOfferTypePageComponent', () => {
 
     let typeServiceMock = {
       getAllPaginated : jasmine.createSpy('getAllPaginated')
-                         .and.returnValue(of(subTypesMock)),
+                         .and.returnValue(of(typesMock)),
       deleteType: jasmine.createSpy('deleteType')
                          .and.returnValue(of()),
       createType: jasmine.createSpy('createType')
@@ -49,8 +55,7 @@ describe('CulturalOfferTypePageComponent', () => {
     };
 
     let subTypeServiceMock = {
-      getAllPaginated : jasmine.createSpy('getAllPaginated')
-                         .and.returnValue(of(typesMock))
+      getAllPaginated: jasmine.createSpy('getAllPaginated').and.returnValue(of(subTypesMock))
     };
 
     let dialogMock = {
@@ -80,9 +85,9 @@ describe('CulturalOfferTypePageComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     typeService = TestBed.inject(CulturalOfferTypeService);
-    subtypeService = TestBed.inject(CulturalOfferSubTypeService);
     dialog = TestBed.inject(MatDialog);
-    snackbar = TestBed.inject(SnackBarComponent);
+    snackBar = TestBed.inject(SnackBarComponent);
+    subTypeService = TestBed.inject(CulturalOfferSubTypeService);
   });
 
   it('should fetch the type list on init', async () => {
@@ -136,16 +141,16 @@ describe('CulturalOfferTypePageComponent', () => {
     component.getNextSubType();
 
     expect(component.curentPageSubType).toBe(1);
-    expect(subtypeService.getAllPaginated).toHaveBeenCalled();
+    expect(subTypeService.getAllPaginated).toHaveBeenCalled();
 
-    // fixture.whenStable()
-    //   .then( () => {
-    //     expect(component.culturalOfferSubTypes.length).toBe(3);
-    //     fixture.detectChanges();
-    //     let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
-    //     // let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
-    //     expect(elements.length).toBe(4);
-    //   })
+    fixture.whenStable()
+      .then( () => {
+        expect(component.culturalOfferSubTypes.length).toBe(3);
+        // fixture.detectChanges();
+        // let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+        // // let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
+        // expect(elements.length).toBe(4);
+      })
   });
 
   it('should go to previous page in subtype table', async () => {
@@ -153,16 +158,17 @@ describe('CulturalOfferTypePageComponent', () => {
     component.getPreviousSubType();
 
     expect(component.curentPageSubType).toBe(0);
-    expect(subtypeService.getAllPaginated).toHaveBeenCalled();
+    expect(subTypeService.getAllPaginated).toHaveBeenCalled();
 
-    // fixture.whenStable()
-    //   .then( () => {
-    //     expect(component.culturalOfferSubTypes.length).toBe(3);
-    //     fixture.detectChanges();
-    //     let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
-    //     //  let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
-    //     expect(elements.length).toBe(4);
-    //   })
+    fixture.whenStable()
+      .then( () => {
+        expect(component.culturalOfferSubTypes.length).toBe(3);
+        // fixture.detectChanges();
+      //   let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+      //   //  let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
+      //   expect(elements.length).toBe(4);
+      // })
+    });
   });
 
   it('should call delete type', async () => {
@@ -180,7 +186,7 @@ describe('CulturalOfferTypePageComponent', () => {
     expect(typeService.getAllPaginated).toHaveBeenCalled();
   });
 
-  it('should open create dialog', async ()=>{
+  it('should open create dialog', async () => {
     component.openCreateDialog("Whatever");
     fixture.detectChanges();
     expect(dialog.open).toHaveBeenCalled();
@@ -195,5 +201,7 @@ describe('CulturalOfferTypePageComponent', () => {
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
   });
+  
+
 
 });

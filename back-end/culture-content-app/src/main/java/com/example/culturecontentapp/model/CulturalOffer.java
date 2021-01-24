@@ -20,7 +20,7 @@ public class CulturalOffer extends Model {
   @Column(nullable = false)
   private String description;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "location_id")
   private Location location;
 

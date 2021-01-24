@@ -1,0 +1,51 @@
+<mat-tab-group headerPosition="below">
+  <mat-tab label="Overview">
+    <div class="content">
+      <mat-carousel timings="250ms ease-in" color=primary [proportion]="40" [hideArrows]="true" [hideIndicators]="false"
+        [maintainAspectRatio]="true" maxWidth="200">
+        <mat-carousel-slide #matCarouselSlide *ngFor="let slide of slides; let i = index" [image]="slide"
+          overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
+      </mat-carousel>
+      <div class="headerContent">
+        <div class="headerInfo">
+          <div class="contentItem">
+            <span class="contentTitle">Name</span>
+            <div class="contentValue">{{offer.name}}</div>
+          </div>
+          <div class="contentItem">
+            <span class="contentTitle">Type</span>
+            <div class="contentValue">{{offer.subType.type.name}}</div>
+          </div>
+          <div class="contentItem">
+            <span class="contentTitle">Subtype</span>
+            <div class="contentValue">{{offer.subType.name}}</div>
+          </div>
+        </div>
+        <div class="contentIcons">
+          <button mat-icon-button>
+            <mat-icon>create</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="contentFooter">
+
+        <div class="descriptionArea">
+          <span class="contentDescriptionHeader">Description</span>
+          <div class="contentDescription">{{offer.description}}
+
+          </div>
+        </div>
+        <div class="ratingArea">
+          <mat-star-rating [rating]="starRating" [starCount]="starCount" [color]="starColor"
+            (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+        </div>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="News"> News </mat-tab>
+  <mat-tab label="Reviews"> Content 3 </mat-tab>
+</mat-tab-group>

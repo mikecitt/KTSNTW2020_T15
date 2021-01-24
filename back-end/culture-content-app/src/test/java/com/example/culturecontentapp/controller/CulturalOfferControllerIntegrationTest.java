@@ -25,9 +25,8 @@ import static java.util.Arrays.asList;
 
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
-import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
-import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.SelectCulturalOfferResponse;
+import com.example.culturecontentapp.payload.request.CulturalOfferRequest;
+import com.example.culturecontentapp.payload.response.CulturalOfferResponse;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
 import com.example.culturecontentapp.service.CulturalOfferService;
 import com.example.culturecontentapp.util.RestPageImpl;
@@ -101,8 +100,8 @@ public class CulturalOfferControllerIntegrationTest {
         headers.setAccept(asList(MediaType.APPLICATION_JSON));
         headers.add("Authorization", accessToken);
 
-        NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
-                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
+        CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                CULTURAL_OFFER_DESCRIPTION, null);
 
         byte[] fileContent = "this is file content".getBytes();
         Path tempFile = Files.createTempFile("upload-file", ".txt");
@@ -115,7 +114,7 @@ public class CulturalOfferControllerIntegrationTest {
 
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<NewCulturalOfferResponse> responseEntity = restTemplate.exchange(
+        ResponseEntity<CulturalOfferResponse> responseEntity = restTemplate.exchange(
                 "http://localhost:8080/api/cultural-offer?subTypeId={subTypeId}", HttpMethod.POST, httpEntity,
                 new ParameterizedTypeReference<>() {
                 }, CULTURAL_OFFER_SUBTYPE);
@@ -127,7 +126,7 @@ public class CulturalOfferControllerIntegrationTest {
 
     @Test
     public void insert_SelectReturnsTwo_WhenPageSizeIsTwo() throws IOException {
-        ResponseEntity<RestPageImpl<SelectCulturalOfferResponse>> response = restTemplate.exchange(
+        ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
                 "/api/cultural-offer?size={pageSize}", HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 }, PAGEABLE_SIZE_TWO);
 
@@ -139,7 +138,7 @@ public class CulturalOfferControllerIntegrationTest {
 
     @Test
     public void findAll_ReturnsOne_WhenPageSizeIsOne() {
-        ResponseEntity<RestPageImpl<SelectCulturalOfferResponse>> response = restTemplate.exchange(
+        ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
                 "/api/cultural-offer?page={page}&size={pageSize}", HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 }, PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_ONE);
@@ -152,7 +151,7 @@ public class CulturalOfferControllerIntegrationTest {
 
     @Test
     public void findAll_ReturnsPageTwo_WhenPageIsTwo() {
-        ResponseEntity<RestPageImpl<SelectCulturalOfferResponse>> response = restTemplate.exchange(
+        ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
                 "/api/cultural-offer?page={page}&size={pageSize}", HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 }, PAGEABLE_PAGE_ONE, PAGEABLE_SIZE_ONE);
@@ -165,7 +164,7 @@ public class CulturalOfferControllerIntegrationTest {
 
     @Test
     public void findByBy_ReturnsResult_WhenResultExists() {
-        ResponseEntity<SelectCulturalOfferResponse> response = restTemplate.exchange("/api/cultural-offer/{id}",
+        ResponseEntity<CulturalOfferResponse> response = restTemplate.exchange("/api/cultural-offer/{id}",
                 HttpMethod.GET, null, new ParameterizedTypeReference<>() {
                 }, CULTURAL_OFFER_ID_EXISTS);
 
