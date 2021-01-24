@@ -11,7 +11,10 @@ import { SubTypeDialogData } from '../subtype-list/subtype-list.component';
 })
 export class SubtypeFormComponent implements OnInit {
 
-  form: FormGroup;
+  form = new FormGroup({
+    id: new FormControl(),
+    name: new FormControl()
+  });
 
   constructor(
     public dialogRef: MatDialogRef<SubtypeFormComponent>,
