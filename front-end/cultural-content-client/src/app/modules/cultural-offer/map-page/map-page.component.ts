@@ -69,5 +69,11 @@ export class MapPageComponent implements OnInit {
     const dialogRef = this.dialog.open(NewCulturalOfferDialogComponent, {
       width: '350px',
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadCulturalOffers();
+      }
+    });
   }
 }
