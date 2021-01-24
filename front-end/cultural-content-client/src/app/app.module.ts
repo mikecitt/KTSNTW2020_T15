@@ -42,6 +42,7 @@ import { MapItemOverviewComponent } from './modules/cultural-offer/map-item-over
 import { DynamicComponentService } from './services/dynamic-component.service';
 import { StarRatingComponent } from './modules/star-rating/star-rating.component';
 import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-form.component';
+import { ResendActivationComponent } from './modules/resend-activation/resend-activation.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-
     MapItemOverviewComponent,
     StarRatingComponent,
     TypeFormComponent,
+    ResendActivationComponent,
   ],
   imports: [
     BrowserModule,
