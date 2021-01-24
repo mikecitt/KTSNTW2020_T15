@@ -116,4 +116,16 @@ public class SubscriptionService {
         return new ResponseEntity<>(new PageImpl<>(subscriptions.stream().collect(Collectors.toList())), HttpStatus.OK);
 
     }
+
+    public ResponseEntity<Boolean> isSubscribed(Long id){
+        org.springframework.security.core.userdetails.User loggedUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+
+        Account entity = accountRepository.findByEmail(loggedUser.getUsername()).orElseThrow(() -> new AccountNotFoundException("Provided account is not found in the database"));
+        User user = (User) entity;
+        return new ResponseEntity<>(user.isSubscribedTo(id), HttpStatus.OK);
+
+
+
+    }
 }

@@ -30,4 +30,8 @@ public class User extends Account {
   public Set<CulturalOffer> getSubscriptions() {
     return this.subscriptions;
   }
+
+  public boolean isSubscribedTo(Long culturalOfferId) {
+    return subscriptions.stream().anyMatch(offer -> offer.getId().equals(culturalOfferId));
+}
 }

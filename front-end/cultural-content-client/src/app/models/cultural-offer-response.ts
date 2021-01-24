@@ -3,7 +3,7 @@ import { Location } from './culutral-offer-location';
 import { CulturalOfferSubType } from './culutral-offer-subType';
 
 export interface CulturalOfferResponse {
-  _id?: any;
+  id?: any;
   name: String;
   description: String;
   location: Location;

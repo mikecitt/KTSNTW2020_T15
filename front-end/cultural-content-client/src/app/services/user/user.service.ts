@@ -39,4 +39,13 @@ export class UserService {
 
     return role;
   }
+
+  getEmail() {
+    var email = null;
+    if(this.currentUser) {
+      email = this.currentUser['email'];
+    }
+
+    return email;
+  }
 }

@@ -46,6 +46,9 @@
     </div>
 
   </mat-tab>
-  <mat-tab label="News"> News </mat-tab>
+  <mat-tab label="News" > News 
+      <app-news *ngIf="offer.id" [culturalOfferId]="offer.id"></app-news>
+   
+  </mat-tab>
   <mat-tab label="Reviews"> Content 3 </mat-tab>
 </mat-tab-group>
