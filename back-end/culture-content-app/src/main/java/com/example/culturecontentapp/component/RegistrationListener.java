@@ -32,7 +32,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         String recipientAddress = account.getEmail();
         String subject = "Potvrda registracije";
-        String confirmationUrl = event.getAppUrl() + "/auth/activate?token=" + token;
+        String confirmationUrl = event.getAppUrl() + "/api/auth/activate?token=" + token;
         String message = "Za potvrdu registracije otvorite sledeci link: ";
 
         SimpleMailMessage email = new SimpleMailMessage();
