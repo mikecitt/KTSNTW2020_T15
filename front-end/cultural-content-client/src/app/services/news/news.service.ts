@@ -11,7 +11,6 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class NewsService {
 
-  private readonly path = 'http://localhost:8080/api/news/';
   private readonly ht = new HttpHeaders({
     'Authorization': 'Bearer ' + this.cookieService.get('token')
   });
@@ -22,11 +21,11 @@ export class NewsService {
     const params: HttpParams = new HttpParams()
         .append('page', page.toString())
         .append('size', limit.toString());
-    return this.http.get<NewsPage>(this.path + "culturalOffer/" + culturalOfferId, {headers: this.ht, params : params});
+    return this.http.get<NewsPage>(environment.api_url + '/news/' + culturalOfferId, {headers: this.ht, params : params});
   }
 
   deleteNews(newsId:number):Observable<{}>{
-    return this.http.delete(this.path+ newsId, {headers: this.ht});
+    return this.http.delete(environment.api_url + '/news/' + newsId, {headers: this.ht});
   }
 
   addNews(culturalOfferId: number, newsToAdd: News): Observable<News>{

@@ -4,17 +4,29 @@
         <mat-card-title *ngIf="data.type == 'add'">Add news</mat-card-title>
         <mat-card-title *ngIf="data.type == 'update'">Update news</mat-card-title>
     </mat-card-header>
-    <mat-form-field class="example-full-width">
-        <mat-label>Text</mat-label>
-        <textarea matInput [(ngModel)]="data.news.text"></textarea>
-    </mat-form-field>
+    <form class="example-form"  [formGroup]="form">
+        <mat-form-field class="example-full-width">
+            <mat-label>
+                <mat-icon class="formTitleIcon">subject</mat-icon>Text
+            </mat-label>
+            <textarea matInput formControlName="newsText" [(ngModel)]="data.news.text"></textarea>
+            <mat-error>Text must have between 10 and 256 characters</mat-error>
 
-    <input type="file" multiple  (change)="filesChanged($event)"/>
+        </mat-form-field>
 
-    <mat-form-field class="example-full-width">
-        <mat-label>Date</mat-label>
-        <input matInput disabled value="{{data.news.date  | date:'MM/dd/yy'}}">
-    </mat-form-field>
+        <mat-form-field class="formField">
+            <mat-label class="title">
+              <mat-icon class="formTitleIcon">insert_photo</mat-icon>Choose the images
+            </mat-label>
+            <ngx-mat-file-input (change)="filesChanged()" [multiple]="fileMultiple" [accept]="fileAccept" formControlName="images">
+            </ngx-mat-file-input>
+          </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Date</mat-label>
+            <input matInput disabled value="{{data.news.date  | date:'MM/dd/yy'}}">
+        </mat-form-field>
+    </form>
     <div class="buttons" *ngIf="data.type == 'add'">
         <button mat-raised-button color="warn" (click)="cancelAdd()">Cancel</button>
         <button mat-raised-button color="primary" (click)="add()">Add</button>    
