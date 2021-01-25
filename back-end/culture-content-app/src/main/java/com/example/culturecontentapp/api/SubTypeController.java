@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class SubTypeController {
@@ -42,7 +42,7 @@ public class SubTypeController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping(value = "/sub-types")
-  public ResponseEntity<SubTypeResponse> createSubType(@RequestBody SubTypeRequest typeRequest,
+  public ResponseEntity<SubTypeResponse> createSubType(@RequestBody @Valid SubTypeRequest typeRequest,
       @RequestParam Long typeId) {
     return new ResponseEntity<>(service.create(typeRequest, typeId), HttpStatus.CREATED);
   }
@@ -56,7 +56,7 @@ public class SubTypeController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping(value = "/sub-types/{id}")
-  public ResponseEntity<SubTypeResponse> updateSubType(@RequestBody SubTypeRequest subTypeRequest,
+  public ResponseEntity<SubTypeResponse> updateSubType(@RequestBody @Valid SubTypeRequest subTypeRequest,
       @RequestParam Long typeId, @PathVariable Long id) {
     return new ResponseEntity<>(service.update(subTypeRequest, typeId, id), HttpStatus.OK);
   }

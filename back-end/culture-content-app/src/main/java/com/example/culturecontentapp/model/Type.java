@@ -4,7 +4,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -23,22 +22,9 @@ public class Type extends Model {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "type", cascade = CascadeType.ALL)
   private Set<SubType> subTypes;
 
-  public void update(String newName){
-    this.name = name;
-  }
-
   public void removeSubType(SubType subType){
     this.subTypes.remove(subType);
     subType.setType(null);
-  }
-  public void removeAllSubTypes(){
-    Iterator ite = subTypes.iterator();
-    SubType s;
-    while (ite.hasNext()) {
-      s =(SubType) ite.next();
-      s.setType(null);
-      ite.remove();
-    }
   }
 
   public Type() {

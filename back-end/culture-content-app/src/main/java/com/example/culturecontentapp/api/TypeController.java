@@ -43,7 +43,7 @@ public class TypeController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("")
-  public ResponseEntity<TypeResponse> createCulturalOfferType(@RequestBody TypeRequest typeRequestDto) {
+  public ResponseEntity<TypeResponse> createCulturalOfferType(@RequestBody @Valid TypeRequest typeRequestDto) {
     return new ResponseEntity<>(service.create(typeRequestDto), HttpStatus.CREATED);
   }
 

@@ -1,7 +1,4 @@
 package com.example.culturecontentapp.payload.request;
-
-import com.example.culturecontentapp.model.Model;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 

@@ -96,12 +96,12 @@ export class MapItemComponent implements OnInit, OnChanges {
 
     let response = this.httpClient.get<Geocoder>(api_url);
 
-    response.subscribe((geo) => {
+    response.subscribe((geo: Geocoder) => {
       if (geo.features[0]) {
         this.mapa.setCenter(
-          geo.features[0].bbox.slice(0, 2) as [number, number]
+          geo.features[0].center as [number, number]
         );
-        this.mapa.setZoom(8);
+        this.mapa.setZoom(13.5);
       } //mozda error staviti
     });
   }
