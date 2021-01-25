@@ -9,14 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class CulturalOfferTypeService {
 
-  headers: HttpHeaders;
-
-  constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + cookieService.get('token'),
-    });
-   }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   getAll(): Observable<CulturalOfferType[]>{
     return this.http.get<CulturalOfferType[]>(environment.api_url + '/types/all');
@@ -29,16 +22,16 @@ export class CulturalOfferTypeService {
 
   createType(req: CulturalOfferType): Observable<CulturalOfferType>{
     return this.http.post<CulturalOfferType>
-      (environment.api_url + '/types', req, {headers: this.headers});
+      (environment.api_url + '/types', req);
   }
 
   updateType(req: CulturalOfferType): Observable<CulturalOfferType>{
     return this.http.put<CulturalOfferType>
-      (environment.api_url + `/types/${req.id}`, req , {headers: this.headers});
+      (environment.api_url + `/types/${req.id}`, req );
   }
 
   deleteType(type_id: any): Observable<void>{
-    return this.http.delete<void>(environment.api_url + `/types/${type_id}`, {headers: this.headers});
+    return this.http.delete<void>(environment.api_url + `/types/${type_id}`);
   }
 
 }
