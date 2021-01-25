@@ -7,6 +7,8 @@ import { CulturalOfferTypeService } from 'src/app/services/cultural-offer-type/c
 import { CulturalOfferSubTypeService } from 'src/app/services/cultural-offer-subtype/cultural-offer-sub-type.service';
 import { FilterRequest } from 'src/app/models/filter-request';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
+import { MatDialog } from '@angular/material/dialog';
+import { NewCulturalOfferDialogComponent } from '../new-cultural-offer-dialog/new-cultural-offer-dialog.component';
 
 @Component({
   selector: 'app-map-page',
@@ -23,7 +25,8 @@ export class MapPageComponent implements OnInit {
   constructor(
     private culturalOfferService: CulturalOfferService,
     private culturalOfferTypeService: CulturalOfferTypeService,
-    private culturalOfferSubTypeService: CulturalOfferSubTypeService
+    private culturalOfferSubTypeService: CulturalOfferSubTypeService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +63,17 @@ export class MapPageComponent implements OnInit {
 
   findLocation(location: string) {
     this.searchedLocation = location;
+  }
+
+  openNewDialog() {
+    const dialogRef = this.dialog.open(NewCulturalOfferDialogComponent, {
+      width: '350px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadCulturalOffers();
+      }
+    });
   }
 }

@@ -35,10 +35,15 @@ import { LoginComponent } from './modules/login/login.component';
 import { SnackBarComponent } from './core/snack-bar/snack-bar.component';
 import { SubtypeListComponent } from './modules/cultural-offer-subtype/subtype-list/subtype-list.component';
 import { SubtypeFormComponent } from './modules/cultural-offer-subtype/subtype-form/subtype-form.component';
+import { NewCulturalOfferDialogComponent } from './modules/cultural-offer/new-cultural-offer-dialog/new-cultural-offer-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { MapItemOverviewComponent } from './modules/cultural-offer/map-item-overview/map-item-overview.component';
 import { DynamicComponentService } from './services/dynamic-component.service';
 import { StarRatingComponent } from './modules/star-rating/star-rating.component';
 import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-form.component';
+import { ResendActivationComponent } from './modules/resend-activation/resend-activation.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -59,9 +64,11 @@ import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-
     SnackBarComponent,
     SubtypeListComponent,
     SubtypeFormComponent,
+    NewCulturalOfferDialogComponent,
     MapItemOverviewComponent,
     StarRatingComponent,
     TypeFormComponent,
+    ResendActivationComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +87,8 @@ import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-
     MatCardModule,
     ReactiveFormsModule,
     MatCarouselModule.forRoot(),
+    MatDialogModule,
+    NgxMatFileInputModule,
   ],
   providers: [
     CulturalOfferService,
@@ -90,6 +99,11 @@ import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     },
     DynamicComponentService,
   ],

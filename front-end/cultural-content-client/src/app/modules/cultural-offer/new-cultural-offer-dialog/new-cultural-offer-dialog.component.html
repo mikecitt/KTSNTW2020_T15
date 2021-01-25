@@ -1,0 +1,73 @@
+<h1 mat-dialog-title class="title">
+  <mat-icon class="titleIcon">add</mat-icon>Add cultural offer
+</h1>
+<form class="example-form" #insertForm="ngForm" (ngSubmit)="insert()" [formGroup]="form">
+  <mat-dialog-content class="content">
+    <mat-form-field class="formField">
+      <mat-label class="title">
+        <mat-icon class="formTitleIcon">subject</mat-icon>Name
+      </mat-label>
+      <input matInput formControlName="name">
+      <mat-error>Name must have between 3 and 64 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="formField">
+      <mat-label class="title">
+        <mat-icon class="formTitleIcon">description</mat-icon>Description
+      </mat-label>
+      <textarea matInput formControlName="description"></textarea>
+      <mat-error>Must have between 10 and 256 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="formField">
+      <mat-label class="title">
+        <mat-icon class="formTitleIcon">place</mat-icon>Location
+      </mat-label>
+      <input (ngModelChange)="locationChanged($event)" type="text" [matAutocomplete]="auto" formControlName="location"
+        matInput>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let location of locations" [value]="location">
+          {{location.place_name}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error>Location is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="formField">
+      <mat-label class="title">
+        <mat-icon class="formTitleIcon">insert_photo</mat-icon>Choose the images
+      </mat-label>
+      <ngx-mat-file-input [multiple]="fileMultiple" [accept]="fileAccept" formControlName="images">
+      </ngx-mat-file-input>
+      <mat-error>At least 1 image is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="formField">
+      <mat-label class="title">
+        <mat-icon class="formTitleIcon">category</mat-icon>Type
+      </mat-label>
+      <mat-select (selectionChange)="typeChanged($event)">
+        <mat-option *ngFor="let type of allTypes" [value]="type">
+          {{type.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formField">
+      <mat-label class="title">
+        <mat-icon class="formTitleIcon">category</mat-icon>Subtype
+      </mat-label>
+      <mat-select formControlName="subType">
+        <mat-option *ngFor="let subType of subTypes" [value]="subType">
+          {{subType.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Subtype is required</mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button type="submit" [disabled]="!insertForm.form.valid" mat-button>Submit</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

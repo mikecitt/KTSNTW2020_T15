@@ -1,3 +1,5 @@
+import { SnackBarComponent } from './../../../core/snack-bar/snack-bar.component';
+import { CulturalOfferSubTypeService } from './../../../services/cultural-offer-subtype/cultural-offer-sub-type.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
@@ -6,8 +8,6 @@ import { By } from '@angular/platform-browser';
 
 import { CulturalOfferTypePageComponent } from './cultural-offer-type-page.component';
 import { DebugElement } from '@angular/core';
-import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
-import { CulturalOfferSubTypeService } from 'src/app/services';
 
 describe('CulturalOfferTypePageComponent', () => {
   let component: CulturalOfferTypePageComponent;
@@ -26,13 +26,22 @@ describe('CulturalOfferTypePageComponent', () => {
       ],
       totalElements: 3
     };
+    // const subTypesMock = {
+    //   content: [
+    //     {id: 1, name: 'podtip1'},
+    //     {id: 1, name: 'podtip2'}
+    //   ],
+    //   totalElements: 2
+    // };
+
     const subTypesMock = {
       content: [
-        {id: 1, name: 'podtip1'},
-        {id: 1, name: 'podtip2'}
+        {id: 1, name: "podtip1"},
+        {id:2, name: "podtip2"},
+        {id: 3, name: "podtip3"}
       ],
-      totalElements: 2
-    };
+      totalElements: 3
+    }
 
     let typeServiceMock = {
       getAllPaginated : jasmine.createSpy('getAllPaginated')
@@ -55,17 +64,17 @@ describe('CulturalOfferTypePageComponent', () => {
         })
     };
 
-    let snackBarMock = {
+    const snackbarMock = {
       openSnackBar: jasmine.createSpy('openSnackBar')
-    };
+    }
 
     await TestBed.configureTestingModule({
       declarations: [ CulturalOfferTypePageComponent ],
       providers : [
         {provide: CulturalOfferTypeService, useValue: typeServiceMock},
         {provide: MatDialog, useValue: dialogMock},
-        {provide: SnackBarComponent, useValue: snackBarMock},
-        {provide: CulturalOfferSubTypeService, useValue: subTypeServiceMock}
+        {provide: CulturalOfferSubTypeService, useValue: subTypeServiceMock},
+        {provide: SnackBarComponent, useValue: snackbarMock}
       ]
     });
     //.compileComponents();
@@ -95,7 +104,7 @@ describe('CulturalOfferTypePageComponent', () => {
            });
   });
 
-  it('should go to next page in table', async () => {
+  it('should go to next page in type table', async () => {
     component.getNextType();
 
     expect(component.curentPageType).toBe(1);
@@ -111,7 +120,7 @@ describe('CulturalOfferTypePageComponent', () => {
       })
   });
 
-  it('should go to previous page in table', async () => {
+  it('should go to previous page in type table', async () => {
     component.curentPageType = 1;
     component.getPreviousType();
 
@@ -126,6 +135,40 @@ describe('CulturalOfferTypePageComponent', () => {
         //  let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
         expect(elements.length).toBe(4);
       })
+  });
+
+  it('should go to next page in subtype table', async () => {
+    component.getNextSubType();
+
+    expect(component.curentPageSubType).toBe(1);
+    expect(subTypeService.getAllPaginated).toHaveBeenCalled();
+
+    fixture.whenStable()
+      .then( () => {
+        expect(component.culturalOfferSubTypes.length).toBe(3);
+        // fixture.detectChanges();
+        // let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+        // // let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
+        // expect(elements.length).toBe(4);
+      })
+  });
+
+  it('should go to previous page in subtype table', async () => {
+    component.curentPageSubType = 1;
+    component.getPreviousSubType();
+
+    expect(component.curentPageSubType).toBe(0);
+    expect(subTypeService.getAllPaginated).toHaveBeenCalled();
+
+    fixture.whenStable()
+      .then( () => {
+        expect(component.culturalOfferSubTypes.length).toBe(3);
+        // fixture.detectChanges();
+      //   let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+      //   //  let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
+      //   expect(elements.length).toBe(4);
+      // })
+    });
   });
 
   it('should call delete type', async () => {
@@ -143,7 +186,7 @@ describe('CulturalOfferTypePageComponent', () => {
     expect(typeService.getAllPaginated).toHaveBeenCalled();
   });
 
-  it('should open create dialog', async ()=>{
+  it('should open create dialog', async () => {
     component.openCreateDialog("Whatever");
     fixture.detectChanges();
     expect(dialog.open).toHaveBeenCalled();
@@ -158,5 +201,7 @@ describe('CulturalOfferTypePageComponent', () => {
     expect(typeService.getAllPaginated).toHaveBeenCalled();
 
   });
+  
+
 
 });

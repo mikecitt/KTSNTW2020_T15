@@ -38,6 +38,7 @@ export class SubtypeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<CulturalOfferSubType>(this.offerSubtypes);
   }
 
   createDialog(data: SubTypeDialogData): MatDialogRef<SubtypeFormComponent>{

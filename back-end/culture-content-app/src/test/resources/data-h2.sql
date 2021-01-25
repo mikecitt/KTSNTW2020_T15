@@ -19,11 +19,17 @@ INSERT INTO Sub_type (id, name, type_id) VALUES
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (2, 'Festival1111', 1);
 
-INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
-    (1, 'Najveci festival u regionu', 'Petrovaradinska tvrdjava', 'Exit festival1', 1);
+INSERT INTO Location (id, address, latitude, longitude) VALUES
+    (1, 'Petrovaradinska tvrdjava', 45.252736, 19.8601);
 
-INSERT INTO Cultural_offer (id, description, location, name, subtype_id) VALUES
-    (2, 'Najveci festival na mediteranu', 'Budva', 'Sea Dance festival1', 1);
+INSERT INTO Location (id, address, latitude, longitude) VALUES
+    (2, 'Usce', 44.8177044, 20.4284067);
+
+INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
+    (1, 'Najveci festival u regionu', 1, 'Exit festival1', 1);
+
+INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
+    (2, 'Najveci festival na mediteranu', 2, 'Sea Dance festival1', 1);
 
 INSERT INTO Review (comment, rating, user_id, culturaloffer_id) VALUES
     ('extra', 5, 1, 1);

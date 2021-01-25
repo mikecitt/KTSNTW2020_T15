@@ -59,9 +59,23 @@ export class AuthService {
     }));
   }
 
+  resendActivation(email: string) {
+    return this.http.get<any>(
+      `${environment.api_url}/auth/resend?email=${email}`
+    );
+  }
+
   logout() {
     this.cookieService.delete(COOKIE_NAME);
     this.userService.setupUser(null);
     this.router.navigate(['/']);
+  }
+
+  tokenIsPresent() {
+    return this.access_token != undefined && this.access_token != null;
+  }
+
+  getToken() {
+    return this.access_token;
   }
 }

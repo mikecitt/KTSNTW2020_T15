@@ -12,8 +12,8 @@ import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.model.Review;
 import com.example.culturecontentapp.model.User;
-import com.example.culturecontentapp.payload.request.AddReviewRequest;
-import com.example.culturecontentapp.payload.response.AddReviewResponse;
+import com.example.culturecontentapp.payload.request.ReviewRequest;
+import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
@@ -61,8 +61,7 @@ public class ReviewService {
     return new ResponseEntity<>(reviews.map(review -> modelMapper.map(review, ReviewResponse.class)), HttpStatus.OK);
   }
 
-  public ResponseEntity<AddReviewResponse> addReview(Long culturalOfferId, AddReviewRequest request,
-      MultipartFile[] files) {
+  public ResponseEntity<ReviewResponse> addReview(Long culturalOfferId, ReviewRequest request) {
 
     org.springframework.security.core.userdetails.User loggedUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
         .getContext().getAuthentication().getPrincipal();
@@ -78,8 +77,8 @@ public class ReviewService {
     }
 
     Set<String> fileNames = new HashSet<>();
-    if (files.length >= 1 && !files[0].isEmpty()) {
-      fileNames = Arrays.asList(files).stream().map(storageService::store).collect(Collectors.toSet());
+    for (String image : request.getImages()) {
+      fileNames.add(storageService.store(image));
     }
 
     Review review = modelMapper.map(request, Review.class);
@@ -87,12 +86,12 @@ public class ReviewService {
     review.setAuthor(user);
 
     CulturalOffer culturalOffer = culturalOfferEntity.get();
-    fileNames.forEach(fileName -> review.getImages().add(fileName));
+    review.setImages(fileNames);
     culturalOffer.addReview(review);
 
     repository.save(review);
     culturalOfferRepository.save(culturalOffer);
 
-    return new ResponseEntity<>(modelMapper.map(review, AddReviewResponse.class), HttpStatus.CREATED);
+    return new ResponseEntity<>(modelMapper.map(review, ReviewResponse.class), HttpStatus.CREATED);
   }
 }

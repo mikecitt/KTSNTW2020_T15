@@ -3,11 +3,11 @@ package com.example.culturecontentapp.service;
 import com.example.culturecontentapp.exception.CulturalOfferAlreadyExistsException;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
-import com.example.culturecontentapp.payload.request.EditCulturalOfferRequest;
-import com.example.culturecontentapp.payload.request.NewCulturalOfferRequest;
-import com.example.culturecontentapp.payload.response.EditCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.NewCulturalOfferResponse;
-import com.example.culturecontentapp.payload.response.SelectCulturalOfferResponse;
+import com.example.culturecontentapp.payload.request.CulturalOfferLocationRequest;
+import com.example.culturecontentapp.payload.request.CulturalOfferRequest;
+import com.example.culturecontentapp.payload.response.CulturalOfferResponse;
+import com.example.culturecontentapp.storage.StorageException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.net.http.HttpResponse;
+import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -35,11 +34,14 @@ import static com.example.culturecontentapp.constants.CulturalOfferConstants.PAG
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_NOT_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_DESCRIPTION;
-import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION_LONGITUDE;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION_ADDRESS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION_LATITUDE;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_SUBTYPE;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_SUBTYPE_NOT_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_ID_NOT_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_ID_EXISTS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.STORAGE_FILE_NOT_VALID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -54,8 +56,8 @@ public class CulturalOfferServiceIntegrationTest {
                 String offerName = "Exit%";
                 String subTypeName = "Festival%";
                 String typeName = "Manifestacija%";
-                ResponseEntity<List<SelectCulturalOfferResponse>> found = service.searchAndFilter(offerName,
-                                subTypeName, typeName);
+                ResponseEntity<List<CulturalOfferResponse>> found = service.searchAndFilter(offerName, subTypeName,
+                                typeName);
                 assertEquals(1, found.getBody().size());
         }
 
@@ -64,59 +66,101 @@ public class CulturalOfferServiceIntegrationTest {
                 String offerName = "BlaBla%";
                 String subTypeName = "Festival%";
                 String typeName = "Manifestacija%";
-                ResponseEntity<List<SelectCulturalOfferResponse>> found = service.searchAndFilter(offerName,
-                                subTypeName, typeName);
+                ResponseEntity<List<CulturalOfferResponse>> found = service.searchAndFilter(offerName, subTypeName,
+                                typeName);
                 assertEquals(0, found.getBody().size());
         }
 
         @Test(expected = CulturalOfferAlreadyExistsException.class)
         public void insert_ThrowsAlreadyExsistsException_WhenNameAlreadyExsits() {
-                NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_EXISTS,
-                                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
                 service.insert(CULTURAL_OFFER_SUBTYPE, request);
         }
 
         @Test(expected = SubTypeNotFoundException.class)
         public void insert_ThrowsSubTypeNotFound_WhenSubTypeNotExists() {
-                NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
-                                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
                 service.insert(CULTURAL_OFFER_SUBTYPE_NOT_EXISTS, request);
+        }
+
+        @Test(expected = StorageException.class)
+        public void insert_ThrowsStorageFileInvalid_WhenBase64IsInvalid() {
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[] { STORAGE_FILE_NOT_VALID });
+                service.insert(CULTURAL_OFFER_SUBTYPE, request);
         }
 
         @Test
         @Transactional
-        public void insert_InsertsCulturalOfferSuccessfully() {
-                NewCulturalOfferRequest request = new NewCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
-                                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                ResponseEntity<NewCulturalOfferResponse> response = service.insert(CULTURAL_OFFER_SUBTYPE, request);
+        public void insert_InsertsCulturalOfferSuccessfully() throws IOException {
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+                ResponseEntity<CulturalOfferResponse> response = service.insert(CULTURAL_OFFER_SUBTYPE, request);
                 assertEquals(request.getName(), response.getBody().getName());
                 assertEquals(request.getDescription(), response.getBody().getDescription());
-                assertEquals(request.getLocation(), response.getBody().getLocation());
+                assertEquals(request.getLocation().getAddress(), response.getBody().getLocation().getAddress());
+                assertEquals(request.getLocation().getLongitude(), response.getBody().getLocation().getLongitude());
+                assertEquals(request.getLocation().getLatitude(), response.getBody().getLocation().getLatitude());
         }
 
         @Test(expected = CulturalOfferNotFoundException.class)
         public void update_ThrowsNotFoundException_WhenIdNotExists() {
-                EditCulturalOfferRequest request = new EditCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
-                                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
                 service.update(CULTURAL_OFFER_ID_NOT_EXISTS, request);
         }
 
         @Test(expected = CulturalOfferAlreadyExistsException.class)
         public void update_ThrowsAlreadyExsitsException_WhenDifferentNameAlreadyExists() {
-                EditCulturalOfferRequest request = new EditCulturalOfferRequest("Sea Dance festival1",
-                                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
+                CulturalOfferRequest request = new CulturalOfferRequest("Sea Dance festival1",
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+                service.update(CULTURAL_OFFER_ID_EXISTS, request);
+        }
+
+        @Test(expected = StorageException.class)
+        public void update_ThrowsStorageFileInvalid_WhenBase64IsInvalid() {
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[] { STORAGE_FILE_NOT_VALID });
                 service.update(CULTURAL_OFFER_ID_EXISTS, request);
         }
 
         @Test
         @Transactional
         public void update_UpdatesSuccessfully() {
-                EditCulturalOfferRequest request = new EditCulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
-                                CULTURAL_OFFER_DESCRIPTION, CULTURAL_OFFER_LOCATION);
-                ResponseEntity<EditCulturalOfferResponse> response = service.update(CULTURAL_OFFER_ID_EXISTS, request);
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+                ResponseEntity<CulturalOfferResponse> response = service.update(CULTURAL_OFFER_ID_EXISTS, request);
                 assertEquals(request.getName(), response.getBody().getName());
                 assertEquals(request.getDescription(), response.getBody().getDescription());
-                assertEquals(request.getLocation(), response.getBody().getLocation());
+                assertEquals(request.getLocation().getAddress(), response.getBody().getLocation().getAddress());
+                assertEquals(request.getLocation().getLongitude(), response.getBody().getLocation().getLongitude());
+                assertEquals(request.getLocation().getLatitude(), response.getBody().getLocation().getLatitude());
         }
 
         @Test(expected = CulturalOfferNotFoundException.class)
@@ -128,7 +172,7 @@ public class CulturalOfferServiceIntegrationTest {
         @Transactional
         public void select_ReturnsTwo_WhenPageSizeIsTwo() {
                 Pageable pageable = PageRequest.of(PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_TWO);
-                ResponseEntity<Page<SelectCulturalOfferResponse>> response = service.select(pageable);
+                ResponseEntity<Page<CulturalOfferResponse>> response = service.select(pageable);
                 assertEquals(1, response.getBody().getTotalPages());
                 assertEquals(0, response.getBody().getNumber());
                 assertEquals(2, response.getBody().getContent().size());
@@ -138,7 +182,7 @@ public class CulturalOfferServiceIntegrationTest {
         @Transactional
         public void select_ReturnsOne_WhenPageSizeIsOne() {
                 Pageable pageable = PageRequest.of(PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_ONE);
-                ResponseEntity<Page<SelectCulturalOfferResponse>> response = service.select(pageable);
+                ResponseEntity<Page<CulturalOfferResponse>> response = service.select(pageable);
                 assertEquals(2, response.getBody().getTotalPages());
                 assertEquals(0, response.getBody().getNumber());
                 assertEquals(1, response.getBody().getContent().size());
@@ -148,7 +192,7 @@ public class CulturalOfferServiceIntegrationTest {
         @Transactional
         public void select_ReturnsPageTwo_WhenPageIsTwo() {
                 Pageable pageable = PageRequest.of(PAGEABLE_PAGE_ONE, PAGEABLE_SIZE_ONE);
-                ResponseEntity<Page<SelectCulturalOfferResponse>> response = service.select(pageable);
+                ResponseEntity<Page<CulturalOfferResponse>> response = service.select(pageable);
                 assertEquals(2, response.getBody().getTotalPages());
                 assertEquals(1, response.getBody().getNumber());
                 assertEquals(1, response.getBody().getContent().size());
@@ -162,8 +206,17 @@ public class CulturalOfferServiceIntegrationTest {
         @Test
         @Transactional
         public void selectById_SelectsSuccessfully() {
-                ResponseEntity<SelectCulturalOfferResponse> response = service.selectById(CULTURAL_OFFER_ID_EXISTS);
+                ResponseEntity<CulturalOfferResponse> response = service.selectById(CULTURAL_OFFER_ID_EXISTS);
                 assertEquals(HttpStatus.OK, response.getStatusCode());
                 assertEquals(CULTURAL_OFFER_ID_EXISTS, response.getBody().getId());
         }
+
+        @Test
+        @Transactional
+        public void selectAll_SelectsSuccessfully() {
+                ResponseEntity<List<CulturalOfferResponse>> response = service.selectAll();
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(2, response.getBody().size());
+        }
+
 }

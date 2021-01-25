@@ -14,7 +14,7 @@ export class UserGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.userService.currentUser) {
-      if (this.userService.getRole() === 'ROLE_ADMIN') {
+      if (this.userService.getRole() === 'ROLE_USER') {
         return true;
       } else {
         this.router.navigate(['/403']);
