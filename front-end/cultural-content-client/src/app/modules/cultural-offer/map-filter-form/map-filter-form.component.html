@@ -3,7 +3,8 @@
     <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" >
         <mat-label>Select an cultural offer type</mat-label>
-        <mat-select [(value)]="selectedType" formControlName="type" (selectionChange)="onSelectChange($event)">
+        <mat-select [(value)]="selectedType" formControlName="type" id="type-select"
+                    (selectionChange)="onSelectChange($event)">
 
           <mat-option *ngFor="let val of culturalOfferTypes" [value]="val">{{val.name}}</mat-option>
         </mat-select>
@@ -11,17 +12,17 @@
 
       <mat-form-field appearance="outline" style="margin-left: 8px;">
         <mat-label>Select an cultural offer subtype</mat-label>
-        <mat-select [(value)]="selectedSubType" [disabled]="disabled" formControlName="subType">
+        <mat-select [(value)]="selectedSubType" [disabled]="disabled" formControlName="subType" id="subtype-select">
           <mat-option *ngFor="let val of culturalOfferSubTypes" [value]="val">{{val.name}}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="margin-left: 8px;">
-        <input matInput placeholder="Search" formControlName="searchLocation">
+        <input matInput placeholder="Search" formControlName="searchLocation" id="search-input">
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit" style="margin-left: 8px;">Apply filter</button>
-      <button mat-raised-button color="warn" type="button" (click)="resetFilter()" >Reset</button>
+      <button id="apply-btn" mat-raised-button color="primary" type="submit" style="margin-left: 8px;">Apply filter</button>
+      <button id="reset-btn" mat-raised-button color="warn" type="button" (click)="resetFilter()" >Reset</button>
     </form>
 
   </mat-card-content>

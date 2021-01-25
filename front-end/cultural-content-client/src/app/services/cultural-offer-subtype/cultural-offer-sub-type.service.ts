@@ -8,14 +8,8 @@ import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class CulturalOfferSubTypeService {
-  headers: HttpHeaders;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + cookieService.get('token'),
-    });
-   }
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getAll(typeId:any): Observable<CulturalOfferSubType[]>{
     return this.http.get<CulturalOfferSubType[]>(environment.api_url + "/sub-types/all?typeId=" + typeId);
@@ -29,7 +23,7 @@ export class CulturalOfferSubTypeService {
   createSubType(req: CulturalOfferSubType): Observable<CulturalOfferSubType>{
     // this.headers = this.headers.append('typeId', req.type.id);  nesto ne radi
     return this.http.post<CulturalOfferSubType>
-      (environment.api_url + `/sub-types?typeId=${req.type.id}`, req ,{headers: this.headers});
+      (environment.api_url + `/sub-types?typeId=${req.type.id}`, req );
   }
 
   updateSubType(req: CulturalOfferSubType): Observable<CulturalOfferSubType>{
@@ -37,7 +31,7 @@ export class CulturalOfferSubTypeService {
       .append('typeId', req.type.id);
 
     return this.http.put<CulturalOfferSubType>
-      (environment.api_url + `/sub-types/${req.id}`, req, {headers: this.headers, params: params});
+      (environment.api_url + `/sub-types/${req.id}`, req, {headers: {}, params: params});
   }
 
   deleteSubType(subType: CulturalOfferSubType): Observable<void>{
@@ -45,7 +39,7 @@ export class CulturalOfferSubTypeService {
         .append('typeId', subType.type.id);
 
     return this.http.delete<void>
-      (environment.api_url + `/sub-types/${subType.id}`, {headers: this.headers, params: params});
+      (environment.api_url + `/sub-types/${subType.id}`, {headers: {}, params: params});
   }
 
 }

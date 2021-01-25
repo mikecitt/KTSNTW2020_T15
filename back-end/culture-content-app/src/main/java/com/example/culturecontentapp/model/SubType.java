@@ -1,9 +1,4 @@
 package com.example.culturecontentapp.model;
-
-import com.fasterxml.jackson.databind.jsontype.SubtypeResolver;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -21,11 +16,6 @@ public class SubType extends Model {
   private Type type;
 
   public SubType() {
-
-  }
-
-  public void update(String newName){
-    this.name = name;
   }
 
   public SubType(String name) {

@@ -3,7 +3,7 @@
 
 <div mat-dialog-content>
   <mat-form-field [formGroup]= "form">
-    <input id="name" placeholder="Type name" matInput formControlName="name" required>
+    <input id="type_name" placeholder="Type name" matInput formControlName="name" required>
     <mat-error>
       Name must be at least 4 characters long.
     </mat-error>
@@ -11,7 +11,7 @@
 </div>
 
 <div mat-dialog-actions>
-  <button style="margin-left: 85px;" mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button color="primary" type="button" [disabled]="form.invalid"
+  <button style="margin-left: 85px;" id="close_type_button" mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button color="primary" id="save_type_button" type="button" [disabled]="form.invalid"
          (click)="onSaveClick()">Save</button>
 </div>

@@ -1,5 +1,4 @@
 package com.example.culturecontentapp.payload.response;
-import com.example.culturecontentapp.model.Model;
 
 public class SubTypeResponse {
 
