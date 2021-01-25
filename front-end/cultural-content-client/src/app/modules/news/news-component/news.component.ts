@@ -46,9 +46,9 @@ export class NewsComponent implements OnInit {
    
 
    ngOnInit(): void {
-     this.role = this.userService.getRole();
-     this.email = this.userService.getEmail();
-     this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res)});
+    if(this.isUser){
+    this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res)});
+    }
    }
  
    get isAuthorized() {
