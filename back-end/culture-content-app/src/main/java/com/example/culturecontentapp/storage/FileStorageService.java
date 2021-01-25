@@ -113,10 +113,8 @@ public class FileStorageService implements StorageService {
       String encodedImage = base64Image.substring(base64Image.indexOf(",") + 1);
 
       return Base64.getDecoder().decode(encodedImage);
-    } catch (IllegalArgumentException ex) {
+    } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
       throw new StorageException("Storage file is not valid");
-    } catch (IndexOutOfBoundsException ex) {
-      throw new StorageException(notSupportedResponse);
     }
   }
 
