@@ -1,7 +1,6 @@
 package com.example.culturecontentapp.controller;
 
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_DESCRIPTION;
-import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_NOT_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_SUBTYPE;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.DB_ADMIN_EMAIL;
@@ -15,20 +14,16 @@ import static com.example.culturecontentapp.constants.CulturalOfferConstants.CUL
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import static java.util.Arrays.asList;
-
-import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
+import com.example.culturecontentapp.payload.request.CulturalOfferLocationRequest;
 import com.example.culturecontentapp.payload.request.CulturalOfferRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.CulturalOfferResponse;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
-import com.example.culturecontentapp.service.CulturalOfferService;
 import com.example.culturecontentapp.util.RestPageImpl;
 
 import org.junit.Test;
@@ -37,152 +32,154 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION_LONGITUDE;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION_ADDRESS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_LOCATION_LATITUDE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:test.properties")
 public class CulturalOfferControllerIntegrationTest {
 
-    @Autowired
-    private CulturalOfferService service;
-    @Autowired
-    private TestRestTemplate restTemplate;
+        @Autowired
+        private TestRestTemplate restTemplate;
 
-    private String accessToken;
+        private String accessToken;
 
-    public void login(String username, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(username, password), String.class);
-        accessToken = "Bearer " + responseEntity.getBody();
-    }
+        public void login(String username, String password) {
+                ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                                new AccountLoginRequest(username, password), AccountLoginResponse.class);
+                accessToken = "Bearer " + responseEntity.getBody().getToken();
+        }
 
-    @Test
-    public void searchAndFilter_validRequest_willReturnSucceed() {
-        ResponseEntity<List<SubTypeResponse>> responseEntity = restTemplate.exchange(
-                "/api/cultural-offer/search?culturalOfferName=ex&subTypeName=&typeName=", HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
-                });
+        @Test
+        public void searchAndFilter_validRequest_willReturnSucceed() {
+                ResponseEntity<List<SubTypeResponse>> responseEntity = restTemplate.exchange(
+                                "/api/cultural-offer/search?culturalOfferName=ex&subTypeName=&typeName=",
+                                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                                });
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(1, responseEntity.getBody().size());
-    }
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                assertEquals(1, responseEntity.getBody().size());
+        }
 
-    @Test
-    public void searchAndFilter_noResultsRequest_willReturnSucceed() {
-        ResponseEntity<List<SubTypeResponse>> responseEntity = restTemplate.exchange(
-                "/api/cultural-offer/search?culturalOfferName=ex&subTypeName=Manifestacija&typeName=", HttpMethod.GET,
-                null, new ParameterizedTypeReference<>() {
-                });
+        @Test
+        public void searchAndFilter_noResultsRequest_willReturnSucceed() {
+                ResponseEntity<List<SubTypeResponse>> responseEntity = restTemplate.exchange(
+                                "/api/cultural-offer/search?culturalOfferName=ex&subTypeName=Manifestacija&typeName=",
+                                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                                });
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(0, responseEntity.getBody().size());
-    }
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                assertEquals(0, responseEntity.getBody().size());
+        }
 
-    @Test
-    @Transactional
-    public void insert_InsertedSucessfully() throws IOException {
-        login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+        @Test
+        @Transactional
+        public void insert_InsertedSucessfully() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        headers.setAccept(asList(MediaType.APPLICATION_JSON));
-        headers.add("Authorization", accessToken);
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
 
-        CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
-                CULTURAL_OFFER_DESCRIPTION, null);
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
 
-        byte[] fileContent = "this is file content".getBytes();
-        Path tempFile = Files.createTempFile("upload-file", ".txt");
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
 
-        Files.write(tempFile, fileContent);
+                ResponseEntity<CulturalOfferResponse> responseEntity = restTemplate.exchange(
+                                "/api/cultural-offer?subTypeId={subTypeId}", HttpMethod.POST, httpEntity,
+                                new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_SUBTYPE);
 
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("files", new FileSystemResource(tempFile.toFile()));
-        body.add("request", request);
+                assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        }
 
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(body, headers);
+        @Test
+        public void select_ReturnsTwo_WhenPageSizeIsTwo() throws IOException {
+                ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
+                                "/api/cultural-offer?size={pageSize}", HttpMethod.GET, null,
+                                new ParameterizedTypeReference<>() {
+                                }, PAGEABLE_SIZE_TWO);
 
-        ResponseEntity<CulturalOfferResponse> responseEntity = restTemplate.exchange(
-                "http://localhost:8080/api/cultural-offer?subTypeId={subTypeId}", HttpMethod.POST, httpEntity,
-                new ParameterizedTypeReference<>() {
-                }, CULTURAL_OFFER_SUBTYPE);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(1, response.getBody().getTotalPages());
+                assertEquals(0, response.getBody().getNumber());
+                assertEquals(2, response.getBody().getContent().size());
+        }
 
-        // NewCulturalOfferResponse newsResponse = responseEntity.getBody();
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        // assertNotNull(newsResponse);
-    }
+        @Test
+        public void select_ReturnsOne_WhenPageSizeIsOne() {
+                ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
+                                "/api/cultural-offer?page={page}&size={pageSize}", HttpMethod.GET, null,
+                                new ParameterizedTypeReference<>() {
+                                }, PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_ONE);
 
-    @Test
-    public void insert_SelectReturnsTwo_WhenPageSizeIsTwo() throws IOException {
-        ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
-                "/api/cultural-offer?size={pageSize}", HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                }, PAGEABLE_SIZE_TWO);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(2, response.getBody().getTotalPages());
+                assertEquals(0, response.getBody().getNumber());
+                assertEquals(1, response.getBody().getContent().size());
+        }
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, response.getBody().getTotalPages());
-        assertEquals(0, response.getBody().getNumber());
-        assertEquals(2, response.getBody().getContent().size());
-    }
+        @Test
+        public void select_ReturnsPageTwo_WhenPageIsTwo() {
+                ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
+                                "/api/cultural-offer?page={page}&size={pageSize}", HttpMethod.GET, null,
+                                new ParameterizedTypeReference<>() {
+                                }, PAGEABLE_PAGE_ONE, PAGEABLE_SIZE_ONE);
 
-    @Test
-    public void findAll_ReturnsOne_WhenPageSizeIsOne() {
-        ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
-                "/api/cultural-offer?page={page}&size={pageSize}", HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
-                }, PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_ONE);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(2, response.getBody().getTotalPages());
+                assertEquals(1, response.getBody().getNumber());
+                assertEquals(1, response.getBody().getContent().size());
+        }
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().getTotalPages());
-        assertEquals(0, response.getBody().getNumber());
-        assertEquals(1, response.getBody().getContent().size());
-    }
+        @Test
+        public void selectById_ReturnsResult_WhenResultExists() {
+                ResponseEntity<CulturalOfferResponse> response = restTemplate.exchange("/api/cultural-offer/{id}",
+                                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_EXISTS);
 
-    @Test
-    public void findAll_ReturnsPageTwo_WhenPageIsTwo() {
-        ResponseEntity<RestPageImpl<CulturalOfferResponse>> response = restTemplate.exchange(
-                "/api/cultural-offer?page={page}&size={pageSize}", HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
-                }, PAGEABLE_PAGE_ONE, PAGEABLE_SIZE_ONE);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(CULTURAL_OFFER_ID_EXISTS, response.getBody().getId());
+        }
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().getTotalPages());
-        assertEquals(1, response.getBody().getNumber());
-        assertEquals(1, response.getBody().getContent().size());
-    }
+        @Test
+        public void selectById_ReturnsNothing_WhenResultNotExists() {
+                HttpHeaders headers = new HttpHeaders();
 
-    @Test
-    public void findByBy_ReturnsResult_WhenResultExists() {
-        ResponseEntity<CulturalOfferResponse> response = restTemplate.exchange("/api/cultural-offer/{id}",
-                HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-                }, CULTURAL_OFFER_ID_EXISTS);
+                HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(CULTURAL_OFFER_ID_EXISTS, response.getBody().getId());
-    }
+                ResponseEntity<String> response = restTemplate.exchange("/api/cultural-offer/{id}", HttpMethod.GET,
+                                httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_NOT_EXISTS);
 
-    @Test
-    public void findByBy_ReturnsNothing_WhenResultNotExists() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(asList(MediaType.TEXT_PLAIN));
+                assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        }
 
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
+        @Test
+        public void selectAll_SelectsSuccessfully() {
+                HttpHeaders headers = new HttpHeaders();
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/cultural-offer/{id}", HttpMethod.GET, httpEntity,
-                new ParameterizedTypeReference<>() {
-                }, CULTURAL_OFFER_ID_NOT_EXISTS);
+                HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+                ResponseEntity<List<CulturalOfferResponse>> response = restTemplate.exchange("/api/cultural-offer/all",
+                                HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
+                                });
+
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+                assertEquals(2, response.getBody().size());
+        }
 }
