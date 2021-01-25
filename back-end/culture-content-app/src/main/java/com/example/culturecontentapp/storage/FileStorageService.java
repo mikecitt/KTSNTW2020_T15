@@ -19,6 +19,7 @@ public class FileStorageService implements StorageService {
   private final Path root = Paths.get("src/main/resources/static/uploads");
 
   private static String notSupportedResponse = "Storage file is not supported";
+  private static String notValidResponse = "Storage file is not valid";
 
   @Override
   public String store(MultipartFile file) {
@@ -102,7 +103,7 @@ public class FileStorageService implements StorageService {
         throw new StorageException(notSupportedResponse);
       }
     } catch (IndexOutOfBoundsException ex) {
-      throw new StorageException("Storage file is not valid");
+      throw new StorageException(notValidResponse);
     }
 
     return extension;
@@ -114,15 +115,19 @@ public class FileStorageService implements StorageService {
 
       return Base64.getDecoder().decode(encodedImage);
     } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
-      throw new StorageException("Storage file is not valid");
+      throw new StorageException(notValidResponse);
     }
   }
 
   private void checkFileType(String base64Image) {
-    String fileType = base64Image.substring(base64Image.indexOf(":") + 1, base64Image.indexOf("/"));
+    try {
+      String fileType = base64Image.substring(base64Image.indexOf(":") + 1, base64Image.indexOf("/"));
 
-    if (!fileType.equals("image")) {
-      throw new StorageException(notSupportedResponse);
+      if (!fileType.equals("image")) {
+        throw new StorageException(notSupportedResponse);
+      }
+    } catch (IndexOutOfBoundsException ex) {
+      throw new StorageException(notValidResponse);
     }
   }
 }
