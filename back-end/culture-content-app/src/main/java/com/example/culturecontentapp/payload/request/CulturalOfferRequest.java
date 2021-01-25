@@ -32,10 +32,11 @@ public class CulturalOfferRequest {
 
   }
 
-  public CulturalOfferRequest(String name, String description, CulturalOfferLocationRequest location) {
+  public CulturalOfferRequest(String name, String description, CulturalOfferLocationRequest location, String[] images) {
     this.name = name;
     this.description = description;
     this.location = location;
+    this.images = images;
   }
 
   public String getName() {

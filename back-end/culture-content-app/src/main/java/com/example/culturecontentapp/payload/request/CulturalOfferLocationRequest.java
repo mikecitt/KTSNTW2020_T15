@@ -23,6 +23,12 @@ public class CulturalOfferLocationRequest {
 
   }
 
+  public CulturalOfferLocationRequest(String address, Double latitude, Double longitude) {
+    this.address = address;
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
+
   public String getAddress() {
     return address;
   }
