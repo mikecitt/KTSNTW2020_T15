@@ -1,5 +1,10 @@
 package com.example.culturecontentapp.exception;
 
 public class TypeHasSubTypesException extends RuntimeException {
-    public TypeHasSubTypesException(String message){super(message);}
+   
+    private static final long serialVersionUID = 1L;
+
+    public TypeHasSubTypesException(String message) {
+        super(message);
+    }
 }

@@ -152,6 +152,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
             .subscribe((response) => {
               this.loadTypes();
               this.loadSubTypes(response.id);
+              this.snackBar.openSnackBar("Updated successfully", "", "green-snackbar");
             });
       }
     });

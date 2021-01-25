@@ -1,5 +1,4 @@
 package com.example.culturecontentapp.service;
-
 import com.example.culturecontentapp.exception.TypeAlreadyExistsException;
 import com.example.culturecontentapp.exception.TypeHasSubTypesException;
 import com.example.culturecontentapp.exception.TypeNotFoundException;
@@ -12,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

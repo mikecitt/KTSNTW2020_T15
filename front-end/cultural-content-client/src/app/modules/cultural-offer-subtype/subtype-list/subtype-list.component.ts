@@ -104,7 +104,9 @@ export class SubtypeListComponent implements OnInit {
       .subscribe( (result) => {
         if(result){
           this.subTypeService.updateSubType(result)
-              .subscribe(() => { this.refreshDataEvent.emit(result.type.id) });
+            .subscribe(() => {
+              this.snackBar.openSnackBar("Updated successfully", "", "green-snackbar");
+              this.refreshDataEvent.emit(result.type.id) });
         }
       });
   }
