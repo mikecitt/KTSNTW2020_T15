@@ -47,7 +47,7 @@ export class NewsComponent implements OnInit {
 
    ngOnInit(): void {
     if(this.isUser){
-    this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res)});
+      this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res)});
     }
    }
  
@@ -121,7 +121,6 @@ export class NewsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(this.newsToAdd.images);
       if(result.operation == "add") this.addNews();
       else if(result.operation == "cancelAdd") this.clearNewsForm();
     });
@@ -158,19 +157,12 @@ export class NewsComponent implements OnInit {
   }
 
   updateNews(news: News, updatedNews: News): void{
-    console.log("update");
-    console.log(updatedNews);
     updatedNews.date = new Date();
     this.newsService.updateNews(updatedNews).subscribe((response) => {
       this.loadNews();
       this.snackBar.openSnackBar("News successfuly updated",'','green-snackbar');
     });
 
-  }
-
-  cancelUpdating(news :News): void{
-    console.log("cancel update");
-    console.log(news);
   }
 
 }
