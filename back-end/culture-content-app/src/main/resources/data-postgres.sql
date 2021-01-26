@@ -19,16 +19,16 @@ INSERT INTO Sub_type (id, name, type_id) VALUES
     (1003, 'Podkategorija1', 1002);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
-    (1001, 'Petrovaradinska tvrdjava', 45.252736, 19.8601);
+    (1001, 'Petrovaradinska Pijaca, Novi Sad, South Bačka 21132, Serbia', 45.241496, 19.8833);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
-    (1002, 'Usce', 44.8177044, 20.4284067);
+    (1002, 'Ušće Shopping Center, Bulevar Mihaila Pupina 4, Beograd, Stari Grad 11070, Serbia', 44.815634, 20.436596);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
-    (1003, 'Bg Arena', 44.8141499, 20.4191007);
+    (1003, 'Шпанских Бораца, Beograd 11070, Stari Grad, Serbia', 44.81489515, 20.4192237006694);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
-    (1004, 'Arena pula', 44.8854538, 13.7460958);
+    (1004, 'Arena, Pula - Pola, Istria 52100, Croatia', 44.87024, 13.847183);
 
 INSERT INTO Cultural_offer (id, description, location_id, name, subtype_id) VALUES
     (1001, 'Najveci festival u regionu', 1001, 'Exit festival', 1001);

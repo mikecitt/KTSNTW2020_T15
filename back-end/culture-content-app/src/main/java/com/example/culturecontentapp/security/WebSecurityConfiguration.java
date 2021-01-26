@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final AccountDetailsService accountDetailsService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
