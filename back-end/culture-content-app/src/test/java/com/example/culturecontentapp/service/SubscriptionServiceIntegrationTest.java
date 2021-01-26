@@ -3,14 +3,11 @@ package com.example.culturecontentapp.service;
 import static com.example.culturecontentapp.constants.SubscriptionConstants.*;
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import com.example.culturecontentapp.exception.UserAlreadySubscribedException;
 import com.example.culturecontentapp.exception.UserNotSubscribedException;
 import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.response.AccountLoginResponse;
-import com.example.culturecontentapp.payload.response.SubscriptionResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.security.jwt.TokenBasedAuthentication;
 
@@ -73,7 +70,6 @@ public class SubscriptionServiceIntegrationTest {
         login(DB_USER_EMAIL, DB_USER_PASSWORD);
 
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
-        List<SubscriptionResponse> test = subscriptionService.get(pageable).getBody().getContent();
         int size = subscriptionService.get(pageable).getBody().getContent().size();
         assertEquals(DB_SUBSCRIPTION_SIZE, size);
     }
