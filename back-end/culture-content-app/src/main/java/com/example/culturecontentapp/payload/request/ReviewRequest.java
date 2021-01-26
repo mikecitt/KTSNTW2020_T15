@@ -31,6 +31,7 @@ public class ReviewRequest {
     public ReviewRequest(Short rating, String comment) {
         this.rating = rating;
         this.comment = comment;
+        this.images = new String[0];
     }
 
     public Short getRating() {

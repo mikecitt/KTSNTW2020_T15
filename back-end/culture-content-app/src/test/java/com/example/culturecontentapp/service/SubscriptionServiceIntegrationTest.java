@@ -1,16 +1,16 @@
 package com.example.culturecontentapp.service;
 
-import static com.example.culturecontentapp.constants.SubscriptionConstants.DB_SUBSCRIPTION_SIZE;
 import static com.example.culturecontentapp.constants.SubscriptionConstants.*;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.PAGEABLE_PAGE;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.PAGEABLE_SIZE;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.SECREY_KEY;
 import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 
 import com.example.culturecontentapp.exception.UserAlreadySubscribedException;
 import com.example.culturecontentapp.exception.UserNotSubscribedException;
 import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
+import com.example.culturecontentapp.payload.response.SubscriptionResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.security.jwt.TokenBasedAuthentication;
 
@@ -50,10 +50,10 @@ public class SubscriptionServiceIntegrationTest {
     private AccountRepository accountRepository;
 
     public void login(String user, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(user, password), String.class);
+        ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                new AccountLoginRequest(user, password), AccountLoginResponse.class);
 
-        String accessToken = "Bearer " + responseEntity.getBody();
+        String accessToken = "Bearer " + responseEntity.getBody().getToken();
 
         accessToken = accessToken.substring(7);
 
@@ -73,6 +73,7 @@ public class SubscriptionServiceIntegrationTest {
         login(DB_USER_EMAIL, DB_USER_PASSWORD);
 
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
+        List<SubscriptionResponse> test = subscriptionService.get(pageable).getBody().getContent();
         int size = subscriptionService.get(pageable).getBody().getContent().size();
         assertEquals(DB_SUBSCRIPTION_SIZE, size);
     }
@@ -87,7 +88,7 @@ public class SubscriptionServiceIntegrationTest {
 
         User u = (User) accountRepository.findByEmail(DB_USER_EMAIL).get();
         Integer SUBSCRIBE_COUNT = u.getSubscriptions().size();
-        assertEquals(DB_SUBSCRIPTION_SIZE, SUBSCRIBE_COUNT - 1);
+        assertEquals(DB_SUBSCRIPTION_COUNT, SUBSCRIBE_COUNT - 1);
     }
 
     @Test(expected = UserAlreadySubscribedException.class)
@@ -109,7 +110,7 @@ public class SubscriptionServiceIntegrationTest {
 
         User u = (User) accountRepository.findByEmail(DB_USER_EMAIL).get();
         Integer SUBSCRIBE_COUNT = u.getSubscriptions().size();
-        assertEquals(DB_SUBSCRIPTION_SIZE, SUBSCRIBE_COUNT + 1);
+        assertEquals(DB_SUBSCRIPTION_COUNT, SUBSCRIBE_COUNT + 1);
     }
 
     @Test(expected = UserNotSubscribedException.class)

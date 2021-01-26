@@ -1,16 +1,13 @@
 package com.example.culturecontentapp.controller;
 
-import static com.example.culturecontentapp.constants.SubscriptionConstants.ALREADY_SUBSCRIBED_OFFER_ID;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.DB_SUBSCRIPTION_SIZE;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.DB_USER_EMAIL;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.DB_USER_PASSWORD;
-import static com.example.culturecontentapp.constants.SubscriptionConstants.NOT_SUBSCRIBED_OFFER_ID;
+import static com.example.culturecontentapp.constants.SubscriptionConstants.*;
 import static org.junit.Assert.assertEquals;
 
 import javax.transaction.Transactional;
 
 import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.SubscriptionResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.util.RestPageImpl;
@@ -44,9 +41,9 @@ public class SubscriptionControllerIntegrationTest {
     private String accessToken;
 
     public void login(String username, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(username, password), String.class);
-        accessToken = "Bearer " + responseEntity.getBody();
+        ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                new AccountLoginRequest(username, password), AccountLoginResponse.class);
+        accessToken = "Bearer " + responseEntity.getBody().getToken();
     }
 
     @Test
@@ -66,7 +63,7 @@ public class SubscriptionControllerIntegrationTest {
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         User u = (User) accountRepository.findByEmail(DB_USER_EMAIL).get();
         Integer SUBSCRIBE_COUNT = u.getSubscriptions().size();
-        assertEquals(DB_SUBSCRIPTION_SIZE, SUBSCRIBE_COUNT - 1);
+        assertEquals(DB_SUBSCRIPTION_COUNT, SUBSCRIBE_COUNT - 1);
     }
 
     @Test
@@ -105,7 +102,7 @@ public class SubscriptionControllerIntegrationTest {
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         User u = (User) accountRepository.findByEmail(DB_USER_EMAIL).get();
         Integer SUBSCRIBE_COUNT = u.getSubscriptions().size();
-        assertEquals(DB_SUBSCRIPTION_SIZE, SUBSCRIBE_COUNT + 1);
+        assertEquals(DB_SUBSCRIPTION_COUNT, SUBSCRIBE_COUNT + 1);
     }
 
     @Test
@@ -135,11 +132,11 @@ public class SubscriptionControllerIntegrationTest {
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(null, headers);
 
         ResponseEntity<RestPageImpl<SubscriptionResponse>> responseEntity = restTemplate.exchange(
-                "/api/subscriptions?page=1&size=10", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
+                "/api/subscriptions?page=0&size=5", HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
                 });
 
         RestPageImpl<SubscriptionResponse> subscriptions = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(DB_SUBSCRIPTION_SIZE, subscriptions.getSize());
+        assertEquals(DB_SUBSCRIPTION_SIZE, subscriptions.getContent().size());
     }
 }
