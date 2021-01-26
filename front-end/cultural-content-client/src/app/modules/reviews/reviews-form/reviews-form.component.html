@@ -1,0 +1,32 @@
+<div>
+    <mat-card-header>
+        <mat-card-title>Add Review</mat-card-title>
+    </mat-card-header>
+    <form class="example-form"  [formGroup]="form">
+        <mat-label>
+            Rating
+        </mat-label>
+        <mat-star-rating [rating]="rating" [starCount]="5" [color]="'primary'" (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+        <mat-form-field class="example-full-width">
+            <mat-label>
+                <mat-icon class="formTitleIcon">subject</mat-icon>Comment
+            </mat-label>
+            <textarea matInput formControlName="comment" [(ngModel)]="data.review.comment" ></textarea>
+            <mat-error>Comment must have between 5 and 128 characters</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field class="formField">
+            <mat-label class="title">
+              <mat-icon class="formTitleIcon">insert_photo</mat-icon>Choose the images
+            </mat-label>
+            <ngx-mat-file-input (change)="filesChanged()" [multiple]="fileMultiple" [accept]="fileAccept" formControlName="images">
+            </ngx-mat-file-input>
+          </mat-form-field>
+
+    </form>
+    <div class="buttons">
+        <button mat-raised-button color="warn" (click)="cancelAdd()">Cancel</button>
+        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="add()">Add</button>    
+    </div>
+</div>
