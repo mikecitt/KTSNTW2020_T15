@@ -50,5 +50,7 @@
     <app-news *ngIf="offer.id" [culturalOfferId]="offer.id"></app-news>
 
   </mat-tab>
-  <mat-tab label="Reviews"> Content 3 </mat-tab>
+  <mat-tab label="Reviews">
+    <app-reviews *ngIf="offer.id" [culturalOfferId]="offer.id"></app-reviews>
+  </mat-tab>
 </mat-tab-group>

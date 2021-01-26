@@ -1,0 +1,42 @@
+<mat-card >
+    <mat-card-header>        
+        <mat-card-title class="title">Reviews</mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content *ngIf="reviewPage">
+        <mat-card class="drop-shadow" *ngFor="let element of reviewPage.content">
+            
+            <div class="row">
+                <mat-star-rating [rating]="element.rating" [starCount]="5" [color]="'primary'"></mat-star-rating>
+            </div>
+
+            <div class="row">
+                <p>{{element.comment}}</p>
+            </div>
+
+            <mat-carousel  class="carousel"          
+            timings="250ms ease-in"
+            color=primary
+            [proportion]="40"
+            [hideArrows]="false"
+            [hideIndicators]="false"
+            [maintainAspectRatio]="true"
+            maxWidth="auto"
+            >
+                <mat-carousel-slide
+                    
+                    #matCarouselSlide
+                    *ngFor="let image of element.images; let i = index"
+                    [image]="uploads_url + image"
+                    overlayColor="#00000040"
+                    [hideOverlay]="false"
+                ></mat-carousel-slide>
+            </mat-carousel>
+            <p class="date">{{element.authorUsername}}</p>  
+        </mat-card>
+        <app-pagination-bar class="centered" [hasPrev]="!reviewPage.first" [hasNext]="!reviewPage.last"
+          [currentPage]="currentPage" (navigatePrevEvent)="getPreviousPage()" (navigateNextEvent)="getNextPage()">
+        </app-pagination-bar>
+    </mat-card-content>
+  </mat-card>
+  

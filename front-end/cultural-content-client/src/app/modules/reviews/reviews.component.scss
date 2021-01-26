@@ -1,0 +1,58 @@
+mat-card::ng-deep.mat-card-header-text {
+  width: 70%;
+}
+mat-card {
+  width: 50%;
+}
+
+mat-card-header {
+  margin-bottom: 10px;
+}
+
+.row {
+  display: table;
+}
+
+.right {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+
+.title {
+  font-size: 30px;
+}
+
+.column {
+  display: table-cell;
+}
+
+.float-right {
+  float: right;
+  width: 300px; // or 33% for equal width independent of parent width
+}
+
+.centered {
+  text-align: center;
+}
+
+.drop-shadow {
+  width: inherit;
+  border: 1px solid;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 5px 5px #e9e9e9;
+}
+
+.date {
+  font-weight: lighter;
+  font-style: italic;
+}
+
+.carousel {
+  margin-bottom: 5px;
+}
+
+.add-button {
+  margin: 10px;
+}
