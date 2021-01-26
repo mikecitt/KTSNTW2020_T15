@@ -122,7 +122,7 @@ public class TypeTest {
         typePage.getYesTypeButton().click();
 
         typePage.ensureSnackbarIsDisplayed();
-        assertEquals("Can't delete type", typePage.getSnackMessage().getText());
+        assertEquals("Cultural offer type has subType. Can't delete.", typePage.getSnackMessage().getText());
 
         List<WebElement> data = browser.findElements(By.cssSelector(".type-row"));
         assertEquals(sizeBeforeDeleting, data.size());
