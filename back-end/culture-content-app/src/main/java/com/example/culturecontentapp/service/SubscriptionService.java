@@ -1,6 +1,9 @@
 package com.example.culturecontentapp.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -107,25 +110,34 @@ public class SubscriptionService {
 
         List<SubscriptionResponse> subscriptions = new ArrayList<SubscriptionResponse>();
         User user = (User) entity.get();
+
         user.getSubscriptions().forEach(culturalOffer -> culturalOffer.getNews().forEach(news -> {
             SubscriptionResponse resp = new SubscriptionResponse();
             resp = modelMapper.map(news, SubscriptionResponse.class);
             resp.setCulturalOfferName(culturalOffer.getName());
             subscriptions.add(resp);
         }));
-        return new ResponseEntity<>(new PageImpl<>(subscriptions.stream().collect(Collectors.toList())), HttpStatus.OK);
+
+        subscriptions.sort(Comparator.comparing(SubscriptionResponse::getDate).reversed());
+
+        int start = (int) pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > subscriptions.size() ? subscriptions.size()
+                : (start + pageable.getPageSize());
+        Page<SubscriptionResponse> pages = new PageImpl<SubscriptionResponse>(subscriptions.subList(start, end),
+                pageable, subscriptions.size());
+
+        return new ResponseEntity<>(pages, HttpStatus.OK);
 
     }
 
-    public ResponseEntity<Boolean> isSubscribed(Long id){
+    public ResponseEntity<Boolean> isSubscribed(Long id) {
         org.springframework.security.core.userdetails.User loggedUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
 
-        Account entity = accountRepository.findByEmail(loggedUser.getUsername()).orElseThrow(() -> new AccountNotFoundException("Provided account is not found in the database"));
+        Account entity = accountRepository.findByEmail(loggedUser.getUsername())
+                .orElseThrow(() -> new AccountNotFoundException("Provided account is not found in the database"));
         User user = (User) entity;
         return new ResponseEntity<>(user.isSubscribedTo(id), HttpStatus.OK);
-
-
 
     }
 }
