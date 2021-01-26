@@ -1,10 +1,35 @@
 #map-page {
+  flex-grow: 1;
   width: 100%;
   height: 100%;
-  margin-top: 10px;
+  margin-left: 0 !important;
 }
 
 .root {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mapPageRoot {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 34% 66%;
+  grid-template-rows: 50% 50%;
+}
+
+.filterRoot {
+  border: 1px solid red;
+}
+
+.tableRoot {
+  border: 1px solid red;
+}
+
+.mapRoot {
+  border: 1px solid red;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
 }
