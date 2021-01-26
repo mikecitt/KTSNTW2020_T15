@@ -53,7 +53,7 @@ describe('NewsService', () => {
 
     service.getAll(1,0,3).subscribe(data => {newsPage = data})
 
-    const req = http.expectOne(path + '1?page=0&size=3');
+    const req = http.expectOne(path + 'culturalOffer/1?page=0&size=3');
     expect(req.request.method).toBe('GET');
     req.flush(mockNews);
 
