@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
-import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
+import { EditCulturalOfferDialogComponent } from '../edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
+import { MapItemComponent } from '../map-item/map-item.component';
 
 @Component({
   selector: 'app-map-item-overview',
@@ -10,11 +12,13 @@ import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
 export class MapItemOverviewComponent implements OnInit {
   public offer: CulturalOfferResponse;
 
+  public page: MapItemComponent;
+
   public starCount = 5;
   public starColor = 'primary';
   public starRating = 0;
 
-  constructor() {}
+  constructor(public dialog: MatDialog) {}
 
   get slides() {
     return [
@@ -29,4 +33,19 @@ export class MapItemOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  openEditDialog() {
+    const dialogRef = this.dialog.open(EditCulturalOfferDialogComponent, {
+      width: '350px',
+      data: this.offer,
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe((result: CulturalOfferResponse | undefined) => {
+        if (result !== undefined) {
+          this.page.updateCulturalOffer(result);
+        }
+      });
+  }
 }
