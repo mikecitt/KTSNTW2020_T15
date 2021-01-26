@@ -5,12 +5,14 @@ import { PageNotFoundComponent } from '../modules/page-not-found/page-not-found.
 import { CulturalOfferTypePageComponent } from '../modules/cultural-offer-type/cultural-offer-type-page/cultural-offer-type-page.component';
 import { MapPageComponent } from '../modules/cultural-offer/map-page/map-page.component';
 import { RegistrationComponent } from '../modules/registration/registration.component';
-import { AdminGuard, LoginGuard } from '../guards';
+import { AdminGuard, LoginGuard, UserGuard } from '../guards';
 import { ResendActivationComponent } from '../modules/resend-activation/resend-activation.component';
+import { SubscriptionsComponent } from '../modules/subscriptions/subscriptions.component';
 
 export const routes: Routes = [
     { path: '', component: MapPageComponent },
     { path: 'culturalOfferTypes', component: CulturalOfferTypePageComponent, canActivate: [AdminGuard] },
+    { path: 'subscriptions', component: SubscriptionsComponent, canActivate: [UserGuard] },
     { path: 'news', component: NewsComponent },
     { path: 'register', component: RegistrationComponent, canActivate: [LoginGuard] },
     { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },

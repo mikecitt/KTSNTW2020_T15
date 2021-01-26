@@ -44,6 +44,7 @@ import { StarRatingComponent } from './modules/star-rating/star-rating.component
 import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-form.component';
 import { ResendActivationComponent } from './modules/resend-activation/resend-activation.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { SubscriptionsComponent } from './modules/subscriptions/subscriptions.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     StarRatingComponent,
     TypeFormComponent,
     ResendActivationComponent,
+    SubscriptionsComponent
   ],
   imports: [
     BrowserModule,
