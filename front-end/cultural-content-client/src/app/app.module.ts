@@ -46,6 +46,7 @@ import { ResendActivationComponent } from './modules/resend-activation/resend-ac
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { SubscriptionsComponent } from './modules/subscriptions/subscriptions.component';
 import { ReviewsComponent } from './modules/reviews/reviews.component';
+import { EditCulturalOfferDialogComponent } from './modules/cultural-offer/edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ReviewsComponent } from './modules/reviews/reviews.component';
     ResendActivationComponent,
     SubscriptionsComponent,
     ReviewsComponent,
+    EditCulturalOfferDialogComponent
   ],
   imports: [
     BrowserModule,

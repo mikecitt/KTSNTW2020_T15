@@ -62,10 +62,14 @@ export class MapItemComponent implements OnInit, OnChanges {
   }
 
   createMarkers(): void {
+    this.markers.length = 0;
     this.culturalOffers.forEach((offer) => {
       let popupContent = this.dynamicComponentService.injectComponent(
         MapItemOverviewComponent,
-        (x) => (x.offer = offer)
+        (x) => {
+          x.offer = offer;
+          x.page = this;
+        }
       );
       const marker = new Mapboxgl.Marker({
         draggable: false,
@@ -77,6 +81,13 @@ export class MapItemComponent implements OnInit, OnChanges {
 
       this.markers.push(marker);
     });
+  }
+
+  updateCulturalOffer(offer: CulturalOfferResponse) {
+    var index = this.culturalOffers.findIndex((co) => co.id === offer.id);
+    this.culturalOffers[index].location = offer.location;
+    this.removeMarkers();
+    this.updateMarkers();
   }
 
   updateMarkers(): void {
@@ -98,9 +109,7 @@ export class MapItemComponent implements OnInit, OnChanges {
 
     response.subscribe((geo: Geocoder) => {
       if (geo.features[0]) {
-        this.mapa.setCenter(
-          geo.features[0].center as [number, number]
-        );
+        this.mapa.setCenter(geo.features[0].center as [number, number]);
         this.mapa.setZoom(13.5);
       } //mozda error staviti
     });
