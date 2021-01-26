@@ -3,7 +3,8 @@ package com.example.culturecontentapp.constants;
 public class SubscriptionConstants {
     public static final Integer PAGEABLE_PAGE = 0;
     public static final Integer PAGEABLE_SIZE = 10;
-    public static final long DB_SUBSCRIPTION_SIZE = 1;
+    public static final long DB_SUBSCRIPTION_SIZE = 2;
+    public static final long DB_SUBSCRIPTION_COUNT = 1;
 
     public static final Long NOT_SUBSCRIBED_OFFER_ID = 2l;
     public static final Long ALREADY_SUBSCRIBED_OFFER_ID = 1l;
