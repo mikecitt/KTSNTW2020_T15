@@ -45,6 +45,7 @@ import { TypeFormComponent } from './modules/cultural-offer-type/type-form/type-
 import { ResendActivationComponent } from './modules/resend-activation/resend-activation.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { SubscriptionsComponent } from './modules/subscriptions/subscriptions.component';
+import { EditCulturalOfferDialogComponent } from './modules/cultural-offer/edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { SubscriptionsComponent } from './modules/subscriptions/subscriptions.co
     StarRatingComponent,
     TypeFormComponent,
     ResendActivationComponent,
-    SubscriptionsComponent
+    SubscriptionsComponent,
+    EditCulturalOfferDialogComponent
   ],
   imports: [
     BrowserModule,
