@@ -3,14 +3,10 @@ package com.example.culturecontentapp.service;
 import com.example.culturecontentapp.exception.SubTypeAlreadyExistsException;
 import com.example.culturecontentapp.exception.SubTypeHasCulturalOffersException;
 import com.example.culturecontentapp.exception.SubTypeNotFoundException;
-import com.example.culturecontentapp.exception.TypeAlreadyExistsException;
 import com.example.culturecontentapp.model.SubType;
-import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.SubTypeRequest;
-import com.example.culturecontentapp.payload.request.TypeRequest;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
 import com.example.culturecontentapp.repository.SubTypeRepository;
-import com.example.culturecontentapp.repository.TypeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
-import java.util.Optional;
+import java.util.List;
 
 import static com.example.culturecontentapp.constants.SubTypeConstants.*;
 import static com.example.culturecontentapp.constants.TypeConstants.*;
@@ -45,6 +39,12 @@ public class SubTypeServiceIntegrationTest {
 
     @Test
     public void testFindAll(){
+        List<SubTypeResponse> subTypes = service.findAll(DB_TYPE_ID);
+        assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS, subTypes.size());
+    }
+
+    @Test
+    public void testFindAllPageable(){
         Pageable pageable = PageRequest.of(SB_PAGEABLE_PAGE,SB_PAGEABLE_SIZE);
         Page<SubTypeResponse> foundSub = service.findAll(DB_TYPE_ID,pageable);
         assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS, foundSub.getSize());

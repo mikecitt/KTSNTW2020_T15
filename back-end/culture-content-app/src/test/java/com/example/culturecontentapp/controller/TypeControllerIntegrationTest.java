@@ -3,10 +3,9 @@ package com.example.culturecontentapp.controller;
 import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.TypeRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.TypeResponse;
 import com.example.culturecontentapp.repository.TypeRepository;
-import com.example.culturecontentapp.security.jwt.TokenBasedAuthentication;
-import com.example.culturecontentapp.service.TypeService;
 import com.example.culturecontentapp.util.RestPageImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,15 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,23 +33,32 @@ public class TypeControllerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
-    private TypeService typeService;
-    @Autowired
     private TypeRepository typeRepository;
 
     private String accessToken;
 
 
     public void login(String username, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(username,password), String.class);
-        accessToken = "Bearer " + responseEntity.getBody();
+        ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                new AccountLoginRequest(username,password), AccountLoginResponse.class);
+        accessToken = "Bearer " + responseEntity.getBody().getToken();
     }
 
     @Test
     public void testGetAllCulturalOfferTypes(){
+        ResponseEntity<List<TypeResponse>> responseEntity =
+                restTemplate.exchange("/api/types/all", HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>(){});
 
-         //a trebalo bi Page<TypeResponse>
+        List<TypeResponse> types = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, types.size());
+        assertEquals(DB_TYPE, types.get(0).getName());
+    }
+
+    @Test
+    public void testGetAllCulturalOfferTypesWithPagination(){
         ResponseEntity<RestPageImpl<TypeResponse>> responseEntity =
                 restTemplate.exchange("/api/types?page=0&size=2", HttpMethod.GET,
                         null,

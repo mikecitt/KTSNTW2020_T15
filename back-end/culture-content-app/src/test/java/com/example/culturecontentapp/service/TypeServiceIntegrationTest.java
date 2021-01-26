@@ -2,7 +2,6 @@ package com.example.culturecontentapp.service;
 
 import com.example.culturecontentapp.exception.TypeAlreadyExistsException;
 import com.example.culturecontentapp.exception.TypeNotFoundException;
-import com.example.culturecontentapp.model.Type;
 import com.example.culturecontentapp.payload.request.TypeRequest;
 import com.example.culturecontentapp.payload.response.TypeResponse;
 import com.example.culturecontentapp.repository.TypeRepository;
@@ -18,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static org.junit.Assert.assertEquals;
@@ -37,6 +36,12 @@ public class TypeServiceIntegrationTest {
 
     @Test
     public void testFindAll(){
+        List<TypeResponse> types = typeService.findAll();
+        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, types.size());
+    }
+
+    @Test
+    public void testFindAllPaginated(){
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
         Page<TypeResponse> foundTypes = typeService.findAll(pageable);
         assertEquals(FIND_ALL_NUMBER_OF_ITEMS, foundTypes.getSize());
@@ -62,7 +67,7 @@ public class TypeServiceIntegrationTest {
     @Rollback(true)
     public void create_badParams_willReturnAlreadyExists(){
         TypeRequest newType = new TypeRequest(DB_TYPE);
-        TypeResponse createdType = typeService.create(newType);
+        typeService.create(newType);
 
         assertEquals(FIND_ALL_NUMBER_OF_ITEMS, typeRepository.count());
     }

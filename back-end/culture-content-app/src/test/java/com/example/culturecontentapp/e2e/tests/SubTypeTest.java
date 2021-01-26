@@ -62,6 +62,7 @@ public class SubTypeTest {
         typePage.ensureSaveSubTypeButtonIsDisplayed();
         typePage.getSaveSubTypeButton().click();
         sleep(1000);
+//        browser.wait(20);
 
         typePage.ensureSnackbarIsDisplayed();
         assertEquals("Created successfully", typePage.getSnackMessage().getText());
