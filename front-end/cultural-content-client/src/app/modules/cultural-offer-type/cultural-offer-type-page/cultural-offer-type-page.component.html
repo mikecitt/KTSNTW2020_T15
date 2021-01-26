@@ -1,5 +1,6 @@
 <app-navigation-bar></app-navigation-bar>
-<mat-grid-list cols="2" rowHeight="1:1">
+<mat-grid-list cols="2" rowHeight = "1.2:1">
+
   <mat-grid-tile style="width: 450px;">
     <mat-card class="mat-elevation-z8">
       <app-cultural-offer-type-list *ngIf="culturalOfferTypes" [offerTypes]="culturalOfferTypes"
@@ -12,12 +13,11 @@
           [currentPage]="curentPageType" (navigateNextEvent)="getNextType()" (navigatePrevEvent)="getPreviousType()">
         </app-pagination-bar>
       </mat-card-actions>
-
     </mat-card>
   </mat-grid-tile>
 
   <mat-grid-tile>
-    <mat-card class="mat-elevation-z8" style="width: 450px;">
+    <mat-card class="mat-elevation-z8">
       <app-subtype-list [typeId]="curentType" [offerSubtypes]="culturalOfferSubTypes"
         (refreshDataEvent)="loadSubTypes($event)">
       </app-subtype-list>

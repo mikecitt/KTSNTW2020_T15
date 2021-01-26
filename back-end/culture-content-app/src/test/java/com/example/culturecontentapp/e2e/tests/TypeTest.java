@@ -41,7 +41,7 @@ public class TypeTest {
     }
 
     @Test
-    public void create_nameAlreadyExists_willReturnSucceed(){
+    public void create_validName_willReturnSucceed(){
         testLogin();
         sleep(2000);
 
