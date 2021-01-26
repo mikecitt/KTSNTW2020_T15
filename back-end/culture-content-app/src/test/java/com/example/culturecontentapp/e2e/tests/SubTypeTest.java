@@ -4,13 +4,14 @@ import com.example.culturecontentapp.e2e.pages.LoginPage;
 import com.example.culturecontentapp.e2e.pages.TypePage;
 import lombok.AccessLevel;
 import lombok.Getter;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
@@ -24,7 +25,7 @@ public class SubTypeTest {
     TypePage typePage;
     LoginPage loginPage;
 
-    @BeforeMethod
+    @Before
     public void setup(){
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         browser = new ChromeDriver();
