@@ -2,7 +2,6 @@ package com.example.culturecontentapp.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.example.culturecontentapp.event.OnNewsCreatedEvent;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;

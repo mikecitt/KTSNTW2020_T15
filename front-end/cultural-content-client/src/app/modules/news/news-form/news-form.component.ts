@@ -1,5 +1,6 @@
 import { Inject } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { News } from 'src/app/models/news';
 
@@ -10,12 +11,27 @@ import { News } from 'src/app/models/news';
 })
 export class NewsFormComponent implements OnInit {
 
+  fileMultiple = true;
+  fileAccept = '.png, .jpeg, .jpg';
 
+  form: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<NewsFormComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<NewsFormComponent>,
+    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: NewsFormData
     ){
-      
+      this.form = this.formBuilder.group({
+        newsText: [
+          '',
+          Validators.compose([
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(256),
+          ]),
+        ],
+        images: ['',]
+      });
     }
 
   ngOnInit(): void {
@@ -37,9 +53,11 @@ export class NewsFormComponent implements OnInit {
     this.dialogRef.close({operation: 'cancelUpdate'})
   }
 
-  filesChanged(element : any): void{
+  filesChanged(): void{
     var self = this;
-    let files= element.target.files;
+    this.data.news.images = [];
+    // let files= element.target.files;
+    let files = this.form.getRawValue().images;
     Array.from(files).forEach(function(file){
       var reader = new FileReader();
       reader.onloadend = function() {

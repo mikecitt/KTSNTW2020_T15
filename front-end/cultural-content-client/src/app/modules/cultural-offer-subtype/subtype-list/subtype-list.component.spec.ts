@@ -89,8 +89,8 @@ describe('SubtypeListComponent', () => {
 
     fixture.whenStable().then(()=>{
       fixture.detectChanges();
-      let subtypes: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
-      expect(subtypes.length).toBe(1);
+      let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+      expect(elements.length).toBe(1);
     })
     fixture.detectChanges();
     expect(subtypeService.createSubType).toHaveBeenCalled();
