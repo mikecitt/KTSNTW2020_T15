@@ -1,21 +1,26 @@
-<app-navigation-bar></app-navigation-bar>
-<mat-grid-list cols="4" rowHeight="100px">
+<div class="root">
+  <app-navigation-bar></app-navigation-bar>
+  <div class="mapPageRoot">
 
-  <mat-grid-tile [colspan]="4">
-    <app-map-filter-form [culturalOfferTypes]="types" [culturalOfferSubTypes]="subTypes"
-      (getSubTypesEvent)="loadSubTypes($event)" (applyFilterEvent)="applyFilter($event)"
-      (resetFilterEvent)="resetFilter($event)"></app-map-filter-form>
-    <button mat-fab color="accent" (click)="openNewDialog()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-grid-tile>
-
-
-  <mat-grid-tile [rowspan]="4" [colspan]="4">
-    <div id="map-page">
-      <app-map-item *ngIf="culturalOfferLocations" [culturalOffers]="culturalOfferLocations"
-        [location]="searchedLocation"> </app-map-item>
+    <div class="filterRoot">
+      <app-map-filter-form [culturalOfferTypes]="types" [culturalOfferSubTypes]="subTypes"
+        (getSubTypesEvent)="loadSubTypes($event)" (applyFilterEvent)="applyFilter($event)"
+        (resetFilterEvent)="resetFilter($event)"></app-map-filter-form>
+      <button mat-fab color="accent" (click)="openNewDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
-  </mat-grid-tile>
 
-</mat-grid-list>
+    <div class="mapRoot">
+      <div id="map-page">
+        <app-map-item *ngIf="culturalOfferLocations" [culturalOffers]="culturalOfferLocations"
+          [location]="searchedLocation"> </app-map-item>
+      </div>
+    </div>
+
+    <div class="tableRoot">
+
+    </div>
+
+  </div>
+</div>
