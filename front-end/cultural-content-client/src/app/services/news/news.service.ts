@@ -21,7 +21,7 @@ export class NewsService {
     const params: HttpParams = new HttpParams()
         .append('page', page.toString())
         .append('size', limit.toString());
-    return this.http.get<NewsPage>(environment.api_url + '/news/' + culturalOfferId, {headers: this.ht, params : params});
+    return this.http.get<NewsPage>(environment.api_url + '/news/culturalOffer/' + culturalOfferId, {headers: this.ht, params : params});
   }
 
   deleteNews(newsId:number):Observable<{}>{
