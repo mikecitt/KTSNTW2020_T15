@@ -4,9 +4,12 @@ import static com.example.culturecontentapp.constants.NewsConstants.OFFER_ID;
 import static com.example.culturecontentapp.constants.NewsConstants.DB_NEWS_SIZE;
 import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_PAGE;
 import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_SIZE;
+import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_SIZE_ONE;
+import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_SIZE_TWO;
+import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_PAGE_ONE;
+import static com.example.culturecontentapp.constants.NewsConstants.PAGEABLE_PAGE_ZERO;
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
 
 import com.example.culturecontentapp.model.News;
 
@@ -29,10 +32,29 @@ public class NewsRepositoryIntegrationTest {
     private NewsRepository newsRepository;
 
     @Test
-    public void testFindByCulturalOffer() {
+    public void findByCulturalOffer_validParams_shouldSucceed() {
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE,PAGEABLE_SIZE);
         Page<News> found = newsRepository.findByCulturalOffer(OFFER_ID,pageable);
         assertEquals(DB_NEWS_SIZE, found.getContent().size());
+    }
+
+    @Test
+    public void findByCulturalOffer_ReturnsTwo_WhenPageSizeTwo(){
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_TWO);
+        Page<News> found = newsRepository.findByCulturalOffer(OFFER_ID,pageable);
+        assertEquals(1, found.getTotalPages());
+        assertEquals(0, found.getNumber());
+        assertEquals(2, found.getContent().size());
+
+    }
+
+    @Test
+    public void findByCulturalOffer_ReturnsPageTwo_WhenPageIsTwo() {
+        Pageable pageable = PageRequest.of(PAGEABLE_PAGE_ONE, PAGEABLE_SIZE_ONE);
+        Page<News> news = newsRepository.findAll(pageable);
+        assertEquals(2, news.getTotalPages());
+        assertEquals(1, news.getNumber());
+        assertEquals(1, news.getContent().size());
     }
     
 }

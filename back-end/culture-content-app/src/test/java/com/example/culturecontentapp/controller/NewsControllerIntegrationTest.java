@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.NewsRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.NewsResponse;
 import com.example.culturecontentapp.service.NewsService;
 import com.example.culturecontentapp.util.RestPageImpl;
@@ -54,23 +55,16 @@ public class NewsControllerIntegrationTest {
     
     // JWT token za pristup REST servisima. Bice dobijen pri logovanju
     private String accessToken;
-    
-    // public void login(String username, String password) {
-    //     AccountLoginRequest loginRequest = new AccountLoginRequest(username, password);
-    //     ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8080/api/auth/login",
-    //             loginRequest, String.class);
-    //     accessToken = "Bearer " + responseEntity.getBody();
-    // }
 
     public void login(String username, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(username, password), String.class);
-        accessToken = "Bearer " + responseEntity.getBody();
+        ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                new AccountLoginRequest(username,password), AccountLoginResponse.class);
+        accessToken = "Bearer " + responseEntity.getBody().getToken();
     }
 
     @Test
     @Transactional
-    public void testGetOffersNews(){
+    public void getByOfferId_GetsSuccessfully(){
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();
@@ -91,7 +85,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testCreateNews(){        
+    public void create_validParams_willReturnSucceed(){        
         
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
@@ -119,7 +113,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testCreateNewsCulturalOfferDoesntExist(){        
+    public void create_ThrowsCulturalOfferNotFoundException_WhenOfferIdNotExists(){        
         
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
@@ -139,7 +133,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testUpdateNews(){
+    public void update_UpdatesSuccessfully(){
 
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
@@ -169,7 +163,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testUpdateNewsDoesntExist(){
+    public void update_ThrowsNotFoundException_WhenIdNotExists(){
 
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
@@ -190,7 +184,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testGetOffersNewsOfferDoesntExist(){
+    public void getByOfferId_ThrowsOfferNotFound_WhenIdNotExist(){
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();
@@ -206,7 +200,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testFindNews(){
+    public void findByCulturalOffer_validParams_shouldSucceed(){
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();
@@ -221,7 +215,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testFindNewsDoesntExist(){
+    public void findById_ThrowsNotFoundException_WhenIdNotExist(){
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();
@@ -236,7 +230,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testDeleteNews(){
+    public void delete_shouldReturnSuccess(){
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();
@@ -259,7 +253,7 @@ public class NewsControllerIntegrationTest {
 
     @Test
     @Transactional
-    public void testDeleteNewsDoesntExist(){
+    public void delete_ThrowsNotFoundException_WhenIdNotExists(){
         login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
         HttpHeaders headers = new HttpHeaders();

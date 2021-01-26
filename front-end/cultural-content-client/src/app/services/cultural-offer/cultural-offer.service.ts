@@ -31,7 +31,6 @@ export class CulturalOfferService {
     request: CulturalOfferRequest,
     subTypeId: number
   ): Observable<CulturalOfferResponse> {
-    console.log(this.cookieService.get('token'));
     let ht = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.cookieService.get('token')}`,
@@ -44,6 +43,20 @@ export class CulturalOfferService {
         headers: ht,
       }
     );
+  }
+
+  update(
+    request: CulturalOfferRequest,
+    id: number
+  ): Observable<CulturalOfferResponse> {
+    let ht = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.cookieService.get('token')}`,
+    });
+
+    return this.http.put<CulturalOfferResponse>(this.path + `/${id}`, request, {
+      headers: ht,
+    });
   }
 
   filterCulturalOffers(

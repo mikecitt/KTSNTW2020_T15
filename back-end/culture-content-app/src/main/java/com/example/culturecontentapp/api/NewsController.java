@@ -44,13 +44,11 @@ public class NewsController {
     return service.update(newsRequest, id);
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
   @GetMapping("/culturalOffer/{offerId}")
   public ResponseEntity<Page<NewsResponse>> getOffersNews(@PathVariable Long offerId, Pageable pageable){
     return service.getOffersNews(offerId, pageable);
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
   @GetMapping("/{id}")
   public ResponseEntity<NewsResponse> find(@PathVariable Long id){
     return service.find(id);
