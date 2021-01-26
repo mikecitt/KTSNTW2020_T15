@@ -1,12 +1,10 @@
 package com.example.culturecontentapp.controller;
-import com.example.culturecontentapp.exception.SubTypeAlreadyExistsException;
-import com.example.culturecontentapp.exception.SubTypeHasCulturalOffersException;
 import com.example.culturecontentapp.model.SubType;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.SubTypeRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.SubTypeResponse;
 import com.example.culturecontentapp.repository.SubTypeRepository;
-import com.example.culturecontentapp.service.SubTypeService;
 import com.example.culturecontentapp.util.RestPageImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +16,9 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
 import static com.example.culturecontentapp.constants.SubTypeConstants.*;
 import static com.example.culturecontentapp.constants.TypeConstants.*;
 import static com.example.culturecontentapp.constants.UserConstants.DB_ADMIN_EMAIL;
@@ -31,30 +32,42 @@ public class SubTypeControllerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
-    private SubTypeService service;
-    @Autowired
     private SubTypeRepository repository;
 
     private String accessToken;
 
     public void login(String username, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(username,password), String.class);
-        accessToken = "Bearer " + responseEntity.getBody();
+        ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                new AccountLoginRequest(username,password), AccountLoginResponse.class);
+        accessToken = "Bearer " + responseEntity.getBody().getToken();
     }
 
     @Test
-    public void testGetAllCulturalOfferTypes(){
+    public void testGetAllCulturalOfferSubTypes(){
+
+        ResponseEntity<List<SubTypeResponse>> responseEntity =
+                restTemplate.exchange(String.format("/api/sub-types/all?typeId=%d", DB_TYPE_ID), HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>(){});
+
+        List<SubTypeResponse> subTypes = responseEntity.getBody();
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS, subTypes.size());
+        assertEquals(DB_SUBTYPE_NAME, subTypes.get(0).getName());
+    }
+
+    @Test
+    public void testGetAllCulturalOfferSubTypesWithPagination(){
 
         ResponseEntity<RestPageImpl<SubTypeResponse>> responseEntity =
                 restTemplate.exchange("/api/sub-types?typeId=1&page=0&size=2", HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<>(){});
 
-        RestPageImpl<SubTypeResponse> types = responseEntity.getBody();
+        RestPageImpl<SubTypeResponse> subTypes = responseEntity.getBody();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(FIND_ALL_NUMBER_OF_ITEMS, types.getContent().size());
-        assertEquals(DB_SUBTYPE_NAME, types.getContent().get(0).getName());
+        assertEquals(SB_FIND_ALL_NUMBER_OF_ITEMS, subTypes.getContent().size());
+        assertEquals(DB_SUBTYPE_NAME, subTypes.getContent().get(0).getName());
     }
 
     @Test
