@@ -1,5 +1,8 @@
 <mat-card >
-    <mat-card-header>        
+    <mat-card-header>   
+        <button mat-mini-fab *ngIf="isUser" class="add-button" color="primary" (click)="openDialog()">
+            <mat-icon >add</mat-icon>
+        </button>     
         <mat-card-title class="title">Reviews</mat-card-title>
 
     </mat-card-header>
