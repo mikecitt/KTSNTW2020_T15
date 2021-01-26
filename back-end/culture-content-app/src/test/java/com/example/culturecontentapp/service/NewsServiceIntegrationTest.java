@@ -40,7 +40,7 @@ public class NewsServiceIntegrationTest {
 
     @Test   
     @Transactional
-    public void testCreate(){
+    public void create_validParams_willReturnSucceed(){
         NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
         NewsResponse created = newsService.create(newsRequest, OFFER_ID).getBody();
         assertEquals(newsRequest.getText(), created.getText());
@@ -48,13 +48,13 @@ public class NewsServiceIntegrationTest {
 
     @Test(expected = CulturalOfferNotFoundException.class)
     @Transactional
-    public void testCreateOfferDoesntExist(){
+    public void create_ThrowsCulturalOfferNotFoundException_WhenOfferIdNotExists(){
         newsService.create(new NewsRequest(NEWS, NEWS_TIME), BAD_OFFER_ID);
     }
 
     @Test
     @Transactional
-    public void testUpdate(){
+    public void update_UpdatesSuccessfully(){
         NewsRequest newsRequest = new NewsRequest(NEWS, NEWS_TIME);
         NewsResponse created = newsService.update(newsRequest, NEWS_ID).getBody();
         assertEquals(NEWS, created.getText());
@@ -62,49 +62,48 @@ public class NewsServiceIntegrationTest {
 
     @Test(expected = NewsNotFoundException.class)
     @Transactional
-    public void testUpdateNewsDoesntExist(){
+    public void update_ThrowsNotFoundException_WhenIdNotExists(){
         newsService.update(new NewsRequest(NEWS, NEWS_TIME), BAD_NEWS_ID);
     }
 
     @Test
     @Transactional
-    public void testGetOffersNews(){
+    public void selectByOfferId_SelectsSuccessfully(){
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         int size = newsService.getOffersNews(OFFER_ID, pageable).getBody().getContent().size();
         assertEquals(DB_NEWS_SIZE, size);
-        //
     }
 
     @Test(expected = CulturalOfferNotFoundException.class)
     @Transactional
-    public void testGetOffersNewsOfferDoesntExist(){
+    public void selectByOfferId_ThrowsNotFoundException_WhenIdNotExists(){
         Pageable pageable = PageRequest.of(PAGEABLE_PAGE, PAGEABLE_SIZE);
         newsService.getOffersNews(BAD_OFFER_ID, pageable); 
     }
 
     @Test
     @Transactional
-    public void testFindNews(){
+    public void selectById_SelectsSuccessfully(){
         NewsResponse newsResponse = newsService.find(NEWS_ID).getBody();
         assertEquals(NEWS_ID, newsResponse.getId());
     }
 
     @Test(expected = NewsNotFoundException.class)
     @Transactional
-    public void testFindNewsDoesntExist(){
+    public void selectById_ThrowsNotFoundException_WhenIdNotExists(){
         newsService.find(BAD_NEWS_ID);
     }
 
     @Test(expected = NewsNotFoundException.class)
     @Transactional
-    public void testDeleteNews(){
+    public void delete_shouldReturnSuccess(){
         newsService.deleteNews(NEWS_ID);
         newsService.find(NEWS_ID);
     }
 
     @Test(expected = NewsNotFoundException.class)
     @Transactional
-    public void testDeleteNewsDoesntExist(){
+    public void delete_ThrowsNotFoundException_WhenIdNotExists(){
         newsService.deleteNews(BAD_NEWS_ID);
     }
 
