@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
 import com.example.culturecontentapp.payload.request.AccountLoginRequest;
 import com.example.culturecontentapp.payload.request.ReviewRequest;
+import com.example.culturecontentapp.payload.response.AccountLoginResponse;
 import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.security.jwt.TokenBasedAuthentication;
 
@@ -50,10 +51,10 @@ public class ReviewServiceIntegrationTest {
     private TestRestTemplate restTemplate;
 
     public void login(String user, String password) {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/api/auth/login",
-                new AccountLoginRequest(user, password), String.class);
+        ResponseEntity<AccountLoginResponse> responseEntity = restTemplate.postForEntity("/api/auth/login",
+                new AccountLoginRequest(user, password), AccountLoginResponse.class);
 
-        String accessToken = "Bearer " + responseEntity.getBody();
+        String accessToken = "Bearer " + responseEntity.getBody().getToken();
 
         accessToken = accessToken.substring(7);
 

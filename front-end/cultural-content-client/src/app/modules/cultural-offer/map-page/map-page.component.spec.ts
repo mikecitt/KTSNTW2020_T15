@@ -1,5 +1,6 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
@@ -16,8 +17,16 @@ describe('MapPageComponent', () => {
   let culturalOfferService: CulturalOfferService;
   let typeService: CulturalOfferTypeService;
   let subTypeService: CulturalOfferSubTypeService;
+  let dialog: MatDialog;
 
   beforeEach(async () => {
+    const dialogMock = {
+      close: jasmine.createSpy('close'),
+      open : jasmine.createSpy('open').and.returnValue({
+        afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({}) ), close: null
+       })
+    }
+
     const culturalOffers: CulturalOfferResponse[] = [
       {
         id: 1,
@@ -88,7 +97,8 @@ describe('MapPageComponent', () => {
       providers: [
         {provide: CulturalOfferService, useValue: culturalOfferServiceMock},
         {provide: CulturalOfferTypeService, useValue: typeServiceMock},
-        {provide: CulturalOfferSubTypeService, useValue: subTypeSeviceMock}
+        {provide: CulturalOfferSubTypeService, useValue: subTypeSeviceMock},
+        {provide: MatDialog, useValue: dialogMock},
       ]
     })
     .compileComponents();
@@ -101,6 +111,8 @@ describe('MapPageComponent', () => {
     culturalOfferService = TestBed.inject(CulturalOfferService);
     typeService = TestBed.inject(CulturalOfferTypeService);
     subTypeService = TestBed.inject(CulturalOfferSubTypeService);
+    dialog = TestBed.inject(MatDialog);
+
   });
 
   it('should create', () => {

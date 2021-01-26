@@ -61,35 +61,33 @@ public class AuthenticationControllerIntegrationTest {
                 assertEquals(verificationTokenRepository.count(), DB_TOKENS_COUNT + 1);
         }
 
-        /*
-         * @Test(expected = AccountAlreadyExistsException.class)
-         * 
-         * @Transactional
-         * 
-         * @Rollback(true) public void testRegisterEmailAlreadyExist() {
-         * 
-         * HttpHeaders headers = new HttpHeaders(); HttpEntity<Object> httpEntity = new
-         * HttpEntity<Object>( new AccountRegisterRequest(REGISTER_EMAIL_ALREADY_EXIST,
-         * REGISTER_USERNAME, REGISTER_PASSWORD), headers);
-         * 
-         * restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity, new
-         * ParameterizedTypeReference<>() { }); ; }
-         */
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testRegisterEmailAlreadyExist() {
 
-        /*
-         * @Test(expected = AccountAlreadyExistsException.class)
-         * 
-         * @Transactional
-         * 
-         * @Rollback(true) public void testRegisterUsernamelAlreadyExist() {
-         * 
-         * HttpHeaders headers = new HttpHeaders(); HttpEntity<Object> httpEntity = new
-         * HttpEntity<Object>( new AccountRegisterRequest(REGISTER_EMAIL,
-         * REGISTER_USERNAME_ALREADY_EXIST, REGISTER_PASSWORD), headers);
-         * 
-         * restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity, new
-         * ParameterizedTypeReference<>() { }); ; }
-         */
+                HttpHeaders headers = new HttpHeaders();
+                HttpEntity<Object> httpEntity = new HttpEntity<Object>(new AccountRegisterRequest(
+                                REGISTER_EMAIL_ALREADY_EXIST, REGISTER_USERNAME, REGISTER_PASSWORD), headers);
+
+                ResponseEntity<String> resp = restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity,
+                                String.class);
+                assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, resp.getStatusCode());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(true)
+        public void testRegisterUsernamelAlreadyExist() {
+
+                HttpHeaders headers = new HttpHeaders();
+                HttpEntity<Object> httpEntity = new HttpEntity<Object>(new AccountRegisterRequest(REGISTER_EMAIL,
+                                REGISTER_USERNAME_ALREADY_EXIST, REGISTER_PASSWORD), headers);
+
+                ResponseEntity<String> resp = restTemplate.exchange("/api/auth/register", HttpMethod.POST, httpEntity,
+                                String.class);
+                assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, resp.getStatusCode());
+        }
 
         @Test
         @Transactional

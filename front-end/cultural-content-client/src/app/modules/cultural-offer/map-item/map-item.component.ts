@@ -71,6 +71,7 @@ export class MapItemComponent implements OnInit, OnChanges {
           x.page = this;
         }
       );
+      console.log(popupContent);
       const marker = new Mapboxgl.Marker({
         draggable: false,
       })
