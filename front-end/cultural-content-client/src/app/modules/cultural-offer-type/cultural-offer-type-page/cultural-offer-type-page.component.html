@@ -1,47 +1,31 @@
+<app-navigation-bar></app-navigation-bar>
 <mat-grid-list cols="2" rowHeight="1:1">
   <mat-grid-tile style="width: 450px;">
-  <mat-card class="mat-elevation-z8" >
-    <app-cultural-offer-type-list
-        *ngIf="culturalOfferTypes"
-        [offerTypes]="culturalOfferTypes"
-        (onCreateTypeEvent)="openCreateDialog($event)"
-        (onUpdateTypeEvent)="openUpdateDialog($event)"
-        (onDeleteTypeEvent)="deleteType($event)"
-        (onRowClickEvent)="loadSubTypes($event)"
-        >
-    </app-cultural-offer-type-list>
+    <mat-card class="mat-elevation-z8">
+      <app-cultural-offer-type-list *ngIf="culturalOfferTypes" [offerTypes]="culturalOfferTypes"
+        (onCreateTypeEvent)="openCreateDialog($event)" (onUpdateTypeEvent)="openUpdateDialog($event)"
+        (onDeleteTypeEvent)="deleteType($event)" (onRowClickEvent)="loadSubTypes($event)">
+      </app-cultural-offer-type-list>
 
-    <mat-card-actions style="width: 300px; margin-left: 110px;">
-      <app-pagination-bar
-          *ngIf="typePage"
-          [hasNext]="!typePage.last"
-          [hasPrev]="!typePage.first"
-          [currentPage]="curentPageType"
-          (navigateNextEvent)="getNextType()"
-          (navigatePrevEvent)="getPreviousType()">
-      </app-pagination-bar>
-    </mat-card-actions>
+      <mat-card-actions style="width: 300px; margin-left: 110px;">
+        <app-pagination-bar *ngIf="typePage" [hasNext]="!typePage.last" [hasPrev]="!typePage.first"
+          [currentPage]="curentPageType" (navigateNextEvent)="getNextType()" (navigatePrevEvent)="getPreviousType()">
+        </app-pagination-bar>
+      </mat-card-actions>
 
-  </mat-card>
+    </mat-card>
   </mat-grid-tile>
 
   <mat-grid-tile>
     <mat-card class="mat-elevation-z8" style="width: 450px;">
-      <app-subtype-list
-        [typeId]="curentType"
-        [offerSubtypes]="culturalOfferSubTypes"
-        (refreshDataEvent)="loadSubTypes($event)"
-      >
+      <app-subtype-list [typeId]="curentType" [offerSubtypes]="culturalOfferSubTypes"
+        (refreshDataEvent)="loadSubTypes($event)">
       </app-subtype-list>
 
       <mat-card-actions style="width: 300px; margin-left: 110px;">
-        <app-pagination-bar
-            *ngIf="subTypePage"
-            [hasNext]="!subTypePage.last"
-            [hasPrev]="!subTypePage.first"
-            [currentPage]="curentPageSubType"
-            (navigateNextEvent)="getNextSubType()"
-            (navigatePrevEvent)="getPreviousSubType()">
+        <app-pagination-bar *ngIf="subTypePage" [hasNext]="!subTypePage.last" [hasPrev]="!subTypePage.first"
+          [currentPage]="curentPageSubType" (navigateNextEvent)="getNextSubType()"
+          (navigatePrevEvent)="getPreviousSubType()">
         </app-pagination-bar>
       </mat-card-actions>
     </mat-card>
