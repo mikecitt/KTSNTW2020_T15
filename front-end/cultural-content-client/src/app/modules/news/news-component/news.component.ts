@@ -83,7 +83,7 @@ export class NewsComponent implements OnInit {
       if(result){
         this.newsService.deleteNews(id).subscribe((res) => {
           this.loadNews();
-          this.snackBar.openSnackBar("News deleted successfuly",'','green-snackbar');
+          this.snackBar.openSnackBar("News deleted successfully",'','green-snackbar');
         });
       }
     })
@@ -92,14 +92,14 @@ export class NewsComponent implements OnInit {
   subscribe():void{
     this.subService.subscribeToOffer(this.culturalOfferId).subscribe((res) => {
       this.isSubscribed = true;
-      this.snackBar.openSnackBar("Successfuly subscribed",'','green-snackbar');
+      this.snackBar.openSnackBar("Successfully subscribed",'','green-snackbar');
     });
   }
 
   unsubscribe():void{
     this.subService.unsubscribeFromOffer(this.culturalOfferId).subscribe((res) => {
       this.isSubscribed = false;
-      this.snackBar.openSnackBar("Successfuly unsubscribed",'','green-snackbar');
+      this.snackBar.openSnackBar("Successfully unsubscribed",'','green-snackbar');
     });
   }
 
@@ -131,7 +131,7 @@ export class NewsComponent implements OnInit {
     this.newsService.addNews(this.culturalOfferId, this.newsToAdd).subscribe((response) => {
       this.loadNews();
       this.clearNewsForm();
-      this.snackBar.openSnackBar("News successfuly added",'','green-snackbar');
+      this.snackBar.openSnackBar("News successfully added",'','green-snackbar');
     });
   }
 
@@ -160,7 +160,7 @@ export class NewsComponent implements OnInit {
     updatedNews.date = new Date();
     this.newsService.updateNews(updatedNews).subscribe((response) => {
       this.loadNews();
-      this.snackBar.openSnackBar("News successfuly updated",'','green-snackbar');
+      this.snackBar.openSnackBar("News successfully updated",'','green-snackbar');
     });
 
   }

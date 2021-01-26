@@ -109,7 +109,7 @@ describe('NewsComponent', () => {
     fixture.detectChanges();
     expect(newsService.deleteNews).toHaveBeenCalled();
     expect(component.loadNews).toHaveBeenCalled();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("News deleted successfuly",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith("News deleted successfully",'','green-snackbar');
   });
 
   it('should subscribe', async ()=>{
@@ -117,7 +117,7 @@ describe('NewsComponent', () => {
     expect(subService.subscribeToOffer).toHaveBeenCalled();
     fixture.detectChanges();
     expect(component.isSubscribed).toBeTruthy();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("Successfuly subscribed",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith("Successfully subscribed",'','green-snackbar');
 
   });
 
@@ -126,7 +126,7 @@ describe('NewsComponent', () => {
     expect(subService.unsubscribeFromOffer).toHaveBeenCalled();
     fixture.detectChanges();
     expect(component.isSubscribed).toBeFalsy();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("Successfuly unsubscribed",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith("Successfully unsubscribed",'','green-snackbar');
 
   });
 
@@ -161,7 +161,7 @@ describe('NewsComponent', () => {
     expect(newsService.addNews).toHaveBeenCalled();
     expect(component.loadNews).toHaveBeenCalled();
     expect(component.clearNewsForm).toHaveBeenCalled();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("News successfuly added",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith("News successfully added",'','green-snackbar');
 
   });
 
@@ -196,6 +196,6 @@ describe('NewsComponent', () => {
     component.updateNews(news, news);
     expect(newsService.updateNews).toHaveBeenCalled();
     expect(component.loadNews).toHaveBeenCalled();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("News successfuly updated",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith("News successfully updated",'','green-snackbar');
   });
 });

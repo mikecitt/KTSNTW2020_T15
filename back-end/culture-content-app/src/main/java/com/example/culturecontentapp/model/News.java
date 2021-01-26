@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class News extends Model {
 
-  @NotBlank(message = "Text cannot be blank")
+  @NotBlank(message = "Description must be between 10 and 256 characters")
   @Size(min = 10, max = 256, message = "Text must be between 10 and 256 characters")
   @Column(nullable = false)
   private String text;
