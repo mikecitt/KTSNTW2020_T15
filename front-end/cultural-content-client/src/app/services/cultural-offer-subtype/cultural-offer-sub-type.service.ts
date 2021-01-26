@@ -21,7 +21,6 @@ export class CulturalOfferSubTypeService {
   }
 
   createSubType(req: CulturalOfferSubType): Observable<CulturalOfferSubType>{
-    // this.headers = this.headers.append('typeId', req.type.id);  nesto ne radi
     return this.http.post<CulturalOfferSubType>
       (environment.api_url + `/sub-types?typeId=${req.type.id}`, req );
   }
@@ -31,7 +30,7 @@ export class CulturalOfferSubTypeService {
       .append('typeId', req.type.id);
 
     return this.http.put<CulturalOfferSubType>
-      (environment.api_url + `/sub-types/${req.id}`, req, {headers: {}, params: params});
+      (environment.api_url + `/sub-types/${req.id}`, req, {params: params});
   }
 
   deleteSubType(subType: CulturalOfferSubType): Observable<void>{
@@ -39,7 +38,7 @@ export class CulturalOfferSubTypeService {
         .append('typeId', subType.type.id);
 
     return this.http.delete<void>
-      (environment.api_url + `/sub-types/${subType.id}`, {headers: {}, params: params});
+      (environment.api_url + `/sub-types/${subType.id}`, {params: params});
   }
 
 }

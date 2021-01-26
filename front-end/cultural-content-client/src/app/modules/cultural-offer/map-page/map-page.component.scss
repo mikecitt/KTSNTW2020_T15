@@ -9,6 +9,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: white;
 }
 
 .mapPageRoot {
@@ -19,6 +20,10 @@
 }
 
 .filterRoot {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  margin: 2%;
 }
 
 .tableRoot {
