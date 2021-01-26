@@ -15,6 +15,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -41,9 +42,6 @@ export class RegistrationComponent implements OnInit {
   form: FormGroup;
   loading = false;
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
   @ViewChild('registerForm')
   private registerForm!: NgForm;
 
@@ -53,7 +51,7 @@ export class RegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private snackBar: SnackBarComponent
   ) {
     this.form = this.formBuilder.group(
       {
@@ -106,26 +104,12 @@ export class RegistrationComponent implements OnInit {
         this.loading = false;
         this.form.reset();
         this.registerForm.resetForm();
-        let snackBarRef = this._snackBar.open(
-          'Confirmation mail has been sent. Please activate your account.',
-          'Go to Home page',
-          {
-            duration: 0,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-          }
-        );
-        snackBarRef.afterDismissed().subscribe(() => {
-          this.router.navigate(['']);
-        });
+        this.snackBar.openSnackBar("Confirmation mail has been sent. Please activate your account",'','green-snackbar');
       },
       (err) => {
         this.loading = false;
-        this._snackBar.open(err.error, 'Try Again', {
-          duration: 0,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
+        console.log(err);
+        this.snackBar.openSnackBar(err,'','red-snackbar');
       }
     );
   }
