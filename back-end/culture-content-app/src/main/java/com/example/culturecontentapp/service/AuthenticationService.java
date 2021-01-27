@@ -103,7 +103,7 @@ public class AuthenticationService {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  public ResponseEntity<?> activate(String token) {
+  public ResponseEntity<String> activate(String token) {
     Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
     if (!verificationToken.isPresent())
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -118,7 +118,7 @@ public class AuthenticationService {
     verificationTokenRepository.deleteByAccount(verificationToken.get().getAccount());
     // verificationTokenRepository.delete(verificationToken.get());
 
-    return new ResponseEntity<>(HttpStatus.OK);
+    return new ResponseEntity<>("<h1>Account successufly activated. You may now login.</h1>", HttpStatus.OK);
   }
 
   public ResponseEntity<AccountLoginResponse> login(AccountLoginRequest request) {
