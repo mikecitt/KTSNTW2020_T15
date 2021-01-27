@@ -41,6 +41,11 @@ public class CulturalOffer extends Model {
   @JoinColumn(name = "subtype_id")
   private SubType subType;
 
+  @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+      CascadeType.PERSIST }, targetEntity = User.class)
+  @JoinTable(name = "user_culturaloffers", joinColumns = @JoinColumn(name = "culturaloffer_id", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false, updatable = false), foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT), inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
+  private Set<User> subscribers;
+
   public CulturalOffer() {
     reviews = new HashSet<>();
     images = new HashSet<>();

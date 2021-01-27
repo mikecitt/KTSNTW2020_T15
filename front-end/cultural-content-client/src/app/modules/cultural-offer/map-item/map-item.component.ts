@@ -91,6 +91,13 @@ export class MapItemComponent implements OnInit, OnChanges {
     this.updateMarkers();
   }
 
+  deleteCulturalOffer(offer: CulturalOfferResponse) {
+    var index = this.culturalOffers.findIndex((co) => co.id === offer.id);
+    this.culturalOffers.splice(index, 1);
+    this.removeMarkers();
+    this.updateMarkers();
+  }
+
   updateMarkers(): void {
     this.createMarkers();
     //add markers on the map
