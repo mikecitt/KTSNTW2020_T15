@@ -170,6 +170,13 @@ public class CulturalOfferServiceIntegrationTest {
 
         @Test
         @Transactional
+        public void delete_DeletesSuccessfully() {
+                ResponseEntity<Void> response = service.delete(CULTURAL_OFFER_ID_EXISTS);
+                assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        }
+
+        @Test
+        @Transactional
         public void select_ReturnsTwo_WhenPageSizeIsTwo() {
                 Pageable pageable = PageRequest.of(PAGEABLE_PAGE_ZERO, PAGEABLE_SIZE_TWO);
                 ResponseEntity<Page<CulturalOfferResponse>> response = service.select(pageable);

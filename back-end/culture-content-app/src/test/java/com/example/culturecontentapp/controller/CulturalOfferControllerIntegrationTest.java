@@ -2,7 +2,10 @@ package com.example.culturecontentapp.controller;
 
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_DESCRIPTION;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_NOT_EXISTS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_EXISTS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_EXISTS_2;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_SUBTYPE;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_SUBTYPE_NOT_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.DB_ADMIN_EMAIL;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.DB_ADMIN_PASSWORD;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.PAGEABLE_PAGE_ZERO;
@@ -11,6 +14,8 @@ import static com.example.culturecontentapp.constants.CulturalOfferConstants.PAG
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.PAGEABLE_SIZE_TWO;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_ID_EXISTS;
 import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_ID_NOT_EXISTS;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.STORAGE_FILE_NOT_VALID;
+import static com.example.culturecontentapp.constants.CulturalOfferConstants.CULTURAL_OFFER_NAME_NEW;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -62,6 +67,7 @@ public class CulturalOfferControllerIntegrationTest {
         }
 
         @Test
+        @Transactional
         public void searchAndFilter_validRequest_willReturnSucceed() {
                 ResponseEntity<List<SubTypeResponse>> responseEntity = restTemplate.exchange(
                                 "/api/cultural-offer/search?culturalOfferName=ex&subTypeName=&typeName=",
@@ -73,6 +79,7 @@ public class CulturalOfferControllerIntegrationTest {
         }
 
         @Test
+        @Transactional
         public void searchAndFilter_noResultsRequest_willReturnSucceed() {
                 ResponseEntity<List<SubTypeResponse>> responseEntity = restTemplate.exchange(
                                 "/api/cultural-offer/search?culturalOfferName=ex&subTypeName=Manifestacija&typeName=",
@@ -85,7 +92,30 @@ public class CulturalOfferControllerIntegrationTest {
 
         @Test
         @Transactional
-        public void insert_InsertedSucessfully() throws IOException {
+        public void insert_ReturnsAlreadyExists() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_EXISTS_2,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer?subTypeId={subTypeId}",
+                                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_SUBTYPE);
+
+                assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        }
+
+        @Test
+        @Transactional
+        public void insert_ReturnsSubTypeNotFound() throws IOException {
                 login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
 
                 HttpHeaders headers = new HttpHeaders();
@@ -99,12 +129,184 @@ public class CulturalOfferControllerIntegrationTest {
 
                 HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
 
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer?subTypeId={subTypeId}",
+                                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_SUBTYPE_NOT_EXISTS);
+
+                assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        }
+
+        @Test
+        @Transactional
+        public void insert_ReturnsStorageBadRequest() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[] { STORAGE_FILE_NOT_VALID });
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer?subTypeId={subTypeId}",
+                                HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_SUBTYPE);
+
+                assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        }
+
+        @Test
+        @Transactional
+        public void insert_InsertedSucessfully() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NEW,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
                 ResponseEntity<CulturalOfferResponse> responseEntity = restTemplate.exchange(
                                 "/api/cultural-offer?subTypeId={subTypeId}", HttpMethod.POST, httpEntity,
                                 new ParameterizedTypeReference<>() {
                                 }, CULTURAL_OFFER_SUBTYPE);
 
                 assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+                assertEquals(request.getName(), responseEntity.getBody().getName());
+                assertEquals(request.getDescription(), responseEntity.getBody().getDescription());
+        }
+
+        @Test
+        public void update_ReturnsNotFound() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer/{id}", HttpMethod.PUT,
+                                httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_NOT_EXISTS);
+
+                assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        }
+
+        @Test
+        public void update_ReturnsNameAlreadyExists() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer/{id}", HttpMethod.PUT,
+                                httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_EXISTS);
+
+                assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        }
+
+        @Test
+        public void update_ReturnsStorageNotValid() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest(CULTURAL_OFFER_NAME_NOT_EXISTS,
+                                CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[] { STORAGE_FILE_NOT_VALID });
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer/{id}", HttpMethod.PUT,
+                                httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_EXISTS);
+
+                assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        }
+
+        @Test
+        @Transactional
+        public void update_UpdatesSucessfully() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                CulturalOfferRequest request = new CulturalOfferRequest("Bla bla bla", CULTURAL_OFFER_DESCRIPTION,
+                                new CulturalOfferLocationRequest(CULTURAL_OFFER_LOCATION_ADDRESS,
+                                                CULTURAL_OFFER_LOCATION_LONGITUDE, CULTURAL_OFFER_LOCATION_LATITUDE),
+                                new String[0]);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(request, headers);
+
+                ResponseEntity<CulturalOfferResponse> responseEntity = restTemplate.exchange("/api/cultural-offer/{id}",
+                                HttpMethod.PUT, httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_EXISTS);
+
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                // assertEquals(request.getName(), responseEntity.getBody().getName());
+                // assertEquals(request.getDescription(),
+                // responseEntity.getBody().getDescription());
+        }
+
+        @Test
+        public void delete_ReturnsNotFound() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer/{id}",
+                                HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>() {
+                                }, CULTURAL_OFFER_ID_NOT_EXISTS);
+
+                assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        }
+
+        @Test
+        @Transactional
+        public void delete_DeletesSucessfully() throws IOException {
+                login(DB_ADMIN_EMAIL, DB_ADMIN_PASSWORD);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Authorization", accessToken);
+
+                HttpEntity<Object> httpEntity = new HttpEntity<>(null, headers);
+
+                ResponseEntity<Void> responseEntity = restTemplate.exchange("/api/cultural-offer/{id}",
+                                HttpMethod.DELETE, httpEntity, new ParameterizedTypeReference<>() {
+                                }, 2);
+
+                assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         }
 
         @Test
