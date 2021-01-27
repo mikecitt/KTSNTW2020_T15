@@ -8,13 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { AuthService, LoginForm } from '../../services';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { AuthService } from '../../services';
 import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -41,19 +35,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class LoginComponent implements OnInit {
   form: FormGroup;
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-  @ViewChild('loginForm')
-  private loginForm!: NgForm;
-
-  matcher = new MyErrorStateMatcher();
-
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private _snackBar: SnackBarComponent
+    private snackBar: SnackBarComponent
   ) {
     this.form = this.formBuilder.group({
       email: [
@@ -90,14 +75,12 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         if (err === 'Forbidden') {
-          this._snackBar.openSnackBar(
+          this.snackBar.openSnackBar(
             'Password is incorrect',
             '',
             'red-snackbar'
           );
         }
-
-        //console.log(err.error);
       }
     );
   }
