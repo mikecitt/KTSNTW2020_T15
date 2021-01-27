@@ -52,8 +52,6 @@ public class TypeTest {
         typePage.getAddTypeButton().click();
         assertEquals(TYPES_PATH, browser.getCurrentUrl());
 
-        int sizeBeforeCreating = browser.findElements(By.cssSelector(".type-row")).size();
-
         typePage.ensureTypeNameIsDisplayed();
         typePage.getTypeNameInput().sendKeys("Novi Tip");
         typePage.getSaveTypeButton().click();
@@ -61,8 +59,6 @@ public class TypeTest {
 
         typePage.ensureSnackbarIsDisplayed();
         assertEquals("Created successfully", typePage.getSnackMessage().getText());
-
-        // typePage.ensureTypeRowCount(sizeBeforeCreating + 1);
     }
 
     @Test

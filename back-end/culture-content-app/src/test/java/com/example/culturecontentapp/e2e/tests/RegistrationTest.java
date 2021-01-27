@@ -53,7 +53,7 @@ public class RegistrationTest {
 
     @Test
     public void register_givenUsernameExists_shouldReturnError() {
-        registrationPage.getEmailInput().sendKeys(EXAMPLE_EMAIL);
+        registrationPage.getEmailInput().sendKeys(EXAMPLE_EMAIL2);
         registrationPage.getUsernameInput().sendKeys(ADMIN_USERNAME);
         registrationPage.getPasswordInput().sendKeys(EXAMPLE_PASSWORD);
         registrationPage.getRepeatInput().sendKeys(EXAMPLE_PASSWORD);
@@ -67,7 +67,7 @@ public class RegistrationTest {
     @Test
     public void register_givenEmailExists_shouldReturnError() {
         registrationPage.getEmailInput().sendKeys(ADMIN_EMAIL);
-        registrationPage.getUsernameInput().sendKeys(EXAMPLE_USERNAME);
+        registrationPage.getUsernameInput().sendKeys(EXAMPLE_USERNAME2);
         registrationPage.getPasswordInput().sendKeys(EXAMPLE_PASSWORD);
         registrationPage.getRepeatInput().sendKeys(EXAMPLE_PASSWORD);
         registrationPage.ensureSubmitButtonIsDisplayed();

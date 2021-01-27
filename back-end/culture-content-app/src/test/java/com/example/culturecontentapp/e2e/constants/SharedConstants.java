@@ -19,6 +19,10 @@ public class SharedConstants {
     public static final String EXAMPLE_EMAIL = "example@example.com";
     public static final String EXAMPLE_USERNAME = "example";
     public static final String EXAMPLE_PASSWORD = "example";
+    public static final String EXAMPLE_EMAIL2 = "example@example.com";
+    public static final String EXAMPLE_USERNAME2 = "example2";
+    public static final String EXAMPLE_EMAIL3 = "example3@example.com";
+    public static final String EXAMPLE_USERNAME3 = "example3";
 
     public static final String CULTURAL_OFFER_NAME = "Novi kulturni dogadjaj";
     public static final String CULTURAL_OFFER_DESCRIPTION = "Neka nova deskripcija";
