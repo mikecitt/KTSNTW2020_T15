@@ -25,10 +25,11 @@ public class HomePage {
 
     }
 
-    public void initalizeOfferSelectElements(){
+    public void initalizeOfferSelectElements() {
         this.typeOption = new SelectWebElement(driver, "#new-co-type-option");
         this.subTypeOption = new SelectWebElement(driver, "#new-co-subType-option");
     }
+
     @FindBy(id = "edit-offer-name")
     private WebElement editOfferName;
 
@@ -38,10 +39,13 @@ public class HomePage {
     @FindBy(id = "edit-offer-btn")
     private WebElement editOfferButton;
 
+    @FindBy(id = "delete-offer-btn")
+    private WebElement deleteOfferButton;
+
     @FindBy(id = "offer-pict")
     private WebElement offerPicture;
 
-    @FindBy(id= "submitOffer")
+    @FindBy(id = "submitOffer")
     private WebElement submitOffer;
 
     @FindBy(id = "submit-edit")
@@ -74,7 +78,7 @@ public class HomePage {
     @FindBy(css = "#edit-location")
     private WebElement editLocation;
 
-    @FindBy(css= "#edit-co-location-option")
+    @FindBy(css = "#edit-co-location-option")
     private WebElement editLocationOption;
 
     @FindBy(css = "#new-co-location-option")
@@ -176,5 +180,9 @@ public class HomePage {
 
     public void ensureMySubscriptionsButtonIsDisplayed() {
         (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(mySubscriptionsButton));
+    }
+
+    public void ensureCulturalOfferDeleteButtonDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(deleteOfferButton));
     }
 }
