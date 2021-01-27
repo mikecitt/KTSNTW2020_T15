@@ -31,7 +31,7 @@ describe('PaginationBarComponent', () => {
 
   it('should navigate previous', () => {
     spyOn(component.navigatePrevEvent, 'emit');
-    component.navigateNext();
+    component.navigatePrevious();
     expect(component.navigatePrevEvent.emit).toHaveBeenCalled();
   });
 });
