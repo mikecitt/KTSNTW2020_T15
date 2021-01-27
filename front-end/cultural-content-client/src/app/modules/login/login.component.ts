@@ -15,6 +15,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -52,7 +53,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: SnackBarComponent
   ) {
     this.form = this.formBuilder.group({
       email: [
@@ -88,6 +89,14 @@ export class LoginComponent implements OnInit {
         //this.router.navigate(['']);
       },
       (err) => {
+        if (err === 'Forbidden') {
+          this._snackBar.openSnackBar(
+            'Password is incorrect',
+            '',
+            'red-snackbar'
+          );
+        }
+
         //console.log(err.error);
       }
     );

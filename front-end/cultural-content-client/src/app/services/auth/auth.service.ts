@@ -30,12 +30,16 @@ const COOKIE_NAME = 'token';
   providedIn: 'root',
 })
 export class AuthService {
-
   private access_token = 'null';
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private userService: UserService, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private userService: UserService,
+    private router: Router
+  ) {
     this.access_token = cookieService.get(COOKIE_NAME);
-    if(!this.access_token) {
+    if (!this.access_token) {
       userService.setupUser(null);
     }
   }
@@ -48,15 +52,19 @@ export class AuthService {
   }
 
   login(login: LoginForm) {
-    return this.http.post<LoginResponse>(`${environment.api_url}/auth/login`, login).pipe(map((res) => {
-      console.log(res);
-      this.access_token = res.token!;
-      this.cookieService.set(COOKIE_NAME, this.access_token);
-      delete res.token;
-      res.role = 'ROLE_' + res.role;
-      this.userService.setupUser(res);
-      this.router.navigate(['/']);
-    }));
+    return this.http
+      .post<LoginResponse>(`${environment.api_url}/auth/login`, login)
+      .pipe(
+        map((res) => {
+          console.log(res);
+          this.access_token = res.token!;
+          this.cookieService.set(COOKIE_NAME, this.access_token);
+          delete res.token;
+          res.role = 'ROLE_' + res.role;
+          this.userService.setupUser(res);
+          this.router.navigate(['/']);
+        })
+      );
   }
 
   resendActivation(email: string) {
