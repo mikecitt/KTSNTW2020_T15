@@ -59,6 +59,17 @@ export class CulturalOfferService {
     });
   }
 
+  delete(id: number): Observable<void> {
+    let ht = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.cookieService.get('token')}`,
+    });
+
+    return this.http.delete<void>(this.path + `/${id}`, {
+      headers: ht,
+    });
+  }
+
   selectWithPagination(page: number, size: number): Observable<any> {
     return this.http.get<CulturalOfferResponse>(
       this.path + `?page${page}&size=${size}`

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
-import { UserService } from 'src/app/services';
+import { CulturalOfferService, UserService } from 'src/app/services';
 import { EditCulturalOfferDialogComponent } from '../edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
 import { MapItemComponent } from '../map-item/map-item.component';
 
@@ -19,7 +19,11 @@ export class MapItemOverviewComponent implements OnInit {
   public starColor = 'primary';
   public starRating = 0;
 
-  constructor(public dialog: MatDialog, private userService: UserService) {}
+  constructor(
+    public dialog: MatDialog,
+    private userService: UserService,
+    private service: CulturalOfferService
+  ) {}
 
   get slides() {
     return [
@@ -52,5 +56,11 @@ export class MapItemOverviewComponent implements OnInit {
           this.page.updateCulturalOffer(result);
         }
       });
+  }
+
+  delete() {
+    this.service.delete(this.offer.id).subscribe((data) => {
+      this.page.deleteCulturalOffer(this.offer);
+    });
   }
 }
