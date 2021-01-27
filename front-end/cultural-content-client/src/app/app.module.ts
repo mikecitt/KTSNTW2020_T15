@@ -48,6 +48,7 @@ import { SubscriptionsComponent } from './modules/subscriptions/subscriptions.co
 import { ReviewsComponent } from './modules/reviews/reviews-component/reviews.component';
 import { EditCulturalOfferDialogComponent } from './modules/cultural-offer/edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
 import { ReviewsFormComponent } from './modules/reviews/reviews-form/reviews-form.component';
+import { TableViewComponent } from './modules/cultural-offer/table-view/table-view.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { ReviewsFormComponent } from './modules/reviews/reviews-form/reviews-for
     SubscriptionsComponent,
     ReviewsComponent,
     EditCulturalOfferDialogComponent,
-    ReviewsFormComponent
+    ReviewsFormComponent,
+    TableViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,7 +113,7 @@ import { ReviewsFormComponent } from './modules/reviews/reviews-form/reviews-for
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
     DynamicComponentService,
   ],
