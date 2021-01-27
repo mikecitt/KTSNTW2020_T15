@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -18,7 +17,7 @@ export interface LoginForm {
   password: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   token?: string;
   email: string;
   role: string;
@@ -52,19 +51,16 @@ export class AuthService {
   }
 
   login(login: LoginForm) {
-    return this.http
-      .post<LoginResponse>(`${environment.api_url}/auth/login`, login)
-      .pipe(
-        map((res) => {
-          console.log(res);
-          this.access_token = res.token!;
-          this.cookieService.set(COOKIE_NAME, this.access_token);
-          delete res.token;
-          res.role = 'ROLE_' + res.role;
-          this.userService.setupUser(res);
-          this.router.navigate(['/']);
-        })
-      );
+    return this.http.post<LoginResponse>(`${environment.api_url}/auth/login`, login).pipe(map((res) => {
+      console.log(res);
+      this.access_token = res.token!;
+      this.cookieService.set(COOKIE_NAME, this.access_token);
+      delete res.token;
+      res.role = 'ROLE_' + res.role;
+      this.userService.setupUser(res);
+      this.router.navigate(['/']);
+    }));
+    
   }
 
   resendActivation(email: string) {
