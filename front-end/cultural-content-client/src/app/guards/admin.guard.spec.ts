@@ -25,7 +25,10 @@ describe('AdminGuard', () => {
     
   });
 
-  it('should be created', () => {
+  it('should be created', () => { 
+    userService = TestBed.inject(UserService);
+    guard = TestBed.inject(AdminGuard);
+    router = TestBed.inject(Router);
     expect(guard).toBeTruthy();
   });
 
