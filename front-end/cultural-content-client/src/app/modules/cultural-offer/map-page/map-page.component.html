@@ -15,7 +15,7 @@
         <app-map-item *ngIf="culturalOfferLocations" [culturalOffers]="culturalOfferLocations"
           [location]="searchedLocation"> </app-map-item>
       </div>
-      <button mat-fab color="accent" class="newButton" (click)="openNewDialog()">
+      <button mat-fab color="accent" *ngIf="isAdmin" class="newButton" (click)="openNewDialog()">
         <mat-icon>add</mat-icon>
       </button>
     </div>
