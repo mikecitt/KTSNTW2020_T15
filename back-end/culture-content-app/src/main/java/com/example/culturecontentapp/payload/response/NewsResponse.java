@@ -12,7 +12,7 @@ public class NewsResponse {
 
     private Long id;
     
-    @NotBlank(message = "Text cannot be blank")
+    @NotBlank(message = "Description must be between 10 and 256 characters")
     @Size(min = 10, max = 256, message = "Description must be between 10 and 256 characters")
     private String text;
   
