@@ -22,8 +22,4 @@ export class ReviewService {
         .append('size', limit.toString());
     return this.http.get<ReviewPage>(environment.api_url + '/review?culturalOfferId=' + culturalOfferId, {params : params});
   }
-
-  getMy(culturalOfferId: number): Observable<Review>{
-    return this.http.get<Review>(environment.api_url + '/review/my?culturalOfferId=' + culturalOfferId);
-  }
 }
