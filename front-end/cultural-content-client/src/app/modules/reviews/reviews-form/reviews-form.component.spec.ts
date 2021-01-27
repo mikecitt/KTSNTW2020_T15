@@ -8,7 +8,7 @@ describe('ReviewsFormComponent', () => {
   let component: ReviewsFormComponent;
   let fixture: ComponentFixture<ReviewsFormComponent>;
   let dialogRef: MatDialogRef<ReviewsFormComponent>;
-  let formBuilder: FormBuilder;
+  const formBuilder: FormBuilder = new FormBuilder();
   let dialogDataMock = {
     type: "add",
     review: {
@@ -25,16 +25,12 @@ describe('ReviewsFormComponent', () => {
     close : jasmine.createSpy('close')
   }
 
-  const formBuilderMock = {
-    group: jasmine.createSpy('group')
-  }
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ReviewsFormComponent ],
       providers: [{provide: MatDialogRef, useValue: dialogMock},
                   {provide: MAT_DIALOG_DATA, useValue: {}},
-                  {provide: FormBuilder, useValue: formBuilderMock},]
+                  {provide: FormBuilder, useValue: formBuilder},]
     })
     .compileComponents();
   });
@@ -43,10 +39,15 @@ describe('ReviewsFormComponent', () => {
     fixture = TestBed.createComponent(ReviewsFormComponent);
     component = fixture.componentInstance;
 
+    component.form = formBuilder.group({
+      rating: null,
+      comment: null,
+      images: []
+    });
+
     component.data = dialogDataMock;
     fixture.detectChanges();
 
-    formBuilder = TestBed.inject(FormBuilder);
     dialogRef = TestBed.inject(MatDialogRef);
   });
 
@@ -61,6 +62,6 @@ describe('ReviewsFormComponent', () => {
 
   it('should call cancel add', async () =>{
     component.cancelAdd();
-    expect(dialogRef.close).toHaveBeenCalledWith({operation: 'cancelAdd'});
+    expect(dialogRef.close).toHaveBeenCalledWith({operation: 'cancel'});
   });
 });

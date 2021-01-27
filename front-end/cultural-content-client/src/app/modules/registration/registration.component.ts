@@ -8,13 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { AuthService, RegistrationForm } from '../../services';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { AuthService } from '../../services';
 import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -50,7 +44,6 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
     private snackBar: SnackBarComponent
   ) {
     this.form = this.formBuilder.group(

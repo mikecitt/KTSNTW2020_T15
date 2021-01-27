@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 import { AuthService } from 'src/app/services';
 
@@ -16,12 +14,9 @@ export class ResendActivationComponent implements OnInit {
   loading = false;
 
   @ViewChild('resendForm')
-  private resendForm!: NgForm;
+  public resendForm!: NgForm;
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-  constructor(private formBuilder: FormBuilder, private snackBar: SnackBarComponent, private router: Router, private authService: AuthService, private _snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder, private snackBar: SnackBarComponent, private authService: AuthService) {
     this.form = this.formBuilder.group({
       email: [
         '',
