@@ -39,7 +39,6 @@ public class TypeService {
   public Page<TypeResponse> findAll(Pageable pageable){
     Page<Type> types = repository.findAll(pageable);
     return new PageImpl<>(toTypeDto(types),types.getPageable(),types.getTotalElements());
-//    return toTypeDto(types);
   }
 
   public TypeResponse findById(Long id){
@@ -75,7 +74,7 @@ public class TypeService {
     if(type.isEmpty())
       throw new TypeNotFoundException("Cultural offer type with given id doesn't exist");
     if(type.get().getSubTypes().size() != 0)
-      throw new TypeHasSubTypesException("Can't delete type");
+      throw new TypeHasSubTypesException("Cultural offer type has subType. Can't delete.");
     //type.get().removeAllSubTypes();;
     repository.delete(type.get());
   }

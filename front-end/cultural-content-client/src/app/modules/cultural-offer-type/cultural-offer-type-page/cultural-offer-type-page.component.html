@@ -2,7 +2,7 @@
 <mat-grid-list cols="2" rowHeight = "1.2:1">
 
   <mat-grid-tile style="width: 450px;">
-    <mat-card class="mat-elevation-z8">
+    <mat-card class="mat-elevation-z8 type-card">
       <app-cultural-offer-type-list *ngIf="culturalOfferTypes" [offerTypes]="culturalOfferTypes"
         (onCreateTypeEvent)="openCreateDialog($event)" (onUpdateTypeEvent)="openUpdateDialog($event)"
         (onDeleteTypeEvent)="deleteType($event)" (onRowClickEvent)="loadSubTypes($event)">
@@ -17,7 +17,7 @@
   </mat-grid-tile>
 
   <mat-grid-tile>
-    <mat-card class="mat-elevation-z8">
+    <mat-card class="mat-elevation-z8 sub-card">
       <app-subtype-list [typeId]="curentType" [offerSubtypes]="culturalOfferSubTypes"
         (refreshDataEvent)="loadSubTypes($event)">
       </app-subtype-list>

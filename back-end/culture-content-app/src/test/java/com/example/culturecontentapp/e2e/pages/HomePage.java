@@ -1,6 +1,7 @@
 package com.example.culturecontentapp.e2e.pages;
 
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -75,8 +76,16 @@ public class HomePage {
         (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(applyFilterButton));
     }
 
-    public void ensureMapMarkerIsDisplayed() {
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(mapMarker));
+    public void ensureMarkerCount(int count){
+        String selector = String.format(".mapboxgl-marker");
+        (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.numberOfElementsToBe(
+                        By.cssSelector(selector), count));
+    }
+    
+    public void ensureMapMarkerIsDisplayed(){
+        (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.visibilityOf(mapMarker));
     }
 
     public void ensureTabLabelNewsIsDisplayed() {

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 import { AuthService } from 'src/app/services';
 
 @Component({
@@ -12,11 +13,15 @@ import { AuthService } from 'src/app/services';
 export class ResendActivationComponent implements OnInit {
 
   form: FormGroup;
+  loading = false;
+
+  @ViewChild('resendForm')
+  private resendForm!: NgForm;
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private _snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder, private snackBar: SnackBarComponent, private router: Router, private authService: AuthService, private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({
       email: [
         '',
@@ -34,25 +39,19 @@ export class ResendActivationComponent implements OnInit {
 
   submit() {
 
+    this.loading = true;
+
     this.authService.resendActivation(this.form.controls['email'].value).subscribe(
       (data) => {
-        console.log(data);
+        this.loading = false;
         this.form.reset();
-        let snackBarRef = this._snackBar.open(
-          'Confirmation mail has been sent. Please activate your account.',
-          'Go to Home page',
-          {
-            duration: 0,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-          }
-        );
-        snackBarRef.afterDismissed().subscribe(() => {
-          this.router.navigate(['']);
-        });
+        this.resendForm.resetForm();
+        this.snackBar.openSnackBar("Confirmation mail has been sent. Please activate your account",'','green-snackbar');
+
       },
       (err) => {
-        console.log(err.error);
+        this.loading = false;
+        this.snackBar.openSnackBar(err,'','red-snackbar');
       }
     );
   }
