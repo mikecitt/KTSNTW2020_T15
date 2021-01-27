@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @RequiredArgsConstructor
 public class LoginPage {
 
-    @Getter(value= AccessLevel.PRIVATE)
+    @Getter(value = AccessLevel.PRIVATE)
     private final WebDriver driver;
 
     @FindBy(css = "#login-username-input")
@@ -25,8 +25,14 @@ public class LoginPage {
     @FindBy(css = "#login-submit-button")
     private WebElement loginButton;
 
+    @FindBy(css = ".mat-simple-snackbar")
+    private WebElement snackMessage;
+
     public void ensureIsDisplayed() {
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(loginButton));
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(loginButton));
+    }
+
+    public void ensureSnackbarIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(snackMessage));
     }
 }
