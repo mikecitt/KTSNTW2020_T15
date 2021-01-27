@@ -10,11 +10,11 @@
         <mat-card class="drop-shadow" *ngFor="let element of reviewPage.content">
             
             <div class="row">
-                <mat-star-rating [rating]="element.rating" [starCount]="5" [color]="'primary'"></mat-star-rating>
+                <mat-star-rating id="ratingId" [rating]="element.rating" [starCount]="5" [color]="'primary'"></mat-star-rating>
             </div>
 
             <div class="row">
-                <p>{{element.comment}}</p>
+                <p id="review-text">{{element.comment}}</p>
             </div>
 
             <mat-carousel  class="carousel"          

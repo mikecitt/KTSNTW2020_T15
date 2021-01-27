@@ -42,6 +42,9 @@ public class HomePage {
     @FindBy(css = "#mat-tab-label-0-1")
     private WebElement tabLabelNews;
 
+    @FindBy(css = "#mat-tab-label-0-2")
+    private WebElement tabLabelReviews;
+
     @FindBy(id = "add-news-button")
     private WebElement addNewsFormButton;
 
@@ -63,6 +66,9 @@ public class HomePage {
     @FindBy(id = "news-text")
     private WebElement newsText;
 
+    @FindBy(id = "review-text")
+    private WebElement reviewText;
+
     @FindBy(id = "nav-subscriptions")
     private WebElement mySubscriptionsButton;
 
@@ -76,20 +82,21 @@ public class HomePage {
         (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(applyFilterButton));
     }
 
-    public void ensureMarkerCount(int count){
+    public void ensureMarkerCount(int count) {
         String selector = String.format(".mapboxgl-marker");
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.numberOfElementsToBe(
-                        By.cssSelector(selector), count));
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(selector), count));
     }
-    
-    public void ensureMapMarkerIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(mapMarker));
+
+    public void ensureMapMarkerIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(mapMarker));
     }
 
     public void ensureTabLabelNewsIsDisplayed() {
         (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(tabLabelNews));
+    }
+
+    public void ensureTabLabelReviewsIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(tabLabelReviews));
     }
 
     public void ensureAddNewsButtonIsDisplayed() {

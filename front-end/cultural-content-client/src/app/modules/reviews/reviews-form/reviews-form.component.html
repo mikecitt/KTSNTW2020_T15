@@ -6,7 +6,7 @@
         <mat-label>
             Rating
         </mat-label>
-        <mat-star-rating [rating]="rating" [starCount]="5" [color]="'primary'" (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+        <mat-star-rating id="formRating" [rating]="rating" [starCount]="5" [color]="'primary'" (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
         <mat-form-field class="example-full-width">
             <mat-label>
                 <mat-icon class="formTitleIcon">subject</mat-icon>Comment
@@ -26,7 +26,7 @@
 
     </form>
     <div class="buttons">
-        <button mat-raised-button color="warn" (click)="cancelAdd()">Cancel</button>
-        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="add()">Add</button>    
+        <button id="cancel-reviews-form-button" mat-raised-button color="warn" (click)="cancelAdd()">Cancel</button>
+        <button id="add-reviews-form-button" mat-raised-button color="primary" [disabled]="form.invalid" (click)="add()">Add</button>    
     </div>
 </div>
