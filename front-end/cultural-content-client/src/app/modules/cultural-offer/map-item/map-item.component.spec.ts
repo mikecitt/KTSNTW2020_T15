@@ -3,9 +3,11 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import * as Mapboxgl from 'mapbox-gl';
+import { of } from 'rxjs';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
 import { Geocoder } from 'src/app/models/geocoder';
+import { CulturalOfferService } from 'src/app/services';
 import { DynamicComponentService } from 'src/app/services/dynamic-component.service';
 import { environment } from 'src/environments/environment';
 import { MapItemComponent } from './map-item.component';
@@ -13,7 +15,7 @@ import { MapItemComponent } from './map-item.component';
 describe('MapItemComponent', () => {
   let component: MapItemComponent;
   let fixture: ComponentFixture<MapItemComponent>;
-  let httpMock: HttpTestingController;
+  let offerService: CulturalOfferService;
   let mapa: Mapboxgl.Map;
   let dynamicsService: DynamicComponentService;
 
@@ -61,14 +63,34 @@ describe('MapItemComponent', () => {
     const mapaMock = {
       setCenter: jasmine.createSpy('setCenter'),
       setZoom: jasmine.createSpy('setZoom')
-    }
+    };
+
+    const geocoderMock : Geocoder = {
+      query: [],
+      features: [{
+        text: "fafa",
+        place_name: "dadas",
+        center: [20,20],
+        bbox: [12,332]
+      },{
+        text: "fafa",
+        place_name: "dadas",
+        center: [20,20],
+        bbox: [12,332]
+      }]
+    };
+
+    const offerServiceMock = {
+      getMapboxLocations : jasmine.createSpy('getMapboxLocations').and.returnValue(of( geocoderMock ))
+    };
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ MapItemComponent ],
       providers: [
         { provide : Mapboxgl.Map, useValue: mapaMock},
-        { provide: DynamicComponentService, useValue: dynamicsServiceMock}
+        { provide: DynamicComponentService, useValue: dynamicsServiceMock},
+        { provide: CulturalOfferService, useValue: offerServiceMock}
       ]
     }).compileComponents();
 
@@ -80,15 +102,11 @@ describe('MapItemComponent', () => {
     component = fixture.componentInstance;
     component.culturalOffers = culturalOffersMock;
     fixture.detectChanges();
-    httpMock = TestBed.inject(HttpTestingController);
+    offerService = TestBed.inject(CulturalOfferService);
     mapa = TestBed.inject(Mapboxgl.Map);
     dynamicsService = TestBed.inject(DynamicComponentService);
     fixture.detectChanges();
 
-  });
-
-  afterEach(() => {
-    httpMock.verify();
   });
 
   it('should create', () => {
@@ -119,21 +137,14 @@ describe('MapItemComponent', () => {
     expect(component.markers.length).toBe(component.culturalOffers.length);
   });
 
-  // it('should update focus when location is changed', async() => {
-  //   const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/
-  //                 London.json?access_token=${environment.mapboxKey}`;
+  // it('should update focus when location is changed', () => {
   //   component.location = "London";
-  //   component.focusOnLocation();
-  //   //fixture.detectChanges();
+  //   fixture.detectChanges();
   //   // component.location = "London";
   //   // fixture.detectChanges();
 
-  //   // const req = httpMock.expectNone(path);
-  //   // expect(req.request.method).toBe('GET');
-  //   // req.flush(geocoderMock);
-
-  //   expect(mapa.setCenter).toHaveBeenCalled();
-  //   expect(mapa.setZoom).toHaveBeenCalled();
+  //   // expect(mapa.setCenter).toHaveBeenCalled();
+  //   expect(mapa.setZoom).toHaveBeenCalledWith(13.5);
   // });
 
 });
