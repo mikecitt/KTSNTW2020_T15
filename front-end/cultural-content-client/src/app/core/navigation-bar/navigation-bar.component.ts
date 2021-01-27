@@ -17,7 +17,6 @@ export class NavigationBarComponent implements OnInit {
   role: string;
 
   ngOnInit(): void {
-    console.log(this.router.url);
     this.role = this.userService.getRole();
   }
 
