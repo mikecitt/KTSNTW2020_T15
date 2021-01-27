@@ -50,7 +50,7 @@ public class NewsService {
     News news = mapper.map(newsRequest, News.class);
     handleStoringImages(news);
     offer.addNews(news);
-    // handlePublishingNewsEvent(offerId, news, offer.getName()); TODO izgleda da antivirus zeza
+    handlePublishingNewsEvent(offerId, news, offer.getName());
     return new ResponseEntity<>(convertToNewsResponse(repository.save(news)), HttpStatus.CREATED);
     
   }
