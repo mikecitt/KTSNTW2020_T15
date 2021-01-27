@@ -22,4 +22,16 @@ describe('PaginationBarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should navigate next', () => {
+    spyOn(component.navigateNextEvent, 'emit');
+    component.navigateNext();
+    expect(component.navigateNextEvent.emit).toHaveBeenCalled();
+  });
+
+  it('should navigate previous', () => {
+    spyOn(component.navigatePrevEvent, 'emit');
+    component.navigateNext();
+    expect(component.navigatePrevEvent.emit).toHaveBeenCalled();
+  });
 });
