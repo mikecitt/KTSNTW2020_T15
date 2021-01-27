@@ -6,11 +6,8 @@ import com.example.culturecontentapp.e2e.pages.LoginPage;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
 import static com.example.culturecontentapp.e2e.constants.SharedConstants.*;

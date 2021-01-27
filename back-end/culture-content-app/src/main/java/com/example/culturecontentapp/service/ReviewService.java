@@ -1,10 +1,8 @@
 package com.example.culturecontentapp.service;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.example.culturecontentapp.exception.AccountNotFoundException;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
@@ -13,7 +11,6 @@ import com.example.culturecontentapp.model.CulturalOffer;
 import com.example.culturecontentapp.model.Review;
 import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.payload.request.ReviewRequest;
-import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
@@ -29,7 +26,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ReviewService {

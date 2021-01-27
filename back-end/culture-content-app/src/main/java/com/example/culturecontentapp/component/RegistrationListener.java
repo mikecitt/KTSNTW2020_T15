@@ -1,7 +1,5 @@
 package com.example.culturecontentapp.component;
 
-import java.util.UUID;
-
 import com.example.culturecontentapp.event.OnRegistrationCompleteEvent;
 import com.example.culturecontentapp.model.Account;
 import com.example.culturecontentapp.service.VerificationTokenService;

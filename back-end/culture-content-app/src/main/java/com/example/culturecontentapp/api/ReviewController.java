@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.example.culturecontentapp.payload.request.ReviewRequest;
 import com.example.culturecontentapp.payload.response.ReviewResponse;
-import com.example.culturecontentapp.payload.response.ReviewResponse;
 import com.example.culturecontentapp.service.ReviewService;
 
 import org.springframework.beans.factory.annotation.Autowired;

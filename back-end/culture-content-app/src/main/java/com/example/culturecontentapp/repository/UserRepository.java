@@ -1,7 +1,6 @@
 package com.example.culturecontentapp.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.example.culturecontentapp.model.User;
 
@@ -16,4 +15,3 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByCulturalOffersId(Long id);
 
 }
-    

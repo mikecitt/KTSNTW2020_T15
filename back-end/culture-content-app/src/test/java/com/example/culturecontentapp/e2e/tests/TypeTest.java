@@ -1,4 +1,5 @@
 package com.example.culturecontentapp.e2e.tests;
+
 import com.example.culturecontentapp.e2e.pages.LoginPage;
 import com.example.culturecontentapp.e2e.pages.TypePage;
 import org.junit.Before;
@@ -23,7 +24,7 @@ public class TypeTest {
     LoginPage loginPage;
 
     @Before
-    public void setup(){
+    public void setup() {
         System.setProperty(WEB_DRIVER, WEB_DRIVER_PATH);
         browser = new ChromeDriver();
         browser.manage().window().maximize();
@@ -33,8 +34,7 @@ public class TypeTest {
         loginPage = PageFactory.initElements(browser, LoginPage.class);
     }
 
-
-    public void testLogin(){
+    public void testLogin() {
         loginPage.ensureIsDisplayed();
         loginPage.getUsernameInput().sendKeys(ADMIN_EMAIL);
         loginPage.getPasswordInput().sendKeys(ADMIN_PASS);
@@ -42,7 +42,7 @@ public class TypeTest {
     }
 
     @Test
-    public void create_validName_willReturnSucceed(){
+    public void create_validName_willReturnSucceed() {
         testLogin();
         sleep(2000);
 
@@ -62,10 +62,11 @@ public class TypeTest {
         typePage.ensureSnackbarIsDisplayed();
         assertEquals("Created successfully", typePage.getSnackMessage().getText());
 
-        //typePage.ensureTypeRowCount(sizeBeforeCreating + 1);
+        // typePage.ensureTypeRowCount(sizeBeforeCreating + 1);
     }
+
     @Test
-    public void create_givenNameExists_willReturnError(){
+    public void create_givenNameExists_willReturnError() {
         testLogin();
         sleep(2000);
 
@@ -87,8 +88,9 @@ public class TypeTest {
 
         typePage.ensureTypeRowCount(sizeBeforeCreating);
     }
+
     @Test
-    public void create_validParams_clickClose(){
+    public void create_validParams_clickClose() {
         testLogin();
         sleep(2000);
 
@@ -97,7 +99,7 @@ public class TypeTest {
         typePage.ensureAddTypeButtonIsDisplayed();
         typePage.getAddTypeButton().click();
         assertEquals(TYPES_PATH, browser.getCurrentUrl());
-        //save size of type list
+        // save size of type list
         int sizeBeforeCreating = browser.findElements(By.cssSelector(".type-row")).size();
 
         typePage.ensureTypeNameIsDisplayed();
@@ -108,8 +110,9 @@ public class TypeTest {
         List<WebElement> data = browser.findElements(By.cssSelector(".type-row"));
         assertEquals(sizeBeforeCreating, data.size());
     }
+
     @Test
-    public void delete_typeHasSubType_shouldReturnError(){
+    public void delete_typeHasSubType_shouldReturnError() {
         testLogin();
         sleep(1000);
 
@@ -130,7 +133,7 @@ public class TypeTest {
     }
 
     @Test
-    public void delete_shouldReturnSuccess(){
+    public void delete_shouldReturnSuccess() {
         testLogin();
         sleep(1000);
 
@@ -139,7 +142,8 @@ public class TypeTest {
 
         String name = browser.findElements(By.cssSelector(".type-row")).get(4).getText();
 
-        WebElement deleteBtn = browser.findElement(By.cssSelector(".mat-table tbody .type-row:last-child .mat-column-options .mat-warn"));
+        WebElement deleteBtn = browser
+                .findElement(By.cssSelector(".mat-table tbody .type-row:last-child .mat-column-options .mat-warn"));
         deleteBtn.click();
         typePage.ensureYesTypeButtonIsDisplayed();
         typePage.getYesTypeButton().click();
@@ -152,7 +156,7 @@ public class TypeTest {
     }
 
     @Test
-    public void update_validName_shouldReturnSuccess(){
+    public void update_validName_shouldReturnSuccess() {
         testLogin();
         sleep(2000);
 
@@ -177,7 +181,7 @@ public class TypeTest {
     }
 
     @Test
-    public void update_validName_clickClose(){
+    public void update_validName_clickClose() {
         testLogin();
         sleep(2000);
 
@@ -199,7 +203,7 @@ public class TypeTest {
     }
 
     @Test
-    public void update_nameAlreadyExists_shouldReturnError(){
+    public void update_nameAlreadyExists_shouldReturnError() {
         testLogin();
         sleep(2000);
 
@@ -212,7 +216,7 @@ public class TypeTest {
 
         typePage.ensureTypeNameIsDisplayed();
         typePage.getTypeNameInput().clear();
-        typePage.getTypeNameInput().sendKeys("Manifestacija"); //Bila je institucija
+        typePage.getTypeNameInput().sendKeys("Manifestacija"); // Bila je institucija
         sleep(1000);
         typePage.getSaveTypeButton().click();
 
@@ -223,8 +227,9 @@ public class TypeTest {
 
         assertEquals(data.size(), beforeUpdating);
     }
+
     @Test
-    public void a_pagination_shouldReturnSuccess(){
+    public void a_pagination_shouldReturnSuccess() {
         testLogin();
         sleep(2000);
         browser.findElement(By.cssSelector("#nav-types")).click();
@@ -240,7 +245,7 @@ public class TypeTest {
         assertEquals(firstCell, typePage.getFirstTypeRowCell().getText());
     }
 
-    public void sleep(int milliseconds){
+    public void sleep(int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
         } catch (InterruptedException e) {

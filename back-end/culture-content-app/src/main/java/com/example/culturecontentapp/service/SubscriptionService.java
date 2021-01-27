@@ -1,12 +1,9 @@
 package com.example.culturecontentapp.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.example.culturecontentapp.exception.AccountNotFoundException;
 import com.example.culturecontentapp.exception.CulturalOfferNotFoundException;
@@ -18,7 +15,6 @@ import com.example.culturecontentapp.model.User;
 import com.example.culturecontentapp.payload.response.SubscriptionResponse;
 import com.example.culturecontentapp.repository.AccountRepository;
 import com.example.culturecontentapp.repository.CulturalOfferRepository;
-import com.example.culturecontentapp.repository.NewsRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +31,14 @@ public class SubscriptionService {
 
     private final AccountRepository accountRepository;
     private final CulturalOfferRepository culturalOfferRepository;
-    private final NewsRepository newsRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
     public SubscriptionService(AccountRepository accountRepository, CulturalOfferRepository culturalOfferRepository,
-            NewsRepository newsRepository, ModelMapper modelMapper) {
+            ModelMapper modelMapper) {
 
         this.accountRepository = accountRepository;
         this.culturalOfferRepository = culturalOfferRepository;
-        this.newsRepository = newsRepository;
         this.modelMapper = modelMapper;
     }
 
