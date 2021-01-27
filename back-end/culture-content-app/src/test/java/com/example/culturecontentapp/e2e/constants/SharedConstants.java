@@ -20,4 +20,8 @@ public class SharedConstants {
     public static final String EXAMPLE_USERNAME = "example";
     public static final String EXAMPLE_PASSWORD = "example";
 
+    public static final String CULTURAL_OFFER_NAME = "Novi kulturni dogadjaj";
+    public static final String CULTURAL_OFFER_DESCRIPTION = "Neka nova deskripcija";
+    public static final String CULTURAL_OFFER_LOCATION = "Los";
+
 }

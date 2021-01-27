@@ -15,10 +15,16 @@ public class HomePage {
     private final SelectWebElement typeSelect;
     private SelectWebElement subTypeSelect;
 
+    private final SelectWebElement typeOption;
+    private SelectWebElement subTypeOption;
+
     public HomePage(WebDriver driver) {
         this.driver = driver;
         this.typeSelect = new SelectWebElement(driver, "#type-select");
         this.subTypeSelect = new SelectWebElement(driver, "#subtype-select");
+
+        this.typeOption = new SelectWebElement(driver, "#new-co-type-option");
+        this.subTypeOption = new SelectWebElement(driver, "#new-co-type-option");
     }
 
     @FindBy(id = "search-input")
@@ -35,6 +41,21 @@ public class HomePage {
 
     @FindBy(css = ".add-button")
     private WebElement addNewsButton;
+
+    @FindBy(css = "#new-co-name")
+    private WebElement nameInput;
+
+    @FindBy(css = "#new-co-description")
+    private WebElement descriptionInput;
+
+    @FindBy(css = "#new-co-location")
+    private WebElement locationInput;
+
+    @FindBy(css = "#new-co-location-option")
+    private WebElement locationOption;
+
+    @FindBy(css = ".newButton")
+    private WebElement addCulturalOfferButton;
 
     @FindBy(css = "#mat-input-3")
     private WebElement textInputNews;

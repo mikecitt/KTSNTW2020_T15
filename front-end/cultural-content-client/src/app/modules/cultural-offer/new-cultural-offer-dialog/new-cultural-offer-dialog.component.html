@@ -7,7 +7,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">subject</mat-icon>Name
       </mat-label>
-      <input matInput formControlName="name">
+      <input id="new-co-name" matInput formControlName="name">
       <mat-error>Name must have between 3 and 64 characters</mat-error>
     </mat-form-field>
 
@@ -15,7 +15,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">description</mat-icon>Description
       </mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <textarea id="new-co-description" matInput formControlName="description"></textarea>
       <mat-error>Must have between 10 and 256 characters</mat-error>
     </mat-form-field>
 
@@ -23,10 +23,10 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">place</mat-icon>Location
       </mat-label>
-      <input (ngModelChange)="locationChanged($event)" type="text" [matAutocomplete]="auto" formControlName="location"
-        matInput>
+      <input id="new-co-location" (ngModelChange)="locationChanged($event)" type="text" [matAutocomplete]="auto"
+        formControlName="location" matInput>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let location of locations" [value]="location">
+        <mat-option id="new-co-location-option" *ngFor="let location of locations" [value]="location">
           {{location.place_name}}
         </mat-option>
       </mat-autocomplete>
@@ -46,7 +46,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">category</mat-icon>Type
       </mat-label>
-      <mat-select (selectionChange)="typeChanged($event)">
+      <mat-select id="new-co-type-option" (selectionChange)="typeChanged($event)">
         <mat-option *ngFor="let type of allTypes" [value]="type">
           {{type.name}}
         </mat-option>
@@ -57,7 +57,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">category</mat-icon>Subtype
       </mat-label>
-      <mat-select formControlName="subType">
+      <mat-select id="new-co-subType-option" formControlName="subType">
         <mat-option *ngFor="let subType of subTypes" [value]="subType">
           {{subType.name}}
         </mat-option>
