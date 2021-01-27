@@ -68,7 +68,6 @@ export class MapPageComponent implements OnInit {
   }
 
   get isAdmin() {
-    console.log(this.userService.getRole());
     return this.userService.getRole() == 'ROLE_ADMIN';
   }
 

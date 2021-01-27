@@ -22,10 +22,10 @@
           </div>
         </div>
         <div class="contentIcons">
-          <button mat-icon-button (click)="openEditDialog()">
+          <button mat-icon-button *ngIf="isAdmin" (click)="openEditDialog()">
             <mat-icon>create</mat-icon>
           </button>
-          <button mat-icon-button>
+          <button mat-icon-button *ngIf="isAdmin">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

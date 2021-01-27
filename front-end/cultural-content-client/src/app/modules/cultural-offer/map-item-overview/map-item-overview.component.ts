@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
+import { UserService } from 'src/app/services';
 import { EditCulturalOfferDialogComponent } from '../edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
 import { MapItemComponent } from '../map-item/map-item.component';
 
@@ -18,7 +19,7 @@ export class MapItemOverviewComponent implements OnInit {
   public starColor = 'primary';
   public starRating = 0;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private userService: UserService) {}
 
   get slides() {
     return [
@@ -33,6 +34,10 @@ export class MapItemOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  get isAdmin() {
+    return this.userService.getRole() == 'ROLE_ADMIN';
+  }
 
   openEditDialog() {
     const dialogRef = this.dialog.open(EditCulturalOfferDialogComponent, {
