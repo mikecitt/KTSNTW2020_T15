@@ -11,6 +11,8 @@ public class SharedConstants {
     public static final String ADMIN_USERNAME = "admin123";
     public static final String ADMIN_PASS = "qwerty";
     public static final String TYPES_PATH = "http://localhost:4200/culturalOfferTypes";
+
+    public static final int NUMBER_OF_ALL_MARKERS = 4;
     public static final String EXAMPLE_EMAIL = "example@example.com";
     public static final String EXAMPLE_USERNAME = "example";
     public static final String EXAMPLE_PASSWORD = "example";

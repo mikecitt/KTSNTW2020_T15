@@ -20,11 +20,11 @@ public class TypePage {
     @FindBy(id = "create_type_button")
     private WebElement addTypeButton;
 
-    @FindBy(css = ".mat-table tbody .type-row:last-child .mat-column-options .mat-warn")
+    @FindBy(css = ".mat-table tbody .type-row:first-child .mat-column-options .mat-warn")
     private WebElement deleteTypeButton;
 
-    //@FindBy(css = ".mat-table tbody .type-row:last-child .mat-column-options .update-type-button")
-    @FindBy(id = "update_type_button")
+    @FindBy(css = ".mat-table tbody .type-row:nth-child(2) .mat-column-options .update-type-button")
+   // @FindBy(id = "update_type_button")
     private WebElement updateTypeButton;
 
     @FindBy(id = "close_type_button")
@@ -46,6 +46,9 @@ public class TypePage {
     @FindBy(css = ".mat-table tbody .type-row:first-child")
     private WebElement typeRaw;
 
+    @FindBy(css = ".mat-table tbody .type-row:nth-child(2)")
+    private WebElement SecondTypeRaw;
+
     @FindBy(id = "create_subType_button")
     private WebElement addSubTypeButton;
 
@@ -61,7 +64,6 @@ public class TypePage {
     @FindBy(id = "save_subType_button")
     private WebElement saveSubTypeButton;
 
-    //@FindBy(xpath = "//mat-dialog-container[@id='mat-dialog-0']/app-confirm-delete/mat-dialog-actions/button")
     @FindBy(css = ".mat-dialog-container app-confirm-delete .delete-content div .mat-primary")
     private WebElement yesSubTypeButton;
 
@@ -74,6 +76,25 @@ public class TypePage {
     @FindBy(css = ".mat-simple-snackbar")
     private WebElement snackMessage;
 
+    // ==== PAGINATION BUTTONS =====
+    @FindBy(css = ".type-card .mat-card-actions app-pagination-bar div #pagination-button-next")
+    private WebElement nextPaginationButtonType;
+
+    @FindBy(css = ".type-card .mat-card-actions app-pagination-bar div #pagination-button-previous")
+    private WebElement previousPaginationButtonType;
+
+    @FindBy(css = ".sub-card .mat-card-actions app-pagination-bar div #pagination-button-next")
+    private WebElement nextPaginationButtonSub;
+
+    @FindBy(css = ".sub-card .mat-card-actions app-pagination-bar div #pagination-button-previous")
+    private WebElement previousPaginationButtonSub;
+
+    @FindBy(css = ".mat-table tbody .type-row:first-child .type_td")
+    private WebElement firstTypeRowCell;
+
+    @FindBy(css = ".mat-table tbody .subType-row:first-child .sub-td")
+    private WebElement firstSubRowCell;
+
     public TypePage(WebDriver driver){
         this.driver = driver;
     }
@@ -81,6 +102,11 @@ public class TypePage {
     public void ensureTypeRawIsDisplayed() {
         (new WebDriverWait(driver, 10))
                 .until(ExpectedConditions.visibilityOf(typeRaw));
+    }
+
+    public void ensureSecondTypeRawIsDisplayed() {
+        (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.visibilityOf(SecondTypeRaw));
     }
 
     public void ensureSnackbarIsDisplayed() {
@@ -175,5 +201,14 @@ public class TypePage {
                         By.cssSelector(selector), count));
     }
 
+    public void ensurePaginationTypeButtonIsDisplayed(){
+        (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.visibilityOf(nextPaginationButtonType));
+    }
+
+    public void ensurePaginationSubButtonIsDisplayed(){
+        (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.visibilityOf(nextPaginationButtonSub));
+    }
 
 }

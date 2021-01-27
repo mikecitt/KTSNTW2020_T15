@@ -9,6 +9,18 @@ INSERT INTO Type (id, name) VALUES
 INSERT INTO Type (id, name) VALUES
     (1002, 'Institucija');
 
+INSERT INTO Type (id, name) VALUES
+    (1003, 'Kategorija1');
+
+INSERT INTO Type (id, name) VALUES
+    (1004, 'Kategorija2');
+
+INSERT INTO Type (id, name) VALUES
+    (1005, 'Kategorija3');
+
+INSERT INTO Type (id, name) VALUES
+    (1006, 'Kategorija4');
+
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1001, 'Festival', 1001);
 
@@ -17,6 +29,24 @@ INSERT INTO Sub_type (id, name, type_id) VALUES
 
 INSERT INTO Sub_type (id, name, type_id) VALUES
     (1003, 'Podkategorija1', 1002);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1004, 'Podkategorija2', 1003);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1005, 'Podkategorija3', 1003);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1006, 'Podkategorija4', 1003);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1007, 'Podkategorija5', 1003);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1008, 'Podkategorija6', 1003);
+
+INSERT INTO Sub_type (id, name, type_id) VALUES
+    (1009, 'Podkategorija7', 1003);
 
 INSERT INTO Location (id, address, latitude, longitude) VALUES
     (1001, 'Petrovaradinska Pijaca, Novi Sad, South Bačka 21132, Serbia', 45.241496, 19.8833);

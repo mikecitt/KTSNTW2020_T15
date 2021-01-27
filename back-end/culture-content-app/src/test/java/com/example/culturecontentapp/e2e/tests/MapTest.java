@@ -36,6 +36,8 @@ public class MapTest {
 
         homePage.getSearchInput().sendKeys("Subotica");
         homePage.getApplyFilterButton().click();
+
+        homePage.ensureMarkerCount(2);
     }
 
     @Test
@@ -52,6 +54,20 @@ public class MapTest {
 
         homePage.getSearchInput().sendKeys("jklstdadasd");
         homePage.getApplyFilterButton().click();
+
+        homePage.ensureMarkerCount(2);
+    }
+
+    @Test
+    public void filterOnlyTypeSelected(){
+        homePage.ensureIsDisplayed();
+
+        homePage.getTypeSelect().click();
+        homePage.getTypeSelect().ensureDropdownItemCount(2);
+        homePage.getTypeSelect().chooseOption(1);
+
+        homePage.getApplyFilterButton().click();
+        homePage.ensureMarkerCount(NUMBER_OF_ALL_MARKERS);
     }
 
     @Test
@@ -66,6 +82,8 @@ public class MapTest {
         homePage.getSubTypeSelect().ensureDropdownItemCount(2);
         homePage.getSubTypeSelect().chooseOption(1);
         homePage.getApplyFilterButton().click();
+
+        homePage.ensureMarkerCount(2);
     }
 
     @Test
@@ -77,11 +95,13 @@ public class MapTest {
         homePage.getTypeSelect().chooseOption(2);
 
         homePage.getSubTypeSelect().click();
-        homePage.getSubTypeSelect().ensureDropdownItemCount(2);
+        homePage.getSubTypeSelect().ensureDropdownItemCount(1);
         homePage.getSubTypeSelect().chooseOption(1);
 
         homePage.getSearchInput().sendKeys("Subotica");
         homePage.getApplyFilterButton().click();
         homePage.getResetFilterButton().click();
+
+        homePage.ensureMarkerCount(NUMBER_OF_ALL_MARKERS);
     }
 }
