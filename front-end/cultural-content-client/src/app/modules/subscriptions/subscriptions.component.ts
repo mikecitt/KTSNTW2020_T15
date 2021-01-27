@@ -42,7 +42,7 @@ export class SubscriptionsComponent implements OnInit {
   loadSubscriptions(): void {
     this.subscriptionService
         .getAll(this.currentPage, this.pageLimit)
-        .subscribe(res => { this.subscriptionPage = res; console.log(this.subscriptionPage) });
+        .subscribe(res => { this.subscriptionPage = res; });
   }
 
   getNextPage(): void{
