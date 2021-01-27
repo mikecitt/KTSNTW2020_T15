@@ -5,6 +5,7 @@ public class SharedConstants {
     public static final String WEB_DRIVER_PATH = "src/test/resources/chromedriver.exe";
     public static final String LOGIN_PATH = "http://localhost:4200/login";
     public static final String REGISTRATION_PATH = "http://localhost:4200/register";
+    public static final String RESEND_ACTIVATION_PATH = "http://localhost:4200/resend-activation";
     public static final String HOME_PATH = "http://localhost:4200";
     public static final String ADMIN_EMAIL = "admin@example.com";
     public static final String ADMIN_USERNAME = "admin123";
