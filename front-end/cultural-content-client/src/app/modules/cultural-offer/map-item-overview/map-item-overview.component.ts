@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferService, UserService } from 'src/app/services';
 import { EditCulturalOfferDialogComponent } from '../edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
@@ -22,7 +23,8 @@ export class MapItemOverviewComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private userService: UserService,
-    private service: CulturalOfferService
+    private service: CulturalOfferService,
+    private snackBarComponent: SnackBarComponent
   ) {}
 
   get slides() {
@@ -60,6 +62,11 @@ export class MapItemOverviewComponent implements OnInit {
 
   delete() {
     this.service.delete(this.offer.id).subscribe((data) => {
+      this.snackBarComponent.openSnackBar(
+        'Successfully deleted',
+        '',
+        'green-snackbar'
+      );
       this.page.deleteCulturalOffer(this.offer);
     });
   }

@@ -1,6 +1,5 @@
 package com.example.culturecontentapp.e2e.tests;
 
-import java.nio.file.FileSystems;
 import java.util.concurrent.TimeUnit;
 
 import com.example.culturecontentapp.e2e.pages.HomePage;
@@ -69,10 +68,11 @@ public class CulturalOfferTest {
     homePage.getSubTypeOption().click();
     homePage.getSubTypeOption().chooseOption(1);
 
-//    String absolutePath = FileSystems.getDefault().getPath("src/test/resources/wireframePrimer.PNG")
-//            .normalize().toAbsolutePath().toString();
-//
-//    homePage.getOfferPicture().sendKeys(absolutePath);
+    // String absolutePath =
+    // FileSystems.getDefault().getPath("src/test/resources/wireframePrimer.PNG")
+    // .normalize().toAbsolutePath().toString();
+    //
+    // homePage.getOfferPicture().sendKeys(absolutePath);
 
     homePage.getSubmitOffer().click();
     homePage.ensureMarkerCount(5);
@@ -102,7 +102,7 @@ public class CulturalOfferTest {
 
     homePage.getSubmitOffer().click();
 
-    assertEquals("Cultural offer with the given name already exists",homePage.getSnackMessage().getText());
+    assertEquals("Cultural offer with the given name already exists", homePage.getSnackMessage().getText());
   }
 
   @Test
@@ -114,7 +114,6 @@ public class CulturalOfferTest {
     homePage.getMapMarker().click();
     sleep(500);
     homePage.getEditOfferButton().click();
-
 
     homePage.getEditOfferName().clear();
     homePage.getEditOfferName().sendKeys("Nova ponudaaaa");
@@ -128,8 +127,23 @@ public class CulturalOfferTest {
     homePage.getSubmitEdit().click();
     sleep(800);
 
-    assertEquals("Updated successully",homePage.getSnackMessage().getText());
+    assertEquals("Updated successully", homePage.getSnackMessage().getText());
 
   }
 
+  @Test
+  public void delete_SuccessfullyDeletes() {
+    testLogin();
+
+    sleep(5000);
+    homePage = PageFactory.initElements(browser, HomePage.class);
+    homePage.getMapMarker().click();
+
+    homePage.ensureCulturalOfferDeleteButtonDisplayed();
+
+    homePage.getDeleteOfferButton().click();
+    homePage.ensureSnackbarIsDisplayed();
+
+    assertEquals("Successfully deleted", homePage.getSnackMessage().getText());
+  }
 }
