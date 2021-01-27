@@ -7,6 +7,7 @@ import com.example.culturecontentapp.e2e.pages.LoginPage;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -56,7 +57,7 @@ public class CulturalOfferTest {
 
     homePage.initalizeOfferSelectElements();
 
-    homePage.getNameInput().sendKeys(CULTURAL_OFFER_NAME);
+    homePage.getNameInput().sendKeys(CULTURAL_OFFER_NAME + "asdasd");
     homePage.getDescriptionInput().sendKeys(CULTURAL_OFFER_DESCRIPTION);
     homePage.getLocationInput().sendKeys(CULTURAL_OFFER_LOCATION);
     sleep(500);
@@ -88,7 +89,7 @@ public class CulturalOfferTest {
 
     homePage.initalizeOfferSelectElements();
 
-    homePage.getNameInput().sendKeys(CULTURAL_OFFER_NAME);
+    homePage.getNameInput().sendKeys("Exit festival");
     homePage.getDescriptionInput().sendKeys(CULTURAL_OFFER_DESCRIPTION);
     homePage.getLocationInput().sendKeys(CULTURAL_OFFER_LOCATION);
     sleep(500);
@@ -106,12 +107,12 @@ public class CulturalOfferTest {
   }
 
   @Test
-  public void test3_edit_SuccessfullyLogins() {
+  public void test3_edit_ReturnsSuccess() {
     testLogin();
 
     sleep(3000);
     homePage = PageFactory.initElements(browser, HomePage.class);
-    homePage.getMapMarker().click();
+    browser.findElement(By.cssSelector(".mapboxgl-marker")).click();
     sleep(500);
     homePage.getEditOfferButton().click();
 
@@ -119,8 +120,8 @@ public class CulturalOfferTest {
     homePage.getEditOfferName().sendKeys("Nova ponudaaaa");
     homePage.getEditDescription().clear();
     homePage.getEditDescription().sendKeys(CULTURAL_OFFER_DESCRIPTION);
-    homePage.getEditLocation().clear();
-    homePage.getEditLocation().sendKeys(CULTURAL_OFFER_LOCATION);
+    // homePage.getEditLocation().clear();
+    // homePage.getEditLocation().sendKeys(CULTURAL_OFFER_LOCATION);
     sleep(500);
     homePage.getEditLocationOption().click();
 
@@ -132,12 +133,40 @@ public class CulturalOfferTest {
   }
 
   @Test
+  public void test3_edit_NameAlreadyExists_ReturnsFail() {
+    testLogin();
+
+    sleep(5000);
+    homePage = PageFactory.initElements(browser, HomePage.class);
+    browser.findElement(By.cssSelector(".mapboxgl-marker")).click();
+    // homePage.getMapMarker().click();
+    sleep(500);
+    homePage.getEditOfferButton().click();
+
+    homePage.getEditOfferName().clear();
+    homePage.getEditOfferName().sendKeys("Koncert 2 Cellos");
+    homePage.getEditDescription().clear();
+    homePage.getEditDescription().sendKeys(CULTURAL_OFFER_DESCRIPTION);
+    homePage.getEditLocation().clear();
+    homePage.getEditLocation().sendKeys(CULTURAL_OFFER_LOCATION);
+    sleep(500);
+    homePage.getEditLocationOption().click();
+
+    homePage.getSubmitEdit().click();
+    sleep(800);
+
+    assertEquals("Cultural offer with the given name already exists", homePage.getSnackMessage().getText());
+
+  }
+
+
+  @Test
   public void delete_SuccessfullyDeletes() {
     testLogin();
 
     sleep(5000);
     homePage = PageFactory.initElements(browser, HomePage.class);
-    homePage.getMapMarker().click();
+    browser.findElement(By.cssSelector(".mapboxgl-marker")).click();
 
     homePage.ensureCulturalOfferDeleteButtonDisplayed();
 
