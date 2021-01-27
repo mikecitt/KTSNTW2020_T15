@@ -1,5 +1,6 @@
 package com.example.culturecontentapp.e2e.tests;
 
+import java.nio.file.FileSystems;
 import java.util.concurrent.TimeUnit;
 
 import com.example.culturecontentapp.e2e.pages.HomePage;
@@ -12,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import static com.example.culturecontentapp.e2e.constants.SharedConstants.*;
+import static org.junit.Assert.assertEquals;
 
 public class CulturalOfferTest {
 
@@ -46,13 +48,15 @@ public class CulturalOfferTest {
   }
 
   @Test
-  public void login_SuccessfullyLogins() {
+  public void test1_login_SuccessfullyLogins() {
     testLogin();
 
-    sleep(2000);
+    sleep(3000);
     homePage = PageFactory.initElements(browser, HomePage.class);
-
     homePage.getAddCulturalOfferButton().click();
+
+    homePage.initalizeOfferSelectElements();
+
     homePage.getNameInput().sendKeys(CULTURAL_OFFER_NAME);
     homePage.getDescriptionInput().sendKeys(CULTURAL_OFFER_DESCRIPTION);
     homePage.getLocationInput().sendKeys(CULTURAL_OFFER_LOCATION);
@@ -64,5 +68,68 @@ public class CulturalOfferTest {
 
     homePage.getSubTypeOption().click();
     homePage.getSubTypeOption().chooseOption(1);
+
+//    String absolutePath = FileSystems.getDefault().getPath("src/test/resources/wireframePrimer.PNG")
+//            .normalize().toAbsolutePath().toString();
+//
+//    homePage.getOfferPicture().sendKeys(absolutePath);
+
+    homePage.getSubmitOffer().click();
+    homePage.ensureMarkerCount(5);
   }
+
+  @Test
+  public void test2_createOffer_AlreadyExist() {
+    testLogin();
+
+    sleep(3000);
+    homePage = PageFactory.initElements(browser, HomePage.class);
+    homePage.getAddCulturalOfferButton().click();
+
+    homePage.initalizeOfferSelectElements();
+
+    homePage.getNameInput().sendKeys(CULTURAL_OFFER_NAME);
+    homePage.getDescriptionInput().sendKeys(CULTURAL_OFFER_DESCRIPTION);
+    homePage.getLocationInput().sendKeys(CULTURAL_OFFER_LOCATION);
+    sleep(500);
+    homePage.getLocationOption().click();
+
+    homePage.getTypeOption().click();
+    homePage.getTypeOption().chooseOption(1);
+
+    homePage.getSubTypeOption().click();
+    homePage.getSubTypeOption().chooseOption(1);
+
+    homePage.getSubmitOffer().click();
+
+    assertEquals("Cultural offer with the given name already exists",homePage.getSnackMessage().getText());
+  }
+
+  @Test
+  public void test3_edit_SuccessfullyLogins() {
+    testLogin();
+
+    sleep(3000);
+    homePage = PageFactory.initElements(browser, HomePage.class);
+    homePage.getMapMarker().click();
+    sleep(500);
+    homePage.getEditOfferButton().click();
+
+
+    homePage.getEditOfferName().clear();
+    homePage.getEditOfferName().sendKeys("Nova ponudaaaa");
+    homePage.getEditDescription().clear();
+    homePage.getEditDescription().sendKeys(CULTURAL_OFFER_DESCRIPTION);
+    homePage.getEditLocation().clear();
+    homePage.getEditLocation().sendKeys(CULTURAL_OFFER_LOCATION);
+    sleep(500);
+    homePage.getEditLocationOption().click();
+
+    homePage.getSubmitEdit().click();
+    sleep(800);
+
+    assertEquals("Updated successully",homePage.getSnackMessage().getText());
+
+  }
+
 }

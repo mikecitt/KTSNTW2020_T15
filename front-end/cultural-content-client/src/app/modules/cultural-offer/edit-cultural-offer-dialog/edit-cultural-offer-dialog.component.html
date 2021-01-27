@@ -7,7 +7,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">subject</mat-icon>Name
       </mat-label>
-      <input matInput formControlName="name">
+      <input matInput formControlName="name" id="edit-offer-name">
       <mat-error>Name must have between 3 and 64 characters</mat-error>
     </mat-form-field>
 
@@ -15,7 +15,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">description</mat-icon>Description
       </mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <textarea matInput formControlName="description" id="edit-offer-description"></textarea>
       <mat-error>Must have between 10 and 256 characters</mat-error>
     </mat-form-field>
 
@@ -23,10 +23,10 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">place</mat-icon>Location
       </mat-label>
-      <input (ngModelChange)="locationChanged($event)" type="text" [matAutocomplete]="auto" formControlName="location"
+      <input id="edit-location" (ngModelChange)="locationChanged($event)" type="text" [matAutocomplete]="auto" formControlName="location"
         matInput>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let location of locations" [value]="location">
+        <mat-option id="edit-co-location-option" *ngFor="let location of locations" [value]="location">
           {{location.place_name}}
         </mat-option>
       </mat-autocomplete>
@@ -44,7 +44,7 @@
 
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button type="submit" [disabled]="!updateForm.form.valid" mat-button>Submit</button>
+    <button type="submit" id="submit-edit" [disabled]="!updateForm.form.valid" mat-button>Submit</button>
     <button mat-button mat-dialog-close>Cancel</button>
   </mat-dialog-actions>
 </form>

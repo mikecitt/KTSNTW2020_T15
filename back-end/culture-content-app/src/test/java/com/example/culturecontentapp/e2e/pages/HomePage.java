@@ -15,7 +15,7 @@ public class HomePage {
     private final SelectWebElement typeSelect;
     private SelectWebElement subTypeSelect;
 
-    private final SelectWebElement typeOption;
+    private SelectWebElement typeOption;
     private SelectWebElement subTypeOption;
 
     public HomePage(WebDriver driver) {
@@ -23,9 +23,29 @@ public class HomePage {
         this.typeSelect = new SelectWebElement(driver, "#type-select");
         this.subTypeSelect = new SelectWebElement(driver, "#subtype-select");
 
-        this.typeOption = new SelectWebElement(driver, "#new-co-type-option");
-        this.subTypeOption = new SelectWebElement(driver, "#new-co-type-option");
     }
+
+    public void initalizeOfferSelectElements(){
+        this.typeOption = new SelectWebElement(driver, "#new-co-type-option");
+        this.subTypeOption = new SelectWebElement(driver, "#new-co-subType-option");
+    }
+    @FindBy(id = "edit-offer-name")
+    private WebElement editOfferName;
+
+    @FindBy(css = "#edit-offer-description")
+    private WebElement editDescription;
+
+    @FindBy(id = "edit-offer-btn")
+    private WebElement editOfferButton;
+
+    @FindBy(id = "offer-pict")
+    private WebElement offerPicture;
+
+    @FindBy(id= "submitOffer")
+    private WebElement submitOffer;
+
+    @FindBy(id = "submit-edit")
+    private WebElement submitEdit;
 
     @FindBy(id = "search-input")
     private WebElement searchInput;
@@ -50,6 +70,12 @@ public class HomePage {
 
     @FindBy(css = "#new-co-location")
     private WebElement locationInput;
+
+    @FindBy(css = "#edit-location")
+    private WebElement editLocation;
+
+    @FindBy(css= "#edit-co-location-option")
+    private WebElement editLocationOption;
 
     @FindBy(css = "#new-co-location-option")
     private WebElement locationOption;

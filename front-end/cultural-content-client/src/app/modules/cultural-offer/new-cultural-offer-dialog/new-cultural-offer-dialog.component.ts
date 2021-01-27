@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferType } from 'src/app/models/cultural-offer-type';
 import { CulturalOfferSubType } from 'src/app/models/culutral-offer-subType';
@@ -44,7 +45,8 @@ export class NewCulturalOfferDialogComponent implements OnInit {
     private service: CulturalOfferService,
     private typeService: CulturalOfferTypeService,
     private subTypeService: CulturalOfferSubTypeService,
-    public dialogRef: MatDialogRef<NewCulturalOfferDialogComponent>
+    public dialogRef: MatDialogRef<NewCulturalOfferDialogComponent>,
+    private snackBar: SnackBarComponent
   ) {
     this.form = this.formBuilder.group({
       name: [
@@ -67,7 +69,7 @@ export class NewCulturalOfferDialogComponent implements OnInit {
         '',
         Validators.compose([Validators.required, this.locationRequired()]),
       ],
-      images: ['', Validators.compose([this.imageRequired()])],
+      images: [[]],
       subType: ['', Validators.compose([Validators.required])],
     });
   }
@@ -129,6 +131,7 @@ export class NewCulturalOfferDialogComponent implements OnInit {
     this.service.insert(formObj, subTypeId).subscribe(
       (response: CulturalOfferResponse) => {
         this.dialogRef.close(true);
+        this.snackBar.openSnackBar("Created successully", "", "green-snackbar");
       },
       (error: any) => {}
     );

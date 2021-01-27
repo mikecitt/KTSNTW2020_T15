@@ -37,7 +37,7 @@
       <mat-label class="title">
         <mat-icon class="formTitleIcon">insert_photo</mat-icon>Choose the images
       </mat-label>
-      <ngx-mat-file-input [multiple]="fileMultiple" [accept]="fileAccept" formControlName="images">
+      <ngx-mat-file-input id="offer-pict" [multiple]="fileMultiple" [accept]="fileAccept" formControlName="images">
       </ngx-mat-file-input>
       <mat-error>At least 1 image is required</mat-error>
     </mat-form-field>
@@ -67,7 +67,7 @@
 
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button type="submit" [disabled]="!insertForm.form.valid" mat-button>Submit</button>
+    <button type="submit" id="submitOffer" [disabled]="!insertForm.form.valid" mat-button>Submit</button>
     <button mat-button mat-dialog-close>Cancel</button>
   </mat-dialog-actions>
 </form>

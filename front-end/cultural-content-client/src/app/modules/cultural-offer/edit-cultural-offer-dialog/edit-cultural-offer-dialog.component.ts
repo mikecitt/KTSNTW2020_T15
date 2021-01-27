@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
 import { GeoFeature } from 'src/app/models/geocoder';
@@ -35,6 +36,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private service: CulturalOfferService,
     public dialogRef: MatDialogRef<EditCulturalOfferDialogComponent>,
+    private snackBar: SnackBarComponent,
     @Inject(MAT_DIALOG_DATA) public data: CulturalOfferResponse
   ) {
     this.cultureOfferId = data.id;
@@ -116,6 +118,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
     this.service.update(formObj, this.cultureOfferId).subscribe(
       (response: CulturalOfferResponse) => {
         this.dialogRef.close(response);
+        this.snackBar.openSnackBar("Updated successully", "", "green-snackbar");
       },
       (error: any) => {}
     );
