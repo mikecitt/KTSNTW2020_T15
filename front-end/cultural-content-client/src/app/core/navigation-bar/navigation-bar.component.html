@@ -4,7 +4,7 @@
       <mat-icon>public</mat-icon>
     </a>Cultural offers
   </button>
-  <button mat-raised-button *ngIf="isUser" routerLink="/subscriptions">My Subscriptions</button>
+  <button mat-raised-button id="nav-subscriptions" *ngIf="isUser" routerLink="/subscriptions">My Subscriptions</button>
 
   <span class="example-spacer"></span>
   <button mat-button *ngIf="isAdmin" id="nav-types" routerLink="/culturalOfferTypes" style="margin: 5px;">
