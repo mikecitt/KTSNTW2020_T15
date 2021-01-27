@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatDialogRef } from '@angular/material/dialog';
+import { SnackBarComponent } from 'src/app/core/snack-bar/snack-bar.component';
 import { CulturalOfferService, CulturalOfferSubTypeService, CulturalOfferTypeService } from 'src/app/services';
 
 import { NewCulturalOfferDialogComponent } from './new-cultural-offer-dialog.component';
@@ -14,6 +15,7 @@ describe('NewCulturalOfferDialogComponent', () => {
   let typeService: CulturalOfferTypeService;
   let subTypeService: CulturalOfferSubTypeService;
   let dialogRef: MatDialogRef<NewCulturalOfferDialogComponent>;
+  let snackBar: SnackBarComponent;
 
   beforeEach(async () => {
     const dialogMock = {
@@ -34,15 +36,20 @@ describe('NewCulturalOfferDialogComponent', () => {
       getAll : jasmine.createSpy("getAll")
     };
 
+    const snackBarMock = {
+      openSnackBar: jasmine.createSpy('openSnackBar')
+    }
+
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, MatAutocomplete],
+      imports: [ReactiveFormsModule, FormsModule],
       declarations: [ NewCulturalOfferDialogComponent, MatAutocomplete ],
       providers: [
         {provide: FormBuilder, useValue: formBuilder},
         {provide: MatDialogRef, useValue: dialogMock},
         {provide: CulturalOfferService, useValue: serviceMock},
         {provide: CulturalOfferSubTypeService, useValue: subServiceMock},
-        {provide: CulturalOfferTypeService, useValue: typeServiceMock}
+        {provide: CulturalOfferTypeService, useValue: typeServiceMock},
+        {provide: SnackBarComponent, useValue: snackBarMock},
       ]
     })
     .compileComponents();
@@ -63,6 +70,7 @@ describe('NewCulturalOfferDialogComponent', () => {
     typeService = TestBed.inject(CulturalOfferTypeService);
     subTypeService = TestBed.inject(CulturalOfferSubTypeService);
     dialogRef = TestBed.inject(MatDialogRef);
+    snackBar = TestBed.inject(SnackBarComponent);
 
   });
 
