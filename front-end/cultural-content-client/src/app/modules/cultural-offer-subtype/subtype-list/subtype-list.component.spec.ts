@@ -25,13 +25,15 @@ describe('SubtypeListComponent', () => {
     const dialogMock = {
       close: jasmine.createSpy('close'),
       open : jasmine.createSpy('open').and.returnValue({
-        afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({}) ), close: null
+        afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({
+          id: 1 , name: '', type: {id: 1, name:''}
+        }) ), close: null
        })
     }
 
     let serviceMock = {
       deleteSubType: jasmine.createSpy('deleteSubType')
-            .and.returnValue(of()),
+            .and.returnValue(of({})),
       createSubType: jasmine.createSpy('createSubType')
             .and.returnValue(of({ id: 0, name:""})),
       updateSubType: jasmine.createSpy('updateSubType')
@@ -95,7 +97,7 @@ describe('SubtypeListComponent', () => {
     fixture.detectChanges();
     expect(subtypeService.createSubType).toHaveBeenCalled();
     expect(snackbar.openSnackBar).toHaveBeenCalled();
-    // expect(component.refreshDataEvent.emit).toHaveBeenCalled();
+    expect(component.refreshDataEvent.emit).toHaveBeenCalled();
   });
 
   it('should delete subtype', async() =>{
@@ -114,7 +116,7 @@ describe('SubtypeListComponent', () => {
       } catch (error) {}
     });
     expect(subtypeService.deleteSubType).toHaveBeenCalled();
-    // expect(snackbar.openSnackBar).toHaveBeenCalled();
+    expect(snackbar.openSnackBar).toHaveBeenCalled();
   });
 
   it('should update subtype', async()=>{
@@ -126,7 +128,7 @@ describe('SubtypeListComponent', () => {
     fixture.detectChanges();
     expect(dialog.open).toHaveBeenCalled();
     expect(subtypeService.updateSubType).toHaveBeenCalled();
-    // expect(component.refreshDataEvent.emit).toHaveBeenCalled();
+    expect(component.refreshDataEvent.emit).toHaveBeenCalled();
 
   });
 
