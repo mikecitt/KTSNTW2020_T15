@@ -1,4 +1,5 @@
 package com.example.culturecontentapp.e2e.pages;
+
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,7 @@ public class HomePage {
     private final SelectWebElement typeSelect;
     private SelectWebElement subTypeSelect;
 
-    public HomePage(WebDriver driver){
+    public HomePage(WebDriver driver) {
         this.driver = driver;
         this.typeSelect = new SelectWebElement(driver, "#type-select");
         this.subTypeSelect = new SelectWebElement(driver, "#subtype-select");
@@ -39,7 +40,7 @@ public class HomePage {
 
     @FindBy(css = "#mat-tab-label-0-1")
     private WebElement tabLabelNews;
-    
+
     @FindBy(id = "add-news-button")
     private WebElement addNewsFormButton;
 
@@ -61,59 +62,56 @@ public class HomePage {
     @FindBy(id = "news-text")
     private WebElement newsText;
 
+    @FindBy(id = "nav-subscriptions")
+    private WebElement mySubscriptionsButton;
+
     @FindBy(id = "pagination-button-next")
     private WebElement nextPaginationButton;
 
     @FindBy(id = "pagination-button-previous")
     private WebElement previousPaginationButton;
 
-    public void ensureIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(applyFilterButton));
+    public void ensureIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(applyFilterButton));
     }
 
-    public void ensureMapMarkerIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(mapMarker));
+    public void ensureMapMarkerIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(mapMarker));
     }
 
-    public void ensureTabLabelNewsIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(tabLabelNews));
+    public void ensureTabLabelNewsIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(tabLabelNews));
     }
 
-    public void ensureAddNewsButtonIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(addNewsButton));
+    public void ensureAddNewsButtonIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(addNewsButton));
     }
 
-    public void ensureTextInputNewsIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(textInputNews));
+    public void ensureTextInputNewsIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(textInputNews));
     }
 
     public void ensureSnackbarIsDisplayed() {
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(snackMessage));
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(snackMessage));
     }
 
-    public void ensureDeleteNewsFormButtonIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(deleteNewsFormButton));
+    public void ensureDeleteNewsFormButtonIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(deleteNewsFormButton));
     }
 
-    public void ensureUpdateNewsFormButtonIsDisplayed(){
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(updateNewsFormButton));
+    public void ensureUpdateNewsFormButtonIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(updateNewsFormButton));
     }
 
     public void ensureYesDeleteButtonIsDisplayed() {
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(yesDeleteButton));
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(yesDeleteButton));
     }
 
     public void ensureNextPaginationButtonIsDisplayed() {
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.visibilityOf(nextPaginationButton));
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(nextPaginationButton));
+    }
+
+    public void ensureMySubscriptionsButtonIsDisplayed() {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOf(mySubscriptionsButton));
     }
 }

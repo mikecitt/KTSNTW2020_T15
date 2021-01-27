@@ -37,7 +37,7 @@ public class NewsTest {
         loginPage.getLoginButton().click();
     }
 
-    private void openNews(){
+    private void openNews() {
         login();
         sleep(2000);
         homePage = PageFactory.initElements(driver, HomePage.class);
@@ -48,10 +48,10 @@ public class NewsTest {
         homePage.getTabLabelNews().click();
 
         homePage.ensureAddNewsButtonIsDisplayed();
-        
+
     }
 
-    private void sleep(int milliseconds){
+    private void sleep(int milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
         } catch (InterruptedException e) {
@@ -147,7 +147,7 @@ public class NewsTest {
     }
 
     @Test
-    public void pagination_shouldReturnSuccess(){
+    public void pagination_shouldReturnSuccess() {
         openNews();
         String firstNewsText = homePage.getNewsText().getText();
         homePage.ensureNextPaginationButtonIsDisplayed();
@@ -158,8 +158,6 @@ public class NewsTest {
         homePage.getPreviousPaginationButton().click();
         sleep(500);
         assertEquals(firstNewsText, homePage.getNewsText().getText());
-
     }
-    
-    
+
 }
