@@ -1,3 +1,14 @@
+.logoButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  margin-left: 7px;
+}
+
 .example-spacer {
   flex: 1 1 auto;
 }

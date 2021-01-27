@@ -1,16 +1,19 @@
 <mat-toolbar color="primary">
   <button routerLink="/" mat-button>
-    <a mat-icon-button>
+    <div class="logoButton">
       <mat-icon>public</mat-icon>
-    </a>Cultural offers
+      <span class="logoText">Cultural offers</span>
+    </div>
   </button>
   <button mat-raised-button id="nav-subscriptions" *ngIf="isUser" routerLink="/subscriptions">My Subscriptions</button>
 
   <span class="example-spacer"></span>
   <button mat-button *ngIf="isAdmin" id="nav-types" routerLink="/culturalOfferTypes" style="margin: 5px;">
     <mat-icon>bubble_chart</mat-icon>
-    Manage Types</button>
-  <button mat-button *ngIf="!isAuthorized" routerLink="/login">Login</button>
-  <button mat-button *ngIf="!isAuthorized" routerLink="/register">Register</button>
-  <button mat-stroked-button *ngIf="isAuthorized" color="primary" style="background-color: white;" (click)="logout()">Logout</button>
+    Manage Types
+  </button>
+  <button mat-button *ngIf="!isAuthorized && !isLogin" routerLink="/login">Login</button>
+  <button mat-button *ngIf="!isAuthorized && !isRegister" routerLink="/register">Register</button>
+  <button mat-stroked-button *ngIf="isAuthorized" color="primary" style="background-color: white;"
+    (click)="logout()">Logout</button>
 </mat-toolbar>

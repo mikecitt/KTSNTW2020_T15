@@ -8,11 +8,16 @@ import { AuthService, UserService } from 'src/app/services';
   styleUrls: ['./navigation-bar.component.scss'],
 })
 export class NavigationBarComponent implements OnInit {
-  constructor(private router: Router, private userService: UserService, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   role: string;
 
   ngOnInit(): void {
+    console.log(this.router.url);
     this.role = this.userService.getRole();
   }
 
@@ -26,6 +31,14 @@ export class NavigationBarComponent implements OnInit {
 
   get isUser() {
     return this.userService.getRole() == 'ROLE_USER';
+  }
+
+  get isLogin() {
+    return this.router.url === '/login';
+  }
+
+  get isRegister() {
+    return this.router.url === '/register';
   }
 
   logout() {
