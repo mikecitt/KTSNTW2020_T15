@@ -1,7 +1,7 @@
 <mat-card >
     <mat-card-header>
         <button mat-raised-button *ngIf="isUser && !isSubscribed" id="sub-button" (click)="subscribe()">Subscribe</button>
-        <button mat-raised-button *ngIf="isUser && isSubscribed" id="sub-button" (click)="unsubscribe()">Unubscribe</button>
+        <button mat-raised-button *ngIf="isUser && isSubscribed" id="unsub-button" (click)="unsubscribe()">Unubscribe</button>
         <button mat-mini-fab *ngIf="isAdmin" class="add-button" color="primary" (click)="openCreateNewsDialog()">
             <mat-icon >add</mat-icon>
         </button>
@@ -13,12 +13,12 @@
         <mat-card class="drop-shadow" *ngFor="let element of newsPage.content">
             
             <div class="row">
-                <p>{{element.text}}</p>
+                <p id="news-text">{{element.text}}</p>
                 <div class="column right">
-                    <button mat-icon-button color="warn" *ngIf="element.id && isAdmin" (click)="deleteNews(element.id)">
+                    <button mat-icon-button color="warn" id="delete-news-button" *ngIf="element.id && isAdmin" (click)="deleteNews(element.id)">
                         <mat-icon >delete</mat-icon>
                     </button>
-                    <button mat-icon-button *ngIf="isAdmin" (click)="openUpdateNewsDialog(element)">
+                    <button mat-icon-button id="update-news-button" *ngIf="isAdmin" (click)="openUpdateNewsDialog(element)">
                         <mat-icon >launch</mat-icon>
                     </button>
                 </div>

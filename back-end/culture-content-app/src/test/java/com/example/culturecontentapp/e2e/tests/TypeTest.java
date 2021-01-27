@@ -220,7 +220,7 @@ public class TypeTest {
         assertEquals("Cultural offer type with given name already exists", typePage.getSnackMessage().getText());
 
         List<WebElement> data = browser.findElements(By.cssSelector(".type-row"));
-        WebElement updated = data.get(data.size() - 1);
+
         assertEquals(data.size(), beforeUpdating);
     }
     @Test

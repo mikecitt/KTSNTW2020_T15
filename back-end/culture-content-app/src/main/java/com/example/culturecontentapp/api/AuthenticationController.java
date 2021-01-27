@@ -41,7 +41,7 @@ public class AuthenticationController {
   }
 
   @GetMapping("/activate")
-  public ResponseEntity<?> activate(@RequestParam("token") String token) {
+  public ResponseEntity<String> activate(@RequestParam("token") String token) {
     return service.activate(token);
   }
 

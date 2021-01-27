@@ -59,6 +59,12 @@ export class CulturalOfferService {
     });
   }
 
+  selectWithPagination(page: number, size: number): Observable<any> {
+    return this.http.get<CulturalOfferResponse>(
+      this.path + `?page${page}&size=${size}`
+    );
+  }
+
   filterCulturalOffers(
     filterReq: FilterRequest
   ): Observable<CulturalOfferResponse[]> {
