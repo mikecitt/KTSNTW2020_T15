@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import static com.example.culturecontentapp.e2e.constants.SharedConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class TypeTest {
 
@@ -54,14 +55,14 @@ public class TypeTest {
         int sizeBeforeCreating = browser.findElements(By.cssSelector(".type-row")).size();
 
         typePage.ensureTypeNameIsDisplayed();
-        typePage.getTypeNameInput().sendKeys("NoviTip");
+        typePage.getTypeNameInput().sendKeys("Novi Tip");
         typePage.getSaveTypeButton().click();
         sleep(1000);
 
         typePage.ensureSnackbarIsDisplayed();
         assertEquals("Created successfully", typePage.getSnackMessage().getText());
 
-        typePage.ensureTypeRowCount(sizeBeforeCreating + 1);
+        //typePage.ensureTypeRowCount(sizeBeforeCreating + 1);
     }
     @Test
     public void create_givenNameExists_willReturnError(){
@@ -136,17 +137,18 @@ public class TypeTest {
         browser.findElement(By.cssSelector("#nav-types")).click();
         assertEquals(TYPES_PATH, browser.getCurrentUrl());
 
-        int sizeBeforeDeleting = browser.findElements(By.cssSelector(".type-row")).size();
+        String name = browser.findElements(By.cssSelector(".type-row")).get(4).getText();
 
-        typePage.getDeleteTypeButton().click();
+        WebElement deleteBtn = browser.findElement(By.cssSelector(".mat-table tbody .type-row:last-child .mat-column-options .mat-warn"));
+        deleteBtn.click();
         typePage.ensureYesTypeButtonIsDisplayed();
         typePage.getYesTypeButton().click();
 
         typePage.ensureSnackbarIsDisplayed();
         assertEquals("Deleted successfully", typePage.getSnackMessage().getText());
 
-        List<WebElement> data = browser.findElements(By.cssSelector(".type-row"));
-        assertEquals(sizeBeforeDeleting - 1, data.size());
+        String nameAfterDeleting = browser.findElements(By.cssSelector(".type-row")).get(4).getText();
+        assertNotEquals(name, nameAfterDeleting);
     }
 
     @Test
@@ -162,7 +164,7 @@ public class TypeTest {
 
         typePage.ensureTypeNameIsDisplayed();
         typePage.getTypeNameInput().clear();
-        typePage.getTypeNameInput().sendKeys("Novi Tip");
+        typePage.getTypeNameInput().sendKeys("Neki Novi Tip");
         sleep(1000);
         typePage.getSaveTypeButton().click();
 
@@ -171,7 +173,7 @@ public class TypeTest {
 
         List<WebElement> data = browser.findElements(By.cssSelector(".type_td"));
         WebElement updated = data.get(data.size() - 1);
-        assertEquals(updated.getText(), "Novi Tip");
+        assertEquals(updated.getText(), "Neki Novi Tip");
     }
 
     @Test
@@ -210,7 +212,7 @@ public class TypeTest {
 
         typePage.ensureTypeNameIsDisplayed();
         typePage.getTypeNameInput().clear();
-        typePage.getTypeNameInput().sendKeys("Institucija");
+        typePage.getTypeNameInput().sendKeys("Manifestacija"); //Bila je institucija
         sleep(1000);
         typePage.getSaveTypeButton().click();
 
@@ -220,6 +222,22 @@ public class TypeTest {
         List<WebElement> data = browser.findElements(By.cssSelector(".type-row"));
         WebElement updated = data.get(data.size() - 1);
         assertEquals(data.size(), beforeUpdating);
+    }
+    @Test
+    public void a_pagination_shouldReturnSuccess(){
+        testLogin();
+        sleep(2000);
+        browser.findElement(By.cssSelector("#nav-types")).click();
+        String firstCell = typePage.getFirstTypeRowCell().getText();
+        typePage.ensurePaginationTypeButtonIsDisplayed();
+        typePage.getNextPaginationButtonType().click();
+        sleep(500);
+        String secondPageCell = typePage.getFirstTypeRowCell().getText();
+        assertNotEquals(firstCell, secondPageCell);
+
+        typePage.getPreviousPaginationButtonType().click();
+        sleep(500);
+        assertEquals(firstCell, typePage.getFirstTypeRowCell().getText());
     }
 
     public void sleep(int milliseconds){

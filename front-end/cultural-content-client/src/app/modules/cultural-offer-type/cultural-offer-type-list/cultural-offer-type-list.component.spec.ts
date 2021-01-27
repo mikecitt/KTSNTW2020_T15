@@ -75,5 +75,11 @@ describe('CulturalOfferTypeListComponent', () => {
     expect(component.onUpdateTypeEvent.emit).toHaveBeenCalledWith({id:1, name:"tip"});
   });
 
+  it('should emit on row click', async() => {
+    spyOn(component.onRowClickEvent,'emit');
+    component.onRowClick({id:1, name:"tip"});
+    expect(component.onRowClickEvent.emit).toHaveBeenCalled();
+    expect(component.onRowClickEvent.emit).toHaveBeenCalledWith(1);
+  });
 
 });

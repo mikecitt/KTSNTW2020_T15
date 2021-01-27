@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static com.example.culturecontentapp.e2e.constants.SharedConstants.*;
 
 public class SubTypeTest {
 
@@ -26,20 +27,18 @@ public class SubTypeTest {
 
     @Before
     public void setup(){
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
+        System.setProperty(WEB_DRIVER, WEB_DRIVER_PATH);
         browser = new ChromeDriver();
-        //maximize window
         browser.manage().window().maximize();
-        //navigate
-        browser.navigate().to("http://localhost:4200/login");
+        browser.navigate().to(LOGIN_PATH);
 
         typePage = PageFactory.initElements(browser, TypePage.class);
         loginPage = PageFactory.initElements(browser, LoginPage.class);
     }
     public void login(){
         loginPage.ensureIsDisplayed();
-        loginPage.getUsernameInput().sendKeys("admin@example.com");
-        loginPage.getPasswordInput().sendKeys("qwerty");
+        loginPage.getUsernameInput().sendKeys(ADMIN_EMAIL);
+        loginPage.getPasswordInput().sendKeys(ADMIN_PASS);
         loginPage.getLoginButton().click();
         sleep(1000);
     }
@@ -54,7 +53,7 @@ public class SubTypeTest {
         typePage.ensureAddSubTypeButtonIsDisplayed();
         typePage.getAddSubTypeButton().click();
 
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         int sizeBeforeCreating = browser.findElements(By.cssSelector(".subType-row")).size();
 
         typePage.ensureSubTypeInputIsDisplayed();
@@ -62,7 +61,6 @@ public class SubTypeTest {
         typePage.ensureSaveSubTypeButtonIsDisplayed();
         typePage.getSaveSubTypeButton().click();
         sleep(1000);
-//        browser.wait(20);
 
         typePage.ensureSnackbarIsDisplayed();
         assertEquals("Created successfully", typePage.getSnackMessage().getText());
@@ -83,7 +81,7 @@ public class SubTypeTest {
         typePage.ensureAddSubTypeButtonIsDisplayed();
         typePage.getAddSubTypeButton().click();
 
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         int sizeBeforeCreating = browser.findElements(By.cssSelector(".subType-row")).size();
 
         typePage.ensureSubTypeInputIsDisplayed();
@@ -109,7 +107,7 @@ public class SubTypeTest {
         typePage.ensureAddSubTypeButtonIsDisplayed();
         typePage.getAddSubTypeButton().click();
 
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         int sizeBeforeCreating = browser.findElements(By.cssSelector(".subType-row")).size();
 
         typePage.ensureSubTypeInputIsDisplayed();
@@ -127,13 +125,13 @@ public class SubTypeTest {
         login();
         browser.findElement(By.cssSelector("#nav-types")).click();
 
-        typePage.ensureTypeRawIsDisplayed();
-        typePage.getTypeRaw().click();
+        typePage.ensureSecondTypeRawIsDisplayed();
+        typePage.getSecondTypeRaw().click();
         typePage.ensureDeleteSubTypeButtonIsDisplayed();
         typePage.getDeleteSubTypeButton().click();
         sleep(500);
 
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         int sizeBeforeDeleting = browser.findElements(By.cssSelector(".subType-row")).size();
 
         typePage.ensureYesSubTypeButtonIsDisplayed();
@@ -156,7 +154,7 @@ public class SubTypeTest {
         typePage.getDeleteSubTypeButton().click();
         sleep(500);
 
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         int sizeBeforeDeleting = browser.findElements(By.cssSelector(".subType-row")).size();
 
         typePage.ensureYesSubTypeButtonIsDisplayed();
@@ -174,7 +172,7 @@ public class SubTypeTest {
         sleep(1000);
 
         browser.findElement(By.cssSelector("#nav-types")).click();
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         typePage.ensureTypeRawIsDisplayed();
         typePage.getTypeRaw().click();
 
@@ -202,7 +200,7 @@ public class SubTypeTest {
         sleep(1000);
 
         browser.findElement(By.cssSelector("#nav-types")).click();
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         typePage.ensureTypeRawIsDisplayed();
         typePage.getTypeRaw().click();
 
@@ -230,7 +228,7 @@ public class SubTypeTest {
         sleep(1000);
 
         browser.findElement(By.cssSelector("#nav-types")).click();
-        assertEquals("http://localhost:4200/culturalOfferTypes", browser.getCurrentUrl());
+        assertEquals(TYPES_PATH, browser.getCurrentUrl());
         typePage.ensureTypeRawIsDisplayed();
         typePage.getTypeRaw().click();
 
@@ -248,6 +246,24 @@ public class SubTypeTest {
         List<WebElement> data = browser.findElements(By.cssSelector(".sub-td"));
         WebElement updated = data.get(0);
         assertNotEquals( "Neko ime",updated.getText());
+    }
+
+    @Test
+    public void a_pagination_shouldReturnSuccess(){
+        login();
+        browser.findElement(By.cssSelector("#nav-types")).click();
+        browser.findElement(By.cssSelector(".mat-table tbody .type-row:nth-child(3)")).click();
+
+        String firstCell = typePage.getFirstSubRowCell().getText();
+        typePage.ensurePaginationSubButtonIsDisplayed();
+        typePage.getNextPaginationButtonSub().click();
+        sleep(500);
+        String secondPageCell = typePage.getFirstSubRowCell().getText();
+        assertNotEquals(firstCell, secondPageCell);
+
+        typePage.getPreviousPaginationButtonSub().click();
+        sleep(500);
+        assertEquals(firstCell, typePage.getFirstSubRowCell().getText());
     }
 
     public void sleep(int milliseconds){

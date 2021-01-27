@@ -8,4 +8,6 @@ public class SharedConstants {
     public static final String ADMIN_EMAIL = "admin@example.com";
     public static final String ADMIN_PASS = "qwerty";
     public static final String TYPES_PATH = "http://localhost:4200/culturalOfferTypes";
+
+    public static final int NUMBER_OF_ALL_MARKERS = 4;
 }
