@@ -13,6 +13,7 @@ import { Geocoder } from '../../../models/geocoder';
 import { DynamicComponentService } from 'src/app/services/dynamic-component.service';
 import { MapItemOverviewComponent } from '../map-item-overview/map-item-overview.component';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
+import { CulturalOfferService } from 'src/app/services';
 
 @Component({
   selector: 'app-map-item',
@@ -31,7 +32,8 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   constructor(
     private httpClient: HttpClient,
-    private dynamicComponentService: DynamicComponentService
+    private dynamicComponentService: DynamicComponentService,
+    private offerService: CulturalOfferService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -110,12 +112,12 @@ export class MapItemComponent implements OnInit, OnChanges {
   }
   focusOnLocation() {
     this.location = this.capitalize(this.location);
-    let api_url = `https://api.mapbox.com/geocoding/v5/mapbox.places/
-                    ${this.location}.json?access_token=${environment.mapboxKey}`;
+    // let api_url = `https://api.mapbox.com/geocoding/v5/mapbox.places/
+    //                 ${this.location}.json?access_token=${environment.mapboxKey}`;
 
-    let response = this.httpClient.get<Geocoder>(api_url);
+    //let response = this.httpClient.get<Geocoder>(api_url);
 
-    response.subscribe((geo: Geocoder) => {
+    this.offerService.getMapboxLocations(this.location).subscribe((geo: Geocoder) => {
       if (geo.features[0]) {
         this.mapa.setCenter(geo.features[0].center as [number, number]);
         this.mapa.setZoom(13.5);

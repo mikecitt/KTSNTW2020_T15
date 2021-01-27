@@ -7,7 +7,7 @@ import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferType } from 'src/app/models/cultural-offer-type';
 import { CulturalOfferLocation } from 'src/app/models/culutral-offer-location';
 import { CulturalOfferSubType } from 'src/app/models/culutral-offer-subType';
-import { CulturalOfferTypeService, CulturalOfferService, CulturalOfferSubTypeService } from 'src/app/services';
+import { CulturalOfferTypeService, CulturalOfferService, CulturalOfferSubTypeService, UserService } from 'src/app/services';
 
 import { MapPageComponent } from './map-page.component';
 
@@ -18,6 +18,7 @@ describe('MapPageComponent', () => {
   let typeService: CulturalOfferTypeService;
   let subTypeService: CulturalOfferSubTypeService;
   let dialog: MatDialog;
+  let userService: UserService;
 
   beforeEach(async () => {
     const dialogMock = {
@@ -92,12 +93,17 @@ describe('MapPageComponent', () => {
               .and.returnValue(of(subTypes))
     };
 
+    let userServiceMock = {
+      getRole: jasmine.createSpy('getRole')
+    };
+
     await TestBed.configureTestingModule({
       declarations: [ MapPageComponent ],
       providers: [
         {provide: CulturalOfferService, useValue: culturalOfferServiceMock},
         {provide: CulturalOfferTypeService, useValue: typeServiceMock},
         {provide: CulturalOfferSubTypeService, useValue: subTypeSeviceMock},
+        {provide: UserService, useValue: userServiceMock},
         {provide: MatDialog, useValue: dialogMock},
       ]
     })
@@ -112,6 +118,7 @@ describe('MapPageComponent', () => {
     typeService = TestBed.inject(CulturalOfferTypeService);
     subTypeService = TestBed.inject(CulturalOfferSubTypeService);
     dialog = TestBed.inject(MatDialog);
+    userService = TestBed.inject(UserService);
 
   });
 

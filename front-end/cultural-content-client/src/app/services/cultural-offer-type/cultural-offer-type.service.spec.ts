@@ -117,21 +117,26 @@ describe('CulturalOfferTypeService', () => {
       name: "tip1"
     };
 
+    let typeResponse: CulturalOfferType = {
+      id: 0,
+      name: ""
+    };
+
     const mockType: CulturalOfferType = {
       id: 1,
       name: "tip1"
     };
 
-    typeService.createType(newType).subscribe(res => newType = res);
+    typeService.createType(newType).subscribe(res => typeResponse = res);
 
     const req = httpMock.expectOne(path + '/types');
     expect(req.request.method).toBe('POST');
     req.flush(mockType);
 
     tick();
-    expect(newType).toBeDefined();
-    expect(newType.id).toEqual(1);
-    expect(newType.name).toEqual("tip1");
+    expect(typeResponse).toBeDefined();
+    expect(typeResponse.id).toEqual(1);
+    expect(typeResponse.name).toEqual("tip1");
   }));
 
   it('updateType() should update a type', fakeAsync( () =>  {
@@ -140,12 +145,17 @@ describe('CulturalOfferTypeService', () => {
       name: 'tip1'
     };
 
+    let updated: CulturalOfferType = {
+      id: 0,
+      name: ""
+    };
+
     const mockType: CulturalOfferType = {
       id: 1,
       name: 'tip1'
     };
 
-    typeService.updateType(type).subscribe(res => type = res);
+    typeService.updateType(type).subscribe(res => updated = res);
 
     const req = httpMock.expectOne(path + '/types/1');
     expect(req.request.method).toBe('PUT');
@@ -153,9 +163,9 @@ describe('CulturalOfferTypeService', () => {
 
     tick();
 
-    expect(type).toBeDefined();
-    expect(type.id).toBe(1);
-    expect(type.name).toBe('tip1');
+    expect(updated).toBeDefined();
+    expect(updated.id).toBe(1);
+    expect(updated.name).toBe('tip1');
 
   }));
 
