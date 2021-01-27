@@ -9,6 +9,7 @@ import { FilterRequest } from 'src/app/models/filter-request';
 import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCulturalOfferDialogComponent } from '../new-cultural-offer-dialog/new-cultural-offer-dialog.component';
+import { UserService } from 'src/app/services';
 
 @Component({
   selector: 'app-map-page',
@@ -26,6 +27,7 @@ export class MapPageComponent implements OnInit {
     private culturalOfferService: CulturalOfferService,
     private culturalOfferTypeService: CulturalOfferTypeService,
     private culturalOfferSubTypeService: CulturalOfferSubTypeService,
+    private userService: UserService,
     public dialog: MatDialog
   ) {}
 
@@ -63,6 +65,10 @@ export class MapPageComponent implements OnInit {
 
   findLocation(location: string) {
     this.searchedLocation = location;
+  }
+
+  get isAdmin() {
+    return this.userService.getRole() == 'ROLE_ADMIN';
   }
 
   openNewDialog() {
