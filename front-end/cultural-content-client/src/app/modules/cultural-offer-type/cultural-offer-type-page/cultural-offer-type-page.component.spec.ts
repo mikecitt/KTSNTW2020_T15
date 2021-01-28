@@ -20,9 +20,9 @@ describe('CulturalOfferTypePageComponent', () => {
   beforeEach(async () => {
     const typesMock = {
       content: [
-        {id: 1, name: "tip1"},
-        {id:2, name: "tip2"},
-        {id: 3, name: "tip3"}
+        {id: 1, name: 'tip1'},
+        {id: 2, name: 'tip2'},
+        {id: 3, name: 'tip3'}
       ],
       totalElements: 3
     };
@@ -36,29 +36,29 @@ describe('CulturalOfferTypePageComponent', () => {
 
     const subTypesMock = {
       content: [
-        {id: 1, name: "podtip1"},
-        {id:2, name: "podtip2"},
-        {id: 3, name: "podtip3"}
+        {id: 1, name: 'podtip1'},
+        {id: 2, name: 'podtip2'},
+        {id: 3, name: 'podtip3'}
       ],
       totalElements: 3
-    }
+    };
 
-    let typeServiceMock = {
+    const typeServiceMock = {
       getAllPaginated : jasmine.createSpy('getAllPaginated')
                          .and.returnValue(of(typesMock)),
       deleteType: jasmine.createSpy('deleteType')
                          .and.returnValue(of()),
       createType: jasmine.createSpy('createType')
-                         .and.returnValue(of({ id: 0, name:""})),
+                         .and.returnValue(of({ id: 0, name: ''})),
       updateType: jasmine.createSpy('updateType')
                          .and.returnValue(of({}))
     };
 
-    let subTypeServiceMock = {
+    const subTypeServiceMock = {
       getAllPaginated: jasmine.createSpy('getAllPaginated').and.returnValue(of(subTypesMock))
     };
 
-    let dialogMock = {
+    const dialogMock = {
       open : jasmine.createSpy('open').and.returnValue({
          afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({}) ), close: null
         })
@@ -66,7 +66,7 @@ describe('CulturalOfferTypePageComponent', () => {
 
     const snackbarMock = {
       openSnackBar: jasmine.createSpy('openSnackBar')
-    }
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ CulturalOfferTypePageComponent ],
@@ -77,7 +77,7 @@ describe('CulturalOfferTypePageComponent', () => {
         {provide: SnackBarComponent, useValue: snackbarMock}
       ]
     });
-    //.compileComponents();
+    // .compileComponents();
   });
 
   beforeEach(() => {
@@ -100,12 +100,12 @@ describe('CulturalOfferTypePageComponent', () => {
               expect(component.culturalOfferTypes.length).toBe(3);
               fixture.detectChanges();
               try {
-                let tr = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+                const tr = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
                 expect(tr.length).toBe(4);
               } catch (error) {
-                
+
               }
-              
+
            });
   });
 
@@ -120,13 +120,13 @@ describe('CulturalOfferTypePageComponent', () => {
         expect(component.culturalOfferTypes.length).toBe(3);
         fixture.detectChanges();
         try {
-          let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+          const elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
           expect(elements.length).toBe(4);
         } catch (error) {
-          
+
         }
         // let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
-      })
+      });
   });
 
   it('should go to previous page in type table', async () => {
@@ -135,7 +135,7 @@ describe('CulturalOfferTypePageComponent', () => {
     try {
       component.getPreviousType();
     } catch (error) {
-      
+
     }
 
     expect(component.curentPageType).toBe(0);
@@ -146,10 +146,10 @@ describe('CulturalOfferTypePageComponent', () => {
         expect(component.culturalOfferTypes.length).toBe(3);
         fixture.detectChanges();
         try {
-          let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+          const elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
           expect(elements.length).toBe(4);
         } catch (error) {}
-      })
+      });
   });
 
   it('should go to next page in subtype table', async () => {
@@ -165,7 +165,7 @@ describe('CulturalOfferTypePageComponent', () => {
         // let elements: DebugElement[] = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
         // // let elements: DebugElement[] = fixture.debugElement.queryAll(By.css('tr'));
         // expect(elements.length).toBe(4);
-      })
+      });
   });
 
   it('should go to previous page in subtype table', async () => {
@@ -195,19 +195,19 @@ describe('CulturalOfferTypePageComponent', () => {
       .then(() => {
         fixture.detectChanges();
         try {
-          let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
-        expect(elements.length).toBe(1);
+          const elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+          expect(elements.length).toBe(1);
         } catch (error) {
-          
+
         }
-        
+
       });
     expect(typeService.deleteType).toHaveBeenCalled();
     expect(typeService.getAllPaginated).toHaveBeenCalled();
   });
 
   it('should open create dialog', async () => {
-    component.openCreateDialog("Whatever");
+    component.openCreateDialog('Whatever');
     fixture.detectChanges();
     expect(dialog.open).toHaveBeenCalled();
 
@@ -215,12 +215,12 @@ describe('CulturalOfferTypePageComponent', () => {
       .then(() => {
         fixture.detectChanges();
         try {
-          let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+          const elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
           expect(elements.length).toBe(1);
         } catch (error) {
-          
+
         }
-        
+
       });
     expect(typeService.createType).toHaveBeenCalled();
     expect(typeService.getAllPaginated).toHaveBeenCalled();

@@ -4,6 +4,6 @@ export interface CulturalOfferType {
 }
 
 export interface TypeDialogData{
-  type: CulturalOfferType,
-  formType: string
+  type: CulturalOfferType;
+  formType: string;
 }

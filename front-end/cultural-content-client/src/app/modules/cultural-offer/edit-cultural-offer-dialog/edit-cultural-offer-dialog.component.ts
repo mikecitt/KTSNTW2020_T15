@@ -40,7 +40,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: CulturalOfferResponse
   ) {
     this.cultureOfferId = data.id;
-    var location = {
+    const location = {
       place_name: data.location.address,
       center: [data.location.longitude, data.location.latitude],
     };
@@ -75,7 +75,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
-    });
+    })
 
   locationRequired() {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -100,7 +100,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
   }
 
   async update() {
-    let formObj = this.form.getRawValue();
+    const formObj = this.form.getRawValue();
 
     for (let i = 0; i < formObj.images.length; i++) {
       if (formObj.images[i] instanceof File) {
@@ -118,7 +118,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
     this.service.update(formObj, this.cultureOfferId).subscribe(
       (response: CulturalOfferResponse) => {
         this.dialogRef.close(response);
-        this.snackBar.openSnackBar("Updated successully", "", "green-snackbar");
+        this.snackBar.openSnackBar('Updated successully', '', 'green-snackbar');
       },
       (error: any) => {}
     );

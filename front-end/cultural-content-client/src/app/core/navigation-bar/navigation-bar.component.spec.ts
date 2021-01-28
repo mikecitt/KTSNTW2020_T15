@@ -13,15 +13,15 @@ describe('NavigationBarComponent', () => {
 
   beforeEach(async () => {
     const routerMock = {
-    }
+    };
 
     const userServiceMock = {
       getRole : jasmine.createSpy('getRole')
-    }
+    };
 
     const authServiceMock = {
       logout: jasmine.createSpy('logout')
-    }
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ NavigationBarComponent ],

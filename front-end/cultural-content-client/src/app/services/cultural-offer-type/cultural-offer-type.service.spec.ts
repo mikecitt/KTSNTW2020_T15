@@ -12,7 +12,7 @@ describe('CulturalOfferTypeService', () => {
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
 
-  const path: string = 'http://localhost:8080/api';
+  const path = 'http://localhost:8080/api';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,14 +39,14 @@ describe('CulturalOfferTypeService', () => {
     const mockTypes: CulturalOfferType[] = [
       {
         id: 1,
-        name: "tip1"
+        name: 'tip1'
       },
       {
         id: 2,
-        name: "tip2"
+        name: 'tip2'
       }];
 
-    typeService.getAll().subscribe(data => {types = data})
+    typeService.getAll().subscribe(data => {types = data; });
 
     const req = httpMock.expectOne(path + '/types/all');
     expect(req.request.method).toBe('GET');
@@ -65,24 +65,24 @@ describe('CulturalOfferTypeService', () => {
 
   it('GetAllPaginated() should return types', fakeAsync( () => {
     let typePage: TypePage = {
-      content:[],
-      first:false,
-      last:false,
-      totalPages:0,
-      totalElements:0
+      content: [],
+      first: false,
+      last: false,
+      totalPages: 0,
+      totalElements: 0
     };
     const mockTypes: TypePage = {
-      content:[{
+      content: [{
         id: 1,
-        name: "tip1"
+        name: 'tip1'
       },
       {
         id: 2,
-        name: "tip2"
+        name: 'tip2'
       },
       {
         id: 3,
-        name:"tip3"
+        name: 'tip3'
       }],
       first: true,
       last: true,
@@ -90,7 +90,7 @@ describe('CulturalOfferTypeService', () => {
       totalPages: 1
     };
 
-    typeService.getAllPaginated(0,3).subscribe(data => {typePage = data})
+    typeService.getAllPaginated(0, 3).subscribe(data => {typePage = data; });
 
     const req = httpMock.expectOne(path + '/types?page=0&size=3');
     expect(req.request.method).toBe('GET');
@@ -112,19 +112,19 @@ describe('CulturalOfferTypeService', () => {
   }));
 
   it('saveType() should save a type', fakeAsync( () => {
-    let newType: CulturalOfferType = {
+    const newType: CulturalOfferType = {
       id: 0,
-      name: "tip1"
+      name: 'tip1'
     };
 
     let typeResponse: CulturalOfferType = {
       id: 0,
-      name: ""
+      name: ''
     };
 
     const mockType: CulturalOfferType = {
       id: 1,
-      name: "tip1"
+      name: 'tip1'
     };
 
     typeService.createType(newType).subscribe(res => typeResponse = res);
@@ -136,18 +136,18 @@ describe('CulturalOfferTypeService', () => {
     tick();
     expect(typeResponse).toBeDefined();
     expect(typeResponse.id).toEqual(1);
-    expect(typeResponse.name).toEqual("tip1");
+    expect(typeResponse.name).toEqual('tip1');
   }));
 
   it('updateType() should update a type', fakeAsync( () =>  {
-    let type: CulturalOfferType = {
+    const type: CulturalOfferType = {
       id: 1,
       name: 'tip1'
     };
 
     let updated: CulturalOfferType = {
       id: 0,
-      name: ""
+      name: ''
     };
 
     const mockType: CulturalOfferType = {
@@ -169,7 +169,7 @@ describe('CulturalOfferTypeService', () => {
 
   }));
 
-  it('deleteType() should delete a type', fakeAsync(() =>{
+  it('deleteType() should delete a type', fakeAsync(() => {
     typeService.deleteType(1).subscribe(res => {});
 
     const req = httpMock.expectOne(path + '/types/1');

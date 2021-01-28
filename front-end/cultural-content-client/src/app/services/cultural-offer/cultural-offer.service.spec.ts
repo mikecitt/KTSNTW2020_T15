@@ -13,7 +13,7 @@ describe('CulturalOfferService', () => {
   let service: CulturalOfferService;
   let httpMock: HttpTestingController;
 
-  const path: string = 'http://localhost:8080/api/cultural-offer';
+  const path = 'http://localhost:8080/api/cultural-offer';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -34,27 +34,27 @@ describe('CulturalOfferService', () => {
   });
 
   it('getLocations() should return some cultural offers', fakeAsync(() => {
-    let offers : CulturalOfferResponse[] = [];
-    let offersMock : CulturalOfferResponse[] = [{
+    let offers: CulturalOfferResponse[] = [];
+    const offersMock: CulturalOfferResponse[] = [{
       id: 1,
-      name: "kulturna ponuda",
-      description: "neki opis",
+      name: 'kulturna ponuda',
+      description: 'neki opis',
       location: {
-        address: "Novi Sad",
+        address: 'Novi Sad',
         longitude: 20,
         latitude: 20
       },
       subType: {
         id: 1,
-        name: "podkategorija",
+        name: 'podkategorija',
         type: {
           id: 1,
-          name: "kategorija"
+          name: 'kategorija'
         }
       },
       images: []
     }];
-    service.getLocations().subscribe(data => {offers = data});
+    service.getLocations().subscribe(data => {offers = data; });
 
     const req = httpMock.expectOne(path + '/all');
     expect(req.request.method).toBe('GET');
@@ -64,64 +64,64 @@ describe('CulturalOfferService', () => {
 
     expect(offers.length).toBe(1);
     expect(offers[0].id).toBe(1);
-    expect(offers[0].description).toBe("neki opis");
-    expect(offers[0].name).toBe("kulturna ponuda");
-    expect(offers[0].location.address).toBe("Novi Sad");
+    expect(offers[0].description).toBe('neki opis');
+    expect(offers[0].name).toBe('kulturna ponuda');
+    expect(offers[0].location.address).toBe('Novi Sad');
     expect(offers[0].location.latitude).toBe(20);
     expect(offers[0].location.longitude).toBe(20);
     expect(offers[0].subType.id).toBe(1);
-    expect(offers[0].subType.name).toBe("podkategorija");
+    expect(offers[0].subType.name).toBe('podkategorija');
     expect(offers[0].subType.type.id).toBe(1);
-    expect(offers[0].subType.type.name).toBe("kategorija");
+    expect(offers[0].subType.type.name).toBe('kategorija');
   }));
 
   it('insert() should create cultural offer', fakeAsync(() => {
-    let newOffer: CulturalOfferRequest = {
-      name: "kulturna ponuda",
-      description: "neki opis",
+    const newOffer: CulturalOfferRequest = {
+      name: 'kulturna ponuda',
+      description: 'neki opis',
       location: {
-        address: "Novi Sad",
+        address: 'Novi Sad',
         longitude: 20,
         latitude: 20
       },
-      images: ["slika.jpg"]
+      images: ['slika.jpg']
     };
 
-    let mockOffer: CulturalOfferResponse = {
+    const mockOffer: CulturalOfferResponse = {
       id: 1,
-      name: "kulturna ponuda",
-      description: "neki opis",
+      name: 'kulturna ponuda',
+      description: 'neki opis',
       location: {
-        address: "Novi Sad",
+        address: 'Novi Sad',
         longitude: 20,
         latitude: 20
       },
       subType: {
         id: 1,
-        name: "podkategorija",
+        name: 'podkategorija',
         type: {
           id: 1,
-          name: "kategorija"
+          name: 'kategorija'
         }
       },
-      images: ["slika.jpg"]
+      images: ['slika.jpg']
     };
 
     let offerResponse: CulturalOfferResponse = {
       id: 0,
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       location: {
-        address: "",
+        address: '',
         longitude: 0,
         latitude: 0
       },
       subType: {
         id: 0,
-        name: "",
+        name: '',
         type: {
           id: 0,
-          name: ""
+          name: ''
         }
       },
       images: []
@@ -136,65 +136,65 @@ describe('CulturalOfferService', () => {
     tick();
 
     expect(offerResponse.id).toBe(1);
-    expect(offerResponse.name).toBe("kulturna ponuda");
-    expect(offerResponse.description).toBe("neki opis");
-    expect(offerResponse.location.address).toBe("Novi Sad");
+    expect(offerResponse.name).toBe('kulturna ponuda');
+    expect(offerResponse.description).toBe('neki opis');
+    expect(offerResponse.location.address).toBe('Novi Sad');
     expect(offerResponse.location.latitude).toBe(20);
     expect(offerResponse.location.longitude).toBe(20);
-    expect(offerResponse.images[0]).toBe("slika.jpg");
+    expect(offerResponse.images[0]).toBe('slika.jpg');
     expect(offerResponse.subType.id).toBe(1);
-    expect(offerResponse.subType.name).toBe("podkategorija");
+    expect(offerResponse.subType.name).toBe('podkategorija');
     expect(offerResponse.subType.type.id).toBe(1);
-    expect(offerResponse.subType.type.name).toBe("kategorija");
+    expect(offerResponse.subType.type.name).toBe('kategorija');
   }));
 
   it('update() should update cultural offer', fakeAsync(() => {
-    let newOffer: CulturalOfferRequest = {
-      name: "kulturna ponuda",
-      description: "neki opis",
+    const newOffer: CulturalOfferRequest = {
+      name: 'kulturna ponuda',
+      description: 'neki opis',
       location: {
-        address: "Novi Sad",
+        address: 'Novi Sad',
         longitude: 20,
         latitude: 20
       },
-      images: ["slika.jpg"]
+      images: ['slika.jpg']
     };
 
-    let mockOffer: CulturalOfferResponse = {
+    const mockOffer: CulturalOfferResponse = {
       id: 1,
-      name: "kulturna ponuda",
-      description: "neki opis",
+      name: 'kulturna ponuda',
+      description: 'neki opis',
       location: {
-        address: "Novi Sad",
+        address: 'Novi Sad',
         longitude: 20,
         latitude: 20
       },
       subType: {
         id: 1,
-        name: "podkategorija",
+        name: 'podkategorija',
         type: {
           id: 1,
-          name: "kategorija"
+          name: 'kategorija'
         }
       },
-      images: ["slika.jpg"]
+      images: ['slika.jpg']
     };
 
     let updatedResponse: CulturalOfferResponse = {
       id: 0,
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       location: {
-        address: "",
+        address: '',
         longitude: 0,
         latitude: 0
       },
       subType: {
         id: 0,
-        name: "",
+        name: '',
         type: {
           id: 0,
-          name: ""
+          name: ''
         }
       },
       images: []
@@ -209,16 +209,16 @@ describe('CulturalOfferService', () => {
     tick();
 
     expect(updatedResponse.id).toBe(1);
-    expect(updatedResponse.name).toBe("kulturna ponuda");
-    expect(updatedResponse.description).toBe("neki opis");
-    expect(updatedResponse.location.address).toBe("Novi Sad");
+    expect(updatedResponse.name).toBe('kulturna ponuda');
+    expect(updatedResponse.description).toBe('neki opis');
+    expect(updatedResponse.location.address).toBe('Novi Sad');
     expect(updatedResponse.location.latitude).toBe(20);
     expect(updatedResponse.location.longitude).toBe(20);
-    expect(updatedResponse.images[0]).toBe("slika.jpg");
+    expect(updatedResponse.images[0]).toBe('slika.jpg');
     expect(updatedResponse.subType.id).toBe(1);
-    expect(updatedResponse.subType.name).toBe("podkategorija");
+    expect(updatedResponse.subType.name).toBe('podkategorija');
     expect(updatedResponse.subType.type.id).toBe(1);
-    expect(updatedResponse.subType.type.name).toBe("kategorija");
+    expect(updatedResponse.subType.type.name).toBe('kategorija');
   }));
 
   it('delete() should delete cultural offer', fakeAsync(() => {
@@ -230,27 +230,27 @@ describe('CulturalOfferService', () => {
   }));
 
   it('filterCulturalOffer should return filtered offers', fakeAsync(() => {
-    let filterRequest: FilterRequest = {
-      subTypeName: "Koncert",
-      typeName: "Manifestacija"
+    const filterRequest: FilterRequest = {
+      subTypeName: 'Koncert',
+      typeName: 'Manifestacija'
     };
-    let response : CulturalOfferResponse[] = [];
+    let response: CulturalOfferResponse[] = [];
 
-    let offersMock : CulturalOfferResponse[] = [{
+    const offersMock: CulturalOfferResponse[] = [{
       id: 1,
-      name: "kulturna ponuda",
-      description: "neki opis",
+      name: 'kulturna ponuda',
+      description: 'neki opis',
       location: {
-        address: "Novi Sad",
+        address: 'Novi Sad',
         longitude: 20,
         latitude: 20
       },
       subType: {
         id: 1,
-        name: "Koncert",
+        name: 'Koncert',
         type: {
           id: 1,
-          name: "Manifestacija"
+          name: 'Manifestacija'
         }
       },
       images: []
@@ -264,42 +264,42 @@ describe('CulturalOfferService', () => {
 
     expect(response.length).toBe(1);
     expect(response[0].id).toBe(1);
-    expect(response[0].description).toBe("neki opis");
-    expect(response[0].name).toBe("kulturna ponuda");
-    expect(response[0].location.address).toBe("Novi Sad");
+    expect(response[0].description).toBe('neki opis');
+    expect(response[0].name).toBe('kulturna ponuda');
+    expect(response[0].location.address).toBe('Novi Sad');
     expect(response[0].location.latitude).toBe(20);
     expect(response[0].location.longitude).toBe(20);
     expect(response[0].subType.id).toBe(1);
-    expect(response[0].subType.name).toBe("Koncert");
+    expect(response[0].subType.name).toBe('Koncert');
     expect(response[0].subType.type.id).toBe(1);
-    expect(response[0].subType.type.name).toBe("Manifestacija");
+    expect(response[0].subType.type.name).toBe('Manifestacija');
   }));
 
   it('getMapboxLocations() should return map location for given address', fakeAsync( () => {
     let location: Geocoder = {
       query: [],
       features: [{
-        text: "",
-        place_name: "",
+        text: '',
+        place_name: '',
         bbox: [],
         center: []
       }
     ]
     };
 
-    let mockLocation: Geocoder = {
+    const mockLocation: Geocoder = {
       query: [],
       features: [{
-        text: "Neki tekst",
-        place_name: "Novi Sad",
-        bbox: [20,20,20,20],
-        center: [20,20]
+        text: 'Neki tekst',
+        place_name: 'Novi Sad',
+        bbox: [20, 20, 20, 20],
+        center: [20, 20]
       }]
     };
-    let mapPath = `https://api.mapbox.com/geocoding/v5/mapbox.places/
+    const mapPath = `https://api.mapbox.com/geocoding/v5/mapbox.places/
     Novi Sad.json?access_token=${environment.mapboxKey}`;
 
-    service.getMapboxLocations("Novi Sad").subscribe(data => location = data);
+    service.getMapboxLocations('Novi Sad').subscribe(data => location = data);
 
     const req = httpMock.expectOne(mapPath);
     expect(req.request.method).toBe('GET');
@@ -307,10 +307,10 @@ describe('CulturalOfferService', () => {
 
     tick();
 
-    expect(location.features[0].text).toBe("Neki tekst");
-    expect(location.features[0].place_name).toBe("Novi Sad");
-    expect(location.features[0].bbox).toEqual([20,20,20,20]);
-    expect(location.features[0].center).toEqual([20,20]);
+    expect(location.features[0].text).toBe('Neki tekst');
+    expect(location.features[0].place_name).toBe('Novi Sad');
+    expect(location.features[0].bbox).toEqual([20, 20, 20, 20]);
+    expect(location.features[0].center).toEqual([20, 20]);
   }));
 
 });

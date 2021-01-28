@@ -1,7 +1,7 @@
 export interface CulturalOfferLocation {
-  id?:any;
-  name: string,
-  location: Location
+  id?: any;
+  name: string;
+  location: Location;
 }
 
 export interface Location{

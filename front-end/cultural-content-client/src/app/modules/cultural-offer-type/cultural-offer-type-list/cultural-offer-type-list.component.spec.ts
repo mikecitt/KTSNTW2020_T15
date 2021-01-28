@@ -6,13 +6,13 @@ describe('CulturalOfferTypeListComponent', () => {
   let component: CulturalOfferTypeListComponent;
   let fixture: ComponentFixture<CulturalOfferTypeListComponent>;
 
-  const typesMock : CulturalOfferType[] = [
+  const typesMock: CulturalOfferType[] = [
     {
       id: 1,
       name: 'tip1'
     },
     {
-      id:2,
+      id: 2,
       name: 'tip2'
     }
   ];
@@ -34,7 +34,7 @@ describe('CulturalOfferTypeListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should assign type list to dataSource', async() => {
+  it('should assign type list to dataSource', async () => {
     component.offerTypes = typesMock;
     component.ngOnInit();
     expect(component.dataSource).toBeDefined();
@@ -42,7 +42,7 @@ describe('CulturalOfferTypeListComponent', () => {
     expect(component.dataSource.data).toEqual(typesMock);
   });
 
-  it('should assign type list to dataSource on changes', async() => {
+  it('should assign type list to dataSource on changes', async () => {
     component.offerTypes = typesMock;
     // fixture.detectChanges();
     component.ngOnChanges();
@@ -51,7 +51,7 @@ describe('CulturalOfferTypeListComponent', () => {
     expect(component.dataSource.data).toEqual(typesMock);
   });
 
-  it('should emit on click create', async () =>{
+  it('should emit on click create', async () => {
     spyOn(component.onCreateTypeEvent, 'emit');
     component.createType();
     fixture.detectChanges();
@@ -60,7 +60,7 @@ describe('CulturalOfferTypeListComponent', () => {
   });
 
   it('should emit on click delete', async () => {
-    spyOn(component.onDeleteTypeEvent,'emit');
+    spyOn(component.onDeleteTypeEvent, 'emit');
     component.deleteType({id: 1});
     fixture.detectChanges();
     expect(component.onDeleteTypeEvent.emit).toHaveBeenCalled();
@@ -68,16 +68,16 @@ describe('CulturalOfferTypeListComponent', () => {
   });
 
   it('should emit on click updateType', async () => {
-    spyOn(component.onUpdateTypeEvent,'emit');
-    component.updateType({id:1, name:"tip"});
+    spyOn(component.onUpdateTypeEvent, 'emit');
+    component.updateType({id: 1, name: 'tip'});
     fixture.detectChanges();
     expect(component.onUpdateTypeEvent.emit).toHaveBeenCalled();
-    expect(component.onUpdateTypeEvent.emit).toHaveBeenCalledWith({id:1, name:"tip"});
+    expect(component.onUpdateTypeEvent.emit).toHaveBeenCalledWith({id: 1, name: 'tip'});
   });
 
-  it('should emit on row click', async() => {
-    spyOn(component.onRowClickEvent,'emit');
-    component.onRowClick({id:1, name:"tip"});
+  it('should emit on row click', async () => {
+    spyOn(component.onRowClickEvent, 'emit');
+    component.onRowClick({id: 1, name: 'tip'});
     expect(component.onRowClickEvent.emit).toHaveBeenCalled();
     expect(component.onRowClickEvent.emit).toHaveBeenCalledWith(1);
   });

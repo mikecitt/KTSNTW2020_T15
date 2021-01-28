@@ -1,4 +1,4 @@
-import { CulturalOfferType } from "./cultural-offer-type";
+import { CulturalOfferType } from './cultural-offer-type';
 
 export interface CulturalOfferSubType{
   id?: any;

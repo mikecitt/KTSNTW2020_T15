@@ -34,7 +34,7 @@ export class TableViewComponent implements AfterViewInit, OnChanges {
   constructor(private service: CulturalOfferService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['culturalOffers']) {
+    if (changes.culturalOffers) {
       this.dataSource.data = this.culturalOffers;
     }
   }

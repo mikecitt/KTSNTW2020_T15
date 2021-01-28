@@ -81,15 +81,15 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {}
 
   checkPasswords(form: FormGroup) {
-    let pass = form.controls.password.value;
-    let confirmPass = form.controls.rePassword.value;
+    const pass = form.controls.password.value;
+    const confirmPass = form.controls.rePassword.value;
 
     return pass === confirmPass ? null : { notSame: true };
   }
 
   register() {
-    let formObj = this.form.getRawValue();
-    delete formObj['rePassword'];
+    const formObj = this.form.getRawValue();
+    delete formObj.rePassword;
     this.loading = true;
 
     this.authService.register(formObj).subscribe(
@@ -97,12 +97,12 @@ export class RegistrationComponent implements OnInit {
         this.loading = false;
         this.form.reset();
         this.registerForm.resetForm();
-        this.snackBar.openSnackBar("Confirmation mail has been sent. Please activate your account",'','green-snackbar');
+        this.snackBar.openSnackBar('Confirmation mail has been sent. Please activate your account', '', 'green-snackbar');
       },
       (err) => {
         this.loading = false;
         console.log(err);
-        this.snackBar.openSnackBar(err,'','red-snackbar');
+        this.snackBar.openSnackBar(err, '', 'red-snackbar');
       }
     );
   }

@@ -13,12 +13,12 @@ describe('LoginGuard', () => {
 
   const serviceMock = {
     currentUser : {}
-  }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: UserService, useValue: serviceMock}, 
+        {provide: UserService, useValue: serviceMock},
         {provide: Router, useValue: routerMock}]
     });
   });
@@ -30,27 +30,27 @@ describe('LoginGuard', () => {
     expect(guard).toBeTruthy();
   });
 
-  it('should not activate', async() => {   
+  it('should not activate', async () => {
     userService = TestBed.inject(UserService);
     guard = TestBed.inject(LoginGuard);
     router = TestBed.inject(Router);
-    const val = guard.canActivate(({data: { expectedRoles: ''}} as any) as ActivatedRouteSnapshot, ({url: ""} as any) as RouterStateSnapshot);
+    const val = guard.canActivate(({data: { expectedRoles: ''}} as any) as ActivatedRouteSnapshot, ({url: ''} as any) as RouterStateSnapshot);
 
     expect(val).toBeFalsy();
     expect(router.navigate).toHaveBeenCalled();
   });
 
-  it('should activate', async() => {
+  it('should activate', async () => {
     const serviceMock2 = {
-    }
+    };
     TestBed.overrideProvider(UserService, {useValue: serviceMock2});
     userService = TestBed.inject(UserService);
     guard = TestBed.inject(LoginGuard);
     router = TestBed.inject(Router);
-    
-    const val = guard.canActivate(({data: { expectedRoles: ''}} as any) as ActivatedRouteSnapshot, ({url: ""} as any) as RouterStateSnapshot);
+
+    const val = guard.canActivate(({data: { expectedRoles: ''}} as any) as ActivatedRouteSnapshot, ({url: ''} as any) as RouterStateSnapshot);
 
     expect(val).toBeTruthy();
   });
-  
+
 });

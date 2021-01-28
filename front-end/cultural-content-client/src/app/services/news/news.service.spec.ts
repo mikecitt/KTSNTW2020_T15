@@ -30,28 +30,28 @@ describe('NewsService', () => {
   });
 
   it('should call getAll and return news', fakeAsync(() => {
-    let newsPage : NewsPage = {
-      content:[],
-      first:false,
-      last:false,
-      totalPages:0,
-      totalElements:0
-    }
+    let newsPage: NewsPage = {
+      content: [],
+      first: false,
+      last: false,
+      totalPages: 0,
+      totalElements: 0
+    };
 
-    let mockNews : NewsPage = {
-      content:[
-        { id: 1, text: "Prva vest", date: new Date(), images: [] },
-        { id: 2, text: "Druga vest", date: new Date(), images: [] },
-        { id: 3, text: "Treca vest", date: new Date(), images: [] },
+    const mockNews: NewsPage = {
+      content: [
+        { id: 1, text: 'Prva vest', date: new Date(), images: [] },
+        { id: 2, text: 'Druga vest', date: new Date(), images: [] },
+        { id: 3, text: 'Treca vest', date: new Date(), images: [] },
 
       ],
-      first:true,
-      last:true,
-      totalPages:1,
-      totalElements:3
-    }
+      first: true,
+      last: true,
+      totalPages: 1,
+      totalElements: 3
+    };
 
-    service.getAll(1,0,3).subscribe(data => {newsPage = data})
+    service.getAll(1, 0, 3).subscribe(data => {newsPage = data; });
 
     const req = http.expectOne(path + 'culturalOffer/1?page=0&size=3');
     expect(req.request.method).toBe('GET');
@@ -63,13 +63,13 @@ describe('NewsService', () => {
     expect(newsPage.totalElements).toBe(3);
     expect(newsPage.totalPages).toBe(1);
     expect(newsPage.content[0].id).toEqual(1);
-    expect(newsPage.content[0].text).toEqual("Prva vest");
+    expect(newsPage.content[0].text).toEqual('Prva vest');
 
     expect(newsPage.content[1].id).toEqual(2);
-    expect(newsPage.content[1].text).toEqual("Druga vest");
+    expect(newsPage.content[1].text).toEqual('Druga vest');
 
     expect(newsPage.content[2].id).toEqual(3);
-    expect(newsPage.content[2].text).toEqual("Treca vest");
+    expect(newsPage.content[2].text).toEqual('Treca vest');
 
 
   }));
@@ -83,11 +83,11 @@ describe('NewsService', () => {
   }));
 
   it('should add news', fakeAsync( () => {
-    let newsToAdd: News = { id: 0, text: "Prva vest", date: new Date(), images: [] };
+    let newsToAdd: News = { id: 0, text: 'Prva vest', date: new Date(), images: [] };
 
-    const mockNews: News =  { id: 1, text: "Prva vest", date: new Date(), images: [] };
+    const mockNews: News =  { id: 1, text: 'Prva vest', date: new Date(), images: [] };
 
-    service.addNews(1,newsToAdd).subscribe(res => newsToAdd = res);
+    service.addNews(1, newsToAdd).subscribe(res => newsToAdd = res);
 
     const req = http.expectOne(path + '1');
     expect(req.request.method).toBe('POST');
@@ -96,13 +96,13 @@ describe('NewsService', () => {
     tick();
     expect(newsToAdd).toBeDefined();
     expect(newsToAdd.id).toEqual(1);
-    expect(newsToAdd.text).toEqual("Prva vest");
+    expect(newsToAdd.text).toEqual('Prva vest');
   }));
 
   it('should update news', fakeAsync( () =>  {
-    let newsToUpdate: News = { id: 1, text: "Prva vest", date: new Date(), images: [] };
+    let newsToUpdate: News = { id: 1, text: 'Prva vest', date: new Date(), images: [] };
 
-    const mockNews: News =  { id: 1, text: "Prva vest", date: new Date(), images: [] };
+    const mockNews: News =  { id: 1, text: 'Prva vest', date: new Date(), images: [] };
 
 
     service.updateNews(newsToUpdate).subscribe(res => newsToUpdate = res);

@@ -4,6 +4,5 @@ export interface Review {
     comment: string;
     authorUsername: string;
     images: string[];
-  
+
   }
-  

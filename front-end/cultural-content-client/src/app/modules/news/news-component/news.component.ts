@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NewsComponent implements OnInit {
 
-  @Input() 
+  @Input()
   culturalOfferId: number;
   role: string;
   email: string;
@@ -25,17 +25,17 @@ export class NewsComponent implements OnInit {
   selectedImages: string[];
   isSubscribed: boolean;
   newsToAdd: News = {
-    text: "",
+    text: '',
     date: new Date(),
     images: []
 
   };
   public currentNewsPage: number;
-  private newsLimit: number = 2;
+  private newsLimit = 2;
 
   constructor(
-    private newsService:NewsService,
-    private subService:SubscriptionService,
+    private newsService: NewsService,
+    private subService: SubscriptionService,
     public dialog: MatDialog,
     private snackBar: SnackBarComponent,
     private userService: UserService
@@ -43,22 +43,22 @@ export class NewsComponent implements OnInit {
     this.currentNewsPage = 0;
    }
 
-   
+
 
    ngOnInit(): void {
-    if(this.isUser){
-      this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res)});
+    if (this.isUser){
+      this.subService.isSubscribed(this.culturalOfferId).subscribe(res => {this.isSubscribed = res; console.log(res); });
     }
    }
- 
+
    get isAuthorized() {
      return this.userService.getRole() != null;
    }
- 
+
    get isAdmin() {
      return this.userService.getRole() == 'ROLE_ADMIN';
    }
- 
+
    get isUser() {
      return this.userService.getRole() == 'ROLE_USER';
    }
@@ -73,33 +73,33 @@ export class NewsComponent implements OnInit {
         .subscribe(res => this.newsPage = res);
   }
 
-  deleteNews(id:number):void{
-    const dialogRef = this.dialog.open(ConfirmDeleteComponent,{
+  deleteNews(id: number): void{
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
       width: '300px',
-      panelClass : "mat-elevation-z8",
+      panelClass : 'mat-elevation-z8',
       data: {}
-    })
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result){
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result){
         this.newsService.deleteNews(id).subscribe((res) => {
           this.loadNews();
-          this.snackBar.openSnackBar("News deleted successfully",'','green-snackbar');
+          this.snackBar.openSnackBar('News deleted successfully', '', 'green-snackbar');
         });
       }
-    })
-  }
-
-  subscribe():void{
-    this.subService.subscribeToOffer(this.culturalOfferId).subscribe((res) => {
-      this.isSubscribed = true;
-      this.snackBar.openSnackBar("Successfully subscribed",'','green-snackbar');
     });
   }
 
-  unsubscribe():void{
+  subscribe(): void{
+    this.subService.subscribeToOffer(this.culturalOfferId).subscribe((res) => {
+      this.isSubscribed = true;
+      this.snackBar.openSnackBar('Successfully subscribed', '', 'green-snackbar');
+    });
+  }
+
+  unsubscribe(): void{
     this.subService.unsubscribeFromOffer(this.culturalOfferId).subscribe((res) => {
       this.isSubscribed = false;
-      this.snackBar.openSnackBar("Successfully unsubscribed",'','green-snackbar');
+      this.snackBar.openSnackBar('Successfully unsubscribed', '', 'green-snackbar');
     });
   }
 
@@ -121,30 +121,30 @@ export class NewsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.operation == "add") this.addNews();
-      else if(result.operation == "cancelAdd") this.clearNewsForm();
+      if (result.operation == 'add') { this.addNews(); }
+      else if (result.operation == 'cancelAdd') { this.clearNewsForm(); }
     });
   }
 
-  addNews():void{
+  addNews(): void{
     this.newsToAdd.date = new Date();
     this.newsService.addNews(this.culturalOfferId, this.newsToAdd).subscribe((response) => {
       this.loadNews();
       this.clearNewsForm();
-      this.snackBar.openSnackBar("News successfully added",'','green-snackbar');
+      this.snackBar.openSnackBar('News successfully added', '', 'green-snackbar');
     });
   }
 
-  clearNewsForm():void{
+  clearNewsForm(): void{
     this.newsToAdd = {
-      text: "",
+      text: '',
       date: new Date(),
       images: []
     };
   }
 
-  openUpdateNewsDialog(news : News): void{
-    let newsToUpdate = {...news};
+  openUpdateNewsDialog(news: News): void{
+    const newsToUpdate = {...news};
     const dialogRef = this.dialog.open(NewsFormComponent, {
       width: '400px',
       data: {type: 'update', news: newsToUpdate},
@@ -152,15 +152,16 @@ export class NewsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.operation == "update") this.updateNews(news, newsToUpdate);
+      if (result.operation == 'update') { this.updateNews(news, newsToUpdate); }
     });
   }
 
   updateNews(news: News, updatedNews: News): void{
     updatedNews.date = new Date();
+    updatedNews.images = news.images;
     this.newsService.updateNews(updatedNews).subscribe((response) => {
       this.loadNews();
-      this.snackBar.openSnackBar("News successfully updated",'','green-snackbar');
+      this.snackBar.openSnackBar('News successfully updated', '', 'green-snackbar');
     });
 
   }

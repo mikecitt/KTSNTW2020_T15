@@ -14,7 +14,7 @@
 
         </mat-form-field>
 
-        <mat-form-field class="formField">
+        <mat-form-field class="formField"  *ngIf="data.type == 'add'">
             <mat-label class="title">
               <mat-icon class="formTitleIcon">insert_photo</mat-icon>Choose the images
             </mat-label>

@@ -63,15 +63,15 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    let formObj = this.form.getRawValue();
+    const formObj = this.form.getRawValue();
     this.authService.login(formObj).subscribe(
       (data) => {
-        //nece da vrati ovde normalan response
-        //console.log(data);
-        //localStorage.setItem('token', data.token);
-        //this.form.reset();
-        //this.loginForm.resetForm();
-        //this.router.navigate(['']);
+        // nece da vrati ovde normalan response
+        // console.log(data);
+        // localStorage.setItem('token', data.token);
+        // this.form.reset();
+        // this.loginForm.resetForm();
+        // this.router.navigate(['']);
       },
       (err) => {
         if (err === 'Forbidden') {

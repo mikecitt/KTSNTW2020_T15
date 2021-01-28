@@ -1,5 +1,5 @@
-import { CulturalOfferType } from "./cultural-offer-type";
-import { CulturalOfferSubType } from "./culutral-offer-subType";
+import { CulturalOfferType } from './cultural-offer-type';
+import { CulturalOfferSubType } from './culutral-offer-subType';
 
 export interface TypePage {
   content: CulturalOfferType[];
@@ -10,9 +10,9 @@ export interface TypePage {
 }
 
 export interface SubTypePage {
-  content: CulturalOfferSubType[],
-  totalElements: number,
-  first: boolean,
-  last: boolean,
-  totalPages: number
+  content: CulturalOfferSubType[];
+  totalElements: number;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
 }

@@ -16,23 +16,23 @@ import { retry, catchError } from 'rxjs/operators';
 export class HttpErrorInterceptor implements HttpInterceptor {
 
     constructor(private snackBar: SnackBarComponent) {}
-    
+
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request)
     .pipe(
         retry(1),
         catchError(err => {
-           
+
             // let error =  typeof err.error !== "string" ? err.error : err.error.error;
             let errorMessage;
-            if(typeof err.error === "string") errorMessage = err.error;
-            else if(err.error == null) errorMessage = err.message;
-            else if(err.error instanceof Array) errorMessage = err.error[0].defaultMessage;
-            else errorMessage = err.error.error
+            if (typeof err.error === 'string') { errorMessage = err.error; }
+            else if (err.error == null) { errorMessage = err.message; }
+            else if (err.error instanceof Array) { errorMessage = err.error[0].defaultMessage; }
+            else { errorMessage = err.error.error; }
 
-            this.snackBar.openSnackBar(errorMessage,'','red-snackbar');
+            this.snackBar.openSnackBar(errorMessage, '', 'red-snackbar');
             return throwError(errorMessage);
         })
-    )
+    );
     }
 }

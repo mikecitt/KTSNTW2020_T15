@@ -20,7 +20,7 @@ export class SubscriptionsComponent implements OnInit {
   uploads_url = 'http://localhost:8080/uploads/';
 
   public currentPage: number;
-  private pageLimit: number = 2;
+  private pageLimit = 2;
 
   constructor(
     private subscriptionService: SubscriptionService,
@@ -29,7 +29,7 @@ export class SubscriptionsComponent implements OnInit {
     this.currentPage = 0;
    }
 
-   
+
 
    ngOnInit(): void {
      this.loadSubscriptions();

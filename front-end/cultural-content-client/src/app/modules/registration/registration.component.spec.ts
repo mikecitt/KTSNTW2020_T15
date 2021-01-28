@@ -15,11 +15,11 @@ describe('RegistrationComponent', () => {
 
   const authServiceMock = {
     register: jasmine.createSpy('register').and.returnValue(of({}))
-  }
+  };
 
   const snackBarMock = {
     openSnackBar: jasmine.createSpy('openSnackBar')
-  }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,7 +27,7 @@ describe('RegistrationComponent', () => {
       declarations: [ RegistrationComponent ],
       providers: [{provide: AuthService, useValue: authServiceMock},
                   {provide: FormBuilder, useValue: formBuilder},
-                  {provide: SnackBarComponent, useValue: snackBarMock},]
+                  {provide: SnackBarComponent, useValue: snackBarMock}, ]
     })
     .compileComponents();
   });
@@ -59,6 +59,6 @@ describe('RegistrationComponent', () => {
     fixture.detectChanges();
     expect(authService.register).toHaveBeenCalled();
     fixture.detectChanges();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("Confirmation mail has been sent. Please activate your account",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith('Confirmation mail has been sent. Please activate your account', '', 'green-snackbar');
   }));
 });

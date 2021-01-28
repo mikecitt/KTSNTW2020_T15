@@ -29,10 +29,10 @@ describe('MapItemComponent', () => {
         latitude: 20.0,
         longitude: 20.0
       },
-      subType:{
+      subType: {
         id: 1,
         name: '',
-        type:{
+        type: {
           id: 1,
           name: ''
         }
@@ -41,42 +41,42 @@ describe('MapItemComponent', () => {
     }
   ];
 
-  const geocoderMock : Geocoder = {
+  const geocoderMock: Geocoder = {
     query: [],
     features: [
       {
         text: '',
         place_name: 'Beograd',
-        bbox: [20,20,30],
-        center: [20,20]
+        bbox: [20, 20, 30],
+        center: [20, 20]
       }
     ]
   };
 
   beforeEach(async () => {
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     const dynamicsServiceMock = {
       injectComponent: jasmine.createSpy('injectComponent')
                               .and.returnValue(div)
-    }
+    };
 
     const mapaMock = {
       setCenter: jasmine.createSpy('setCenter'),
       setZoom: jasmine.createSpy('setZoom')
     };
 
-    const geocoderMock : Geocoder = {
+    const geocoderMock: Geocoder = {
       query: [],
       features: [{
-        text: "fafa",
-        place_name: "dadas",
-        center: [20,20],
-        bbox: [12,332]
-      },{
-        text: "fafa",
-        place_name: "dadas",
-        center: [20,20],
-        bbox: [12,332]
+        text: 'fafa',
+        place_name: 'dadas',
+        center: [20, 20],
+        bbox: [12, 332]
+      }, {
+        text: 'fafa',
+        place_name: 'dadas',
+        center: [20, 20],
+        bbox: [12, 332]
       }]
     };
 
@@ -113,7 +113,7 @@ describe('MapItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('onInit', async()=>{
+  it('onInit', async () => {
     component.initializeMap();
 
     expect(component.mapInitialized).toBeTruthy();
@@ -123,11 +123,11 @@ describe('MapItemComponent', () => {
     .then( () => {
        fixture.detectChanges();
        try {
-        let tr = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
+        const tr = fixture.debugElement.query(el => el.name === 'tr').nativeElement;  // it works
         const matOption: DebugElement[] = fixture.debugElement.query(By.css('#map-mapbox')).nativeElement;
         expect(tr.length).toBe(1);
        } catch (error) {
-         
+
        }
     });
   });

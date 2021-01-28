@@ -18,37 +18,37 @@ describe('ReviewsComponent', () => {
 
     const userServiceMock = {
       getRole: jasmine.createSpy('getRole').and.returnValue('ROLE_USER')
-    }
+    };
 
     const reviewServiceMock = {
       getAll : jasmine.createSpy('getAll').and.returnValue(of({
-        "content": [
+        content: [
           {
-              "id": 1001,
-              "rating": 5,
-              "comment": "extra",
-              "authorUsername": "user123",
-              "images": []
+              id: 1001,
+              rating: 5,
+              comment: 'extra',
+              authorUsername: 'user123',
+              images: []
           }
           ],
-          "pageable": {},
-          "last": true,
-          "totalPages": 1,
-          "totalElements": 1,
+          pageable: {},
+          last: true,
+          totalPages: 1,
+          totalElements: 1,
       })),
 
       add : jasmine.createSpy('add').and.returnValue(of({}))
-    }
+    };
 
     const snackBarMock = {
       openSnackBar: jasmine.createSpy('openSnackBar')
-    }
+    };
 
     const dialogMock = {
       open : jasmine.createSpy('open').and.returnValue({
-        afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({operation: "add"}) ), close: null
+        afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({operation: 'add'}) ), close: null
        }),
-    }
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ ReviewsComponent ],
@@ -79,7 +79,7 @@ describe('ReviewsComponent', () => {
     expect(reviewService.getAll).toHaveBeenCalled();
   });
 
-  it('should go to next page', async () =>{
+  it('should go to next page', async () => {
     spyOn(component, 'loadReviews');
     component.currentPage = 1;
     component.getNextPage();
@@ -87,7 +87,7 @@ describe('ReviewsComponent', () => {
     expect(component.loadReviews).toHaveBeenCalled();
   });
 
-  it('should go to previous page', async () =>{
+  it('should go to previous page', async () => {
     spyOn(component, 'loadReviews');
     component.currentPage = 2;
     component.getPreviousPage();
@@ -95,7 +95,7 @@ describe('ReviewsComponent', () => {
     expect(component.loadReviews).toHaveBeenCalled();
   });
 
-  it('should open create review dialog and call add review', async () =>{
+  it('should open create review dialog and call add review', async () => {
     spyOn(component, 'addReview');
     component.openDialog();
     expect(matDialog.open).toHaveBeenCalled();

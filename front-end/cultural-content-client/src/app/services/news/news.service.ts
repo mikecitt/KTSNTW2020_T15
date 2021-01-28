@@ -11,16 +11,16 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class NewsService {
 
-  constructor(private http:HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   getAll(culturalOfferId: number, page: number, limit: number): Observable<NewsPage>{
     const params: HttpParams = new HttpParams()
         .append('page', page.toString())
         .append('size', limit.toString());
-    return this.http.get<NewsPage>(environment.api_url + '/news/culturalOffer/' + culturalOfferId, {params : params});
+    return this.http.get<NewsPage>(environment.api_url + '/news/culturalOffer/' + culturalOfferId, {params});
   }
 
-  deleteNews(newsId:number):Observable<{}>{
+  deleteNews(newsId: number): Observable<{}>{
     return this.http.delete(environment.api_url + '/news/' + newsId);
   }
 
@@ -29,7 +29,7 @@ export class NewsService {
   }
 
   updateNews(newsToUpdate: News): Observable<News>{
-    return this.http.put<News>(environment.api_url + "/news/" + newsToUpdate.id, newsToUpdate);
+    return this.http.put<News>(environment.api_url + '/news/' + newsToUpdate.id, newsToUpdate);
   }
 
 }

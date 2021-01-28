@@ -15,11 +15,11 @@ describe('ResendActivationComponent', () => {
 
   const snackBarMock = {
     openSnackBar: jasmine.createSpy('openSnackBar')
-  }
+  };
 
   const authServiceMock = {
     resendActivation: jasmine.createSpy('resendActivation').and.returnValue(of({}))
-  }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,7 +27,7 @@ describe('ResendActivationComponent', () => {
       declarations: [ ResendActivationComponent, NgForm ],
       providers: [{provide: FormBuilder, useValue: formBuilder},
                   {provide: SnackBarComponent, useValue: snackBarMock},
-                  {provide: AuthService, useValue: authServiceMock},]
+                  {provide: AuthService, useValue: authServiceMock}, ]
     })
     .compileComponents();
   });
@@ -56,7 +56,7 @@ describe('ResendActivationComponent', () => {
     fixture.detectChanges();
     expect(authService.resendActivation).toHaveBeenCalled();
     fixture.detectChanges();
-    expect(snackBar.openSnackBar).toHaveBeenCalledWith("Confirmation mail has been sent. Please activate your account",'','green-snackbar');
+    expect(snackBar.openSnackBar).toHaveBeenCalledWith('Confirmation mail has been sent. Please activate your account', '', 'green-snackbar');
   }));
 
 });

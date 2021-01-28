@@ -36,17 +36,17 @@ export class ResendActivationComponent implements OnInit {
 
     this.loading = true;
 
-    this.authService.resendActivation(this.form.controls['email'].value).subscribe(
+    this.authService.resendActivation(this.form.controls.email.value).subscribe(
       (data) => {
         this.loading = false;
         this.form.reset();
         this.resendForm.resetForm();
-        this.snackBar.openSnackBar("Confirmation mail has been sent. Please activate your account",'','green-snackbar');
+        this.snackBar.openSnackBar('Confirmation mail has been sent. Please activate your account', '', 'green-snackbar');
 
       },
       (err) => {
         this.loading = false;
-        this.snackBar.openSnackBar(err,'','red-snackbar');
+        this.snackBar.openSnackBar(err, '', 'red-snackbar');
       }
     );
   }
