@@ -117,12 +117,14 @@ export class MapItemComponent implements OnInit, OnChanges {
 
     //let response = this.httpClient.get<Geocoder>(api_url);
 
-    this.offerService.getMapboxLocations(this.location).subscribe((geo: Geocoder) => {
-      if (geo.features[0]) {
-        this.mapa.setCenter(geo.features[0].center as [number, number]);
-        this.mapa.setZoom(13.5);
-      } //mozda error staviti
-    });
+    this.offerService
+      .getMapboxLocations(this.location)
+      .subscribe((geo: Geocoder) => {
+        if (geo.features[0]) {
+          this.mapa.setCenter(geo.features[0].center as [number, number]);
+          this.mapa.setZoom(13.5);
+        } //mozda error staviti
+      });
   }
 
   capitalize = (s: string) => {
