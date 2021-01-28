@@ -18,7 +18,7 @@ export class TypeFormComponent implements OnInit {
   ) {
     this.form = new FormGroup({
       id: new FormControl(''),
-      name: new FormControl('', [Validators.required,Validators.minLength(4)])
+      name: new FormControl('', [Validators.required, Validators.minLength(4)])
     });
   }
 
@@ -31,10 +31,10 @@ export class TypeFormComponent implements OnInit {
   }
 
   onSaveClick(): void{
-    let newType: CulturalOfferType = {
+    const newType: CulturalOfferType = {
       id: this.form.value.id,
       name: this.form.value.name,
-    }
+    };
     // console.log(newSubType)
     this.dialogRef.close(newType);
   }

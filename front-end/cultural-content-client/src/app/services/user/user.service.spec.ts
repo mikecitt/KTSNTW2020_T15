@@ -6,20 +6,20 @@ import { UserService } from './user.service';
 describe('UserService', () => {
   let service: UserService;
   let storage: StorageService;
-  
-  let storageMock : StorageService = {
-    has(key: string): boolean{return true},
-    get(key: string):  undefined {return },
+
+  const storageMock: StorageService = {
+    has(key: string): boolean{return true; },
+    get(key: string): undefined {return; },
     // get<X>(key: string, decoder: StorageDecoder<X>): X | undefined,
     set(key: string, value: string): void {},
     // set<X>(key: string, value: X, encoder: StorageEncoder<X>): void {},
     remove(key: string): void {},
     clear(): void {},
-    withDefaultTranscoder<X>(transcoder: StorageTranscoder<X>): StorageService<X> {return <StorageService>JSON.parse("sdas")},
+    withDefaultTranscoder<X>(transcoder: StorageTranscoder<X>): StorageService<X> {return JSON.parse('sdas') as StorageService; },
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({  
+    TestBed.configureTestingModule({
       providers: [
         {provide: LOCAL_STORAGE, useValue: storageMock}
       ]

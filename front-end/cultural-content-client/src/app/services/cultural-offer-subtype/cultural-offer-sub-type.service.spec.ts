@@ -9,7 +9,7 @@ describe('CulturalOfferSubTypeService', () => {
   let service: CulturalOfferSubTypeService;
   let http: HttpTestingController;
 
-  const path: string = 'http://localhost:8080/api/sub-types';
+  const path = 'http://localhost:8080/api/sub-types';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,16 +33,16 @@ describe('CulturalOfferSubTypeService', () => {
     const mockSubTypes: CulturalOfferSubType[] = [
       {
         id: 1,
-        name: "podtip1",
-        type: {id: 1, name: ""}
+        name: 'podtip1',
+        type: {id: 1, name: ''}
       },
       {
         id: 2,
-        name: "podtip2",
-        type: {id: 1, name: ""}
+        name: 'podtip2',
+        type: {id: 1, name: ''}
       }];
 
-    service.getAll(1).subscribe(data => {subTypes = data})
+    service.getAll(1).subscribe(data => {subTypes = data; });
 
     const req = http.expectOne(path + '/all?typeId=' + 1);
     expect(req.request.method).toBe('GET');
@@ -61,27 +61,27 @@ describe('CulturalOfferSubTypeService', () => {
 
   it('should get paginated', fakeAsync( () => {
     let subtypePage: SubTypePage = {
-      content:[],
-      first:false,
-      last:false,
-      totalPages:0,
-      totalElements:0
+      content: [],
+      first: false,
+      last: false,
+      totalPages: 0,
+      totalElements: 0
     };
     const mockSubTypes: SubTypePage = {
-      content:[{
+      content: [{
         id: 1,
-        name: "podtip1",
-        type: {id: 1, name: ""}
+        name: 'podtip1',
+        type: {id: 1, name: ''}
       },
       {
         id: 2,
-        name: "podtip2",
-        type: {id: 1, name: ""}
+        name: 'podtip2',
+        type: {id: 1, name: ''}
       },
       {
         id: 3,
-        name: "podtip3",
-        type: {id: 1, name: ""}
+        name: 'podtip3',
+        type: {id: 1, name: ''}
       }],
       first: true,
       last: true,
@@ -89,7 +89,7 @@ describe('CulturalOfferSubTypeService', () => {
       totalPages: 1
     };
 
-    service.getAllPaginated(0,3,1).subscribe(data => {subtypePage = data})
+    service.getAllPaginated(0, 3, 1).subscribe(data => {subtypePage = data; });
 
     const req = http.expectOne(path + '?typeId=1&page=0&size=3');
     expect(req.request.method).toBe('GET');
@@ -113,13 +113,13 @@ describe('CulturalOfferSubTypeService', () => {
   it('should save a subtype', fakeAsync( () => {
     let newSubType: CulturalOfferSubType = {
       id: 0,
-      name: "podtip1",
+      name: 'podtip1',
       type: {id: 1, name: ''}
     };
 
     const mockSubType: CulturalOfferSubType = {
       id: 1,
-      name: "podtip1",
+      name: 'podtip1',
       type: {id: 1, name: ''}
     };
 
@@ -132,19 +132,19 @@ describe('CulturalOfferSubTypeService', () => {
     tick();
     expect(newSubType).toBeDefined();
     expect(newSubType.id).toEqual(1);
-    expect(newSubType.name).toEqual("podtip1");
+    expect(newSubType.name).toEqual('podtip1');
   }));
 
   it('should update a subtype', fakeAsync( () =>  {
     let subtype: CulturalOfferSubType = {
       id: 1,
-      name: "podtip1",
+      name: 'podtip1',
       type: {id: 1, name: ''}
     };
 
     const mockSubType: CulturalOfferSubType = {
       id: 1,
-      name: "podtip1",
+      name: 'podtip1',
       type: {id: 1, name: ''}
     };
 
@@ -162,10 +162,10 @@ describe('CulturalOfferSubTypeService', () => {
 
   }));
 
-  it('should delete a subtype', fakeAsync(() =>{
-    let subtype: CulturalOfferSubType = {
+  it('should delete a subtype', fakeAsync(() => {
+    const subtype: CulturalOfferSubType = {
       id: 1,
-      name: "podtip1",
+      name: 'podtip1',
       type: {id: 1, name: ''}
     };
     service.deleteSubType(subtype).subscribe(res => {});

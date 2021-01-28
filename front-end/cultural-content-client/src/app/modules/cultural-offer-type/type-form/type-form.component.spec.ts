@@ -7,9 +7,9 @@ import { TypeFormComponent } from './type-form.component';
 describe('TypeFormComponent', () => {
   let component: TypeFormComponent;
   let fixture: ComponentFixture<TypeFormComponent>;
-  let dialogRef: MatDialogRef<TypeFormComponent>
+  let dialogRef: MatDialogRef<TypeFormComponent>;
 
-  const matDialogDataCreate : TypeDialogData = {
+  const matDialogDataCreate: TypeDialogData = {
     formType: 'CREATE',
     type: {
       id: 0,
@@ -17,7 +17,7 @@ describe('TypeFormComponent', () => {
     }
   };
 
-  const matDialogDataUpdate : TypeDialogData = {
+  const matDialogDataUpdate: TypeDialogData = {
     formType: 'UPDATE',
     type: {
       id: 1,
@@ -29,7 +29,7 @@ describe('TypeFormComponent', () => {
   beforeEach(async () => {
     const dialogMock = {
       close: jasmine.createSpy('close')
-    }
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ TypeFormComponent ],
@@ -72,11 +72,11 @@ describe('TypeFormComponent', () => {
   });
 
   it('should click SAVE and close dialog ', async () => {
-    component.form.setValue({ id: 0, name:'tip1'});
+    component.form.setValue({ id: 0, name: 'tip1'});
     component.onSaveClick();
 
     expect(component.form.valid).toBeTruthy();
-    expect(dialogRef.close).toHaveBeenCalledWith({ id: 0, name:'tip1'});
+    expect(dialogRef.close).toHaveBeenCalledWith({ id: 0, name: 'tip1'});
   });
 
 

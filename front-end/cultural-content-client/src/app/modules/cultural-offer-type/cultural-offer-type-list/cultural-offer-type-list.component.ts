@@ -43,7 +43,7 @@ export class CulturalOfferTypeListComponent implements OnInit {
   }
 
   createType(): void{
-    this.onCreateTypeEvent.emit("create");
+    this.onCreateTypeEvent.emit('create');
   }
 
   deleteType(element: any): void{

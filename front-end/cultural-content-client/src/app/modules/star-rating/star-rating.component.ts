@@ -19,7 +19,7 @@ export class StarRatingComponent implements OnInit {
   @Input('color') public color: string;
   @Output() public ratingUpdated = new EventEmitter();
 
-  public snackBarDuration: number = 2000;
+  public snackBarDuration = 2000;
   public ratingArr: number[] = [];
 
   constructor() {}

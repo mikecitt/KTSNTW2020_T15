@@ -28,7 +28,7 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   mapa: Mapboxgl.Map;
   markers: Mapboxgl.Marker[] = [];
-  mapInitialized: boolean = false;
+  mapInitialized = false;
 
   constructor(
     private httpClient: HttpClient,
@@ -38,11 +38,11 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.mapInitialized) {
-      if (changes['culturalOffers']) {
+      if (changes.culturalOffers) {
         this.removeMarkers();
         this.updateMarkers();
       }
-      if (changes['location']) this.focusOnLocation();
+      if (changes.location) { this.focusOnLocation(); }
     }
   }
 
@@ -56,7 +56,7 @@ export class MapItemComponent implements OnInit, OnChanges {
     this.mapa = new Mapboxgl.Map({
       container: 'map-mapbox',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [20.426773, 44.9979649], //LNG, LAT
+      center: [20.426773, 44.9979649], // LNG, LAT
       zoom: 5.5,
     });
 
@@ -66,7 +66,7 @@ export class MapItemComponent implements OnInit, OnChanges {
   createMarkers(): void {
     this.markers.length = 0;
     this.culturalOffers.forEach((offer) => {
-      let popupContent = this.dynamicComponentService.injectComponent(
+      const popupContent = this.dynamicComponentService.injectComponent(
         MapItemOverviewComponent,
         (x) => {
           x.offer = offer;
@@ -87,14 +87,14 @@ export class MapItemComponent implements OnInit, OnChanges {
   }
 
   updateCulturalOffer(offer: CulturalOfferResponse) {
-    var index = this.culturalOffers.findIndex((co) => co.id === offer.id);
+    const index = this.culturalOffers.findIndex((co) => co.id === offer.id);
     this.culturalOffers[index].location = offer.location;
     this.removeMarkers();
     this.updateMarkers();
   }
 
   deleteCulturalOffer(offer: CulturalOfferResponse) {
-    var index = this.culturalOffers.findIndex((co) => co.id === offer.id);
+    const index = this.culturalOffers.findIndex((co) => co.id === offer.id);
     this.culturalOffers.splice(index, 1);
     this.removeMarkers();
     this.updateMarkers();
@@ -102,7 +102,7 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   updateMarkers(): void {
     this.createMarkers();
-    //add markers on the map
+    // add markers on the map
     this.markers.forEach((marker) => marker.addTo(this.mapa));
   }
 
@@ -115,17 +115,17 @@ export class MapItemComponent implements OnInit, OnChanges {
     // let api_url = `https://api.mapbox.com/geocoding/v5/mapbox.places/
     //                 ${this.location}.json?access_token=${environment.mapboxKey}`;
 
-    //let response = this.httpClient.get<Geocoder>(api_url);
+    // let response = this.httpClient.get<Geocoder>(api_url);
 
     this.offerService.getMapboxLocations(this.location).subscribe((geo: Geocoder) => {
       if (geo.features[0]) {
         this.mapa.setCenter(geo.features[0].center as [number, number]);
         this.mapa.setZoom(13.5);
-      } //mozda error staviti
+      } // mozda error staviti
     });
   }
 
   capitalize = (s: string) => {
     return s.charAt(0).toUpperCase() + s.slice(1);
-  };
+  }
 }

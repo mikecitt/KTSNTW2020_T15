@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ReviewService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   add(culturalOfferId: number, reviewToAdd: Review): Observable<Review>{
     return this.http.post<Review>(environment.api_url + '/review?culturalOfferId=' + culturalOfferId, reviewToAdd);
@@ -20,6 +20,6 @@ export class ReviewService {
     const params: HttpParams = new HttpParams()
         .append('page', page.toString())
         .append('size', limit.toString());
-    return this.http.get<ReviewPage>(environment.api_url + '/review?culturalOfferId=' + culturalOfferId, {params : params});
+    return this.http.get<ReviewPage>(environment.api_url + '/review?culturalOfferId=' + culturalOfferId, {params});
   }
 }

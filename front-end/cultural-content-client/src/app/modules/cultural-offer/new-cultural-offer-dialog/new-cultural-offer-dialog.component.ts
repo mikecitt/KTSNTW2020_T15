@@ -80,7 +80,7 @@ export class NewCulturalOfferDialogComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
-    });
+    })
 
   locationRequired() {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -111,7 +111,7 @@ export class NewCulturalOfferDialogComponent implements OnInit {
   }
 
   async insert() {
-    let formObj = this.form.getRawValue();
+    const formObj = this.form.getRawValue();
 
     for (let i = 0; i < formObj.images.length; i++) {
       if (formObj.images[i] instanceof File) {
@@ -119,8 +119,8 @@ export class NewCulturalOfferDialogComponent implements OnInit {
       }
     }
 
-    let subTypeId = formObj.subType.id;
-    delete formObj['subType'];
+    const subTypeId = formObj.subType.id;
+    delete formObj.subType;
 
     formObj.location = {
       address: formObj.location.place_name,
@@ -131,7 +131,7 @@ export class NewCulturalOfferDialogComponent implements OnInit {
     this.service.insert(formObj, subTypeId).subscribe(
       (response: CulturalOfferResponse) => {
         this.dialogRef.close(true);
-        this.snackBar.openSnackBar("Created successully", "", "green-snackbar");
+        this.snackBar.openSnackBar('Created successully', '', 'green-snackbar');
       },
       (error: any) => {}
     );

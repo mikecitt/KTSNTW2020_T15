@@ -16,7 +16,7 @@ export class CulturalOfferService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getLocations(): Observable<CulturalOfferResponse[]> {
-    let ht = new HttpHeaders({
+    const ht = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization:
         'eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2MDk2ODIwODUsImV4cCI6MTYwOTY4Mzg4NX0.TYRQh3jehALCqTnP6ld_tSq9HUT_t-rBeBIqXibCWe_32V1Yn4TK4tqxuNkOCAzRg4TuhUzlVIRyeaWeIs650Q',
@@ -31,7 +31,7 @@ export class CulturalOfferService {
     request: CulturalOfferRequest,
     subTypeId: number
   ): Observable<CulturalOfferResponse> {
-    let ht = new HttpHeaders({
+    const ht = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.cookieService.get('token')}`,
     });
@@ -49,7 +49,7 @@ export class CulturalOfferService {
     request: CulturalOfferRequest,
     id: number
   ): Observable<CulturalOfferResponse> {
-    let ht = new HttpHeaders({
+    const ht = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.cookieService.get('token')}`,
     });
@@ -60,7 +60,7 @@ export class CulturalOfferService {
   }
 
   delete(id: number): Observable<void> {
-    let ht = new HttpHeaders({
+    const ht = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.cookieService.get('token')}`,
     });

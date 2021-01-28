@@ -29,13 +29,13 @@ export class DynamicComponentService {
     this.compRef = compFactory.create(this.injector);
 
     // Allow a Property Setter to be Passed in (To Set a Model Property, etc)
-    if (propertySetter) propertySetter(this.compRef.instance);
+    if (propertySetter) { propertySetter(this.compRef.instance); }
 
     // Attach to Application
     this.appRef.attachView(this.compRef.hostView);
 
     // Create Wrapper Div and Inject Html
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.appendChild(this.compRef.location.nativeElement);
 
     // Return the Rendered DOM Element

@@ -60,7 +60,7 @@ export class AuthService {
       this.userService.setupUser(res);
       this.router.navigate(['/']);
     }));
-    
+
   }
 
   resendActivation(email: string) {

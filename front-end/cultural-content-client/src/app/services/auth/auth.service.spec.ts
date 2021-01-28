@@ -30,18 +30,18 @@ describe('AuthService', () => {
   });
 
   it('should call login', fakeAsync(() => {
-    let loginForm : LoginForm = {
-      email: "user@example.com",
-      password: "qwerty"
-    }
+    const loginForm: LoginForm = {
+      email: 'user@example.com',
+      password: 'qwerty'
+    };
 
-    let loginResponseMock = {
-      token: "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2MTE3Nzg0NDIsImV4cCI6MTYxMTc4MDI0Mn0._RofUc8Vn4doeN8A8jALpIPRwnlIiUHiGcuo3CxAz6Mo-a6vFlBdazkVSfi7MHSnumksrDYhJO0c7eP3HT8t3Q",
-      role: "USER",
-      email: "user@example.com"
-    }
+    const loginResponseMock = {
+      token: 'eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJjdWx0dXJlY29udGVudCIsInN1YiI6InVzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2MTE3Nzg0NDIsImV4cCI6MTYxMTc4MDI0Mn0._RofUc8Vn4doeN8A8jALpIPRwnlIiUHiGcuo3CxAz6Mo-a6vFlBdazkVSfi7MHSnumksrDYhJO0c7eP3HT8t3Q',
+      role: 'USER',
+      email: 'user@example.com'
+    };
 
-    let loginResponse : LoginResponse;
+    let loginResponse: LoginResponse;
 
     service.login(loginForm).subscribe();
 
@@ -53,20 +53,20 @@ describe('AuthService', () => {
   }));
 
   it('should call register', fakeAsync(() => {
-    let registerForm : RegistrationForm = {
-      email: "user@example.com",
-      username: "user",
-      password: "qwerty"
-    }
+    const registerForm: RegistrationForm = {
+      email: 'user@example.com',
+      username: 'user',
+      password: 'qwerty'
+    };
 
-    let registerResponseMock = "Account with the given email already exists";
+    const registerResponseMock = 'Account with the given email already exists';
 
-    let registerResponse : string;
+    let registerResponse: string;
 
     service.register(registerForm).subscribe(res => {
       registerResponse = res;
-  
-      expect(registerResponse).toEqual("Account with the given email already exists");
+
+      expect(registerResponse).toEqual('Account with the given email already exists');
     });
 
     const req = http.expectOne(path + 'register');
@@ -76,7 +76,7 @@ describe('AuthService', () => {
   }));
 
   it('should call resendActivation', fakeAsync(() => {
-    let resendForm : string = "test@email.com";
+    const resendForm = 'test@email.com';
 
     service.resendActivation(resendForm).subscribe();
 
@@ -85,7 +85,7 @@ describe('AuthService', () => {
 
   }));
 
-  
+
   it('should call logout', fakeAsync(() => {
 
     service.logout();

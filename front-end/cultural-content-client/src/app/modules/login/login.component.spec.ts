@@ -19,13 +19,13 @@ describe('LoginComponent', () => {
 
   const authServiceMock = {
     login: jasmine.createSpy('login').and.returnValue(of({}))
-  }
+  };
 
   const routerMock = jasmine.createSpyObj('router', ['navigate']);
 
   const snackbarMock = {
     openSnackBar: jasmine.createSpy('openSnackBar')
-  }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,7 +34,7 @@ describe('LoginComponent', () => {
       providers: [{provide: FormBuilder, useValue: formBuilder},
                   {provide: AuthService, useValue: authServiceMock},
                   {provide: Router, useValue: routerMock},
-                  {provide: SnackBarComponent, useValue: snackbarMock},]
+                  {provide: SnackBarComponent, useValue: snackbarMock}, ]
     })
     .compileComponents();
   });

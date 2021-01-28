@@ -4,8 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Review } from 'src/app/models/review';
 
 export interface ReviewFormData {
-  type: string,
-  review: Review
+  type: string;
+  review: Review;
 }
 
 @Component({
@@ -44,7 +44,7 @@ export class ReviewsFormComponent implements OnInit {
             Validators.maxLength(256),
           ]),
         ],
-        images: ['',]
+        images: ['', ]
       });
      }
 
@@ -52,31 +52,31 @@ export class ReviewsFormComponent implements OnInit {
   }
 
   add(): void{
-    this.dialogRef.close({operation: 'add'})
+    this.dialogRef.close({operation: 'add'});
   }
 
   cancelAdd(): void{
-    this.dialogRef.close({operation: 'cancel'})
+    this.dialogRef.close({operation: 'cancel'});
   }
 
   filesChanged(): void{
-    var self = this;
+    const self = this;
     this.data.review.images = [];
     // let files= element.target.files;
-    let files = this.form.getRawValue().images;
+    const files = this.form.getRawValue().images;
     Array.from(files).forEach(function(file){
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = function() {
         self.data.review.images.push(reader.result as string);
-        
-      }
+
+      };
       reader.readAsDataURL(file as Blob);
-      
-    })
+
+    });
   }
 
   onRatingChanged(rating: number) {
-    this.form.controls['rating'].setValue(rating);
+    this.form.controls.rating.setValue(rating);
     this.data.review.rating = rating;
     this.rating = rating;
   }

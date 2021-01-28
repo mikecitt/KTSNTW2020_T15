@@ -9,28 +9,28 @@ describe('ReviewsFormComponent', () => {
   let fixture: ComponentFixture<ReviewsFormComponent>;
   let dialogRef: MatDialogRef<ReviewsFormComponent>;
   const formBuilder: FormBuilder = new FormBuilder();
-  let dialogDataMock = {
-    type: "add",
+  const dialogDataMock = {
+    type: 'add',
     review: {
       id: 1,
       rating: 0,
-      comment: "string string",
-      authorUsername: "string",
+      comment: 'string string',
+      authorUsername: 'string',
       images: ['']
-    
+
     }
-  }
+  };
 
   const dialogMock = {
     close : jasmine.createSpy('close')
-  }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ReviewsFormComponent ],
       providers: [{provide: MatDialogRef, useValue: dialogMock},
                   {provide: MAT_DIALOG_DATA, useValue: {}},
-                  {provide: FormBuilder, useValue: formBuilder},]
+                  {provide: FormBuilder, useValue: formBuilder}, ]
     })
     .compileComponents();
   });
@@ -55,12 +55,12 @@ describe('ReviewsFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call add', async () =>{
+  it('should call add', async () => {
     component.add();
     expect(dialogRef.close).toHaveBeenCalledWith({operation: 'add'});
   });
 
-  it('should call cancel add', async () =>{
+  it('should call cancel add', async () => {
     component.cancelAdd();
     expect(dialogRef.close).toHaveBeenCalledWith({operation: 'cancel'});
   });

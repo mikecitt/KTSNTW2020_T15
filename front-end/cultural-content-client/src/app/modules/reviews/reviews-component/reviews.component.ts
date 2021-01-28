@@ -19,32 +19,32 @@ export class ReviewsComponent implements OnInit {
 
   reviewFromDialog: Review = {
     rating: 0,
-    comment: "",
-    authorUsername: "",
+    comment: '',
+    authorUsername: '',
     images: []
   };
 
   uploads_url = 'http://localhost:8080/uploads/';
   reviewPage: ReviewPage;
   public currentPage: number;
-  private pageLimit: number = 2;
+  private pageLimit = 2;
 
-  constructor(private userService: UserService, private reviewService: ReviewService, public dialog: MatDialog, private snackBar: SnackBarComponent) { 
+  constructor(private userService: UserService, private reviewService: ReviewService, public dialog: MatDialog, private snackBar: SnackBarComponent) {
     this.currentPage = 0;
   }
 
   ngOnInit(): void {
     this.loadReviews();
    }
- 
+
    get isAuthorized() {
      return this.userService.getRole() != null;
    }
- 
+
    get isAdmin() {
      return this.userService.getRole() == 'ROLE_ADMIN';
    }
- 
+
    get isUser() {
      return this.userService.getRole() == 'ROLE_USER';
    }
@@ -56,7 +56,7 @@ export class ReviewsComponent implements OnInit {
   loadReviews(): void{
     this.reviewService
         .getAll(this.culturalOfferId, this.currentPage, this.pageLimit)
-        .subscribe(res => { this.reviewPage = res });
+        .subscribe(res => { this.reviewPage = res; });
   }
 
   getNextPage(): void{
@@ -76,29 +76,31 @@ export class ReviewsComponent implements OnInit {
       disableClose: true
     });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if(result.operation == "add")
+    dialogRef.afterClosed().subscribe(result => {
+    if (result.operation == 'add') {
       this.addReview();
-    else if(result.operation == "cancelAdd") 
+    }
+    else if (result.operation == 'cancelAdd') {
       this.clearForm();
+ }
     });
   }
 
-  clearForm():void{
+  clearForm(): void{
     this.reviewFromDialog = {
-      comment: "",
+      comment: '',
       rating: 0,
-      authorUsername: "",
+      authorUsername: '',
       images: []
     };
   }
 
-  
-  addReview():void{
+
+  addReview(): void{
     this.reviewService.add(this.culturalOfferId, this.reviewFromDialog).subscribe((response) => {
       this.loadReviews();
       this.clearForm();
-      this.snackBar.openSnackBar("Review successfuly added",'','green-snackbar');
+      this.snackBar.openSnackBar('Review successfuly added', '', 'green-snackbar');
     });
   }
 }

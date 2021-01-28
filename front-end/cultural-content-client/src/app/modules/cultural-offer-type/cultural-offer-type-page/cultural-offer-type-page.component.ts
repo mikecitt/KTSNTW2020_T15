@@ -42,7 +42,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
 
   loadTypes(): void{
     this.typeService
-        .getAllPaginated(this.curentPageType,this.pageSize).subscribe((res) => {
+        .getAllPaginated(this.curentPageType, this.pageSize).subscribe((res) => {
           this.typePage = res;
           this.culturalOfferTypes = res.content;
         });
@@ -50,10 +50,10 @@ export class CulturalOfferTypePageComponent implements OnInit {
   loadSubTypes(typeId: number){
     this.curentType = typeId;
     this.subTypeService
-        .getAllPaginated(this.curentPageSubType, this.pageSize,typeId)
+        .getAllPaginated(this.curentPageSubType, this.pageSize, typeId)
         .subscribe( (res) => {
           this.subTypePage = res;
-          this.culturalOfferSubTypes = res.content
+          this.culturalOfferSubTypes = res.content;
         });
   }
 
@@ -62,7 +62,7 @@ export class CulturalOfferTypePageComponent implements OnInit {
     this.loadTypes();
   }
 
-  getPreviousType():void{
+  getPreviousType(): void{
     this.curentPageType--;
     this.loadTypes();
   }
@@ -80,63 +80,63 @@ export class CulturalOfferTypePageComponent implements OnInit {
   deleteType(typeId: any): void{
     const dialogRef = this.dialog.open(ConfirmDeleteComponent, {
       width: '300px',
-      panelClass : "mat-elevation-z8",
+      panelClass : 'mat-elevation-z8',
       data: {}
     });
     dialogRef
       .afterClosed()
-      .subscribe(confirmed =>{
-        if(confirmed){
+      .subscribe(confirmed => {
+        if (confirmed){
           this.afterDeleteClosed(typeId);
         }
-      })
+      });
   }
   afterDeleteClosed(typeId: any){
     this.typeService
         .deleteType(typeId)
-        .subscribe(()=>{
+        .subscribe(() => {
           this.loadTypes();
-          this.snackBar.openSnackBar("Deleted successfully", "", "green-snackbar");
+          this.snackBar.openSnackBar('Deleted successfully', '', 'green-snackbar');
         });
   }
 
   openDialog(data: TypeDialogData): MatDialogRef<TypeFormComponent>{
     const dialogRef = this.dialog.open(TypeFormComponent, {
       width: '300px',
-      panelClass : "mat-elevation-z8",
-      data: data
+      panelClass : 'mat-elevation-z8',
+      data
     });
     return dialogRef;
   }
 
   openCreateDialog(event: any){
-    let dialogData : TypeDialogData = {
+    const dialogData: TypeDialogData = {
       formType: 'CREATE',
       type: {
         id: 0,
         name: ''
       }
-    }
+    };
     const dialogRef = this.openDialog(dialogData);
     this.curentPageType = this.typePage.totalPages - 1;
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result){
         this.afterCreateClosed(result.name);
       }
     });
   }
 
   afterCreateClosed(name: any){
-    let req: CulturalOfferType = {id:1, name: name};
+    const req: CulturalOfferType = {id: 1, name};
     this.typeService.createType(req)
         .subscribe(() => {
           this.loadTypes();
-          this.snackBar.openSnackBar("Created successfully", "", "green-snackbar");
+          this.snackBar.openSnackBar('Created successfully', '', 'green-snackbar');
         });
   }
 
-  openUpdateDialog(updatedType:any):void {
-    let dialogData : TypeDialogData = {
+  openUpdateDialog(updatedType: any): void {
+    const dialogData: TypeDialogData = {
       formType: 'UPDATE',
       type: {
         id: updatedType.id,
@@ -144,15 +144,15 @@ export class CulturalOfferTypePageComponent implements OnInit {
       }
     };
     const dialogRef = this.openDialog(dialogData);
-    //bolje sort na back
+    // bolje sort na back
     this.curentPageType = this.typePage.totalPages - 1;
     dialogRef.afterClosed().subscribe((result: CulturalOfferType) => {
-      if(result){
+      if (result){
         this.typeService.updateType(result)
             .subscribe((response) => {
               this.loadTypes();
               this.loadSubTypes(response.id);
-              this.snackBar.openSnackBar("Updated successfully", "", "green-snackbar");
+              this.snackBar.openSnackBar('Updated successfully', '', 'green-snackbar');
             });
       }
     });

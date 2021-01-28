@@ -26,7 +26,7 @@ describe('MapPageComponent', () => {
       open : jasmine.createSpy('open').and.returnValue({
         afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({}) ), close: null
        })
-    }
+    };
 
     const culturalOffers: CulturalOfferResponse[] = [
       {
@@ -38,10 +38,10 @@ describe('MapPageComponent', () => {
           latitude: 20.0,
           longitude: 20.0
         },
-        subType:{
+        subType: {
           id: 1,
           name: '',
-          type:{
+          type: {
             id: 1,
             name: ''
           }
@@ -55,7 +55,7 @@ describe('MapPageComponent', () => {
         name: 'tip1'
       },
       {
-        id:2,
+        id: 2,
         name: 'tip2'
       }
     ];
@@ -63,7 +63,7 @@ describe('MapPageComponent', () => {
       {
         id: 1,
         name: 'podtip1',
-        type:{
+        type: {
           id: 1,
           name: 'tip1'
         }
@@ -78,22 +78,22 @@ describe('MapPageComponent', () => {
       }
     ];
 
-    let culturalOfferServiceMock = {
+    const culturalOfferServiceMock = {
       getLocations: jasmine.createSpy('getLocations')
                     .and.returnValue(of(culturalOffers)),
       filterCulturalOffers: jasmine.createSpy('filterCulturalOffers')
                             .and.returnValue(of(culturalOffers)),
     };
-    let typeServiceMock = {
+    const typeServiceMock = {
       getAll: jasmine.createSpy('getAll')
               .and.returnValue(of(types))
     };
-    let subTypeSeviceMock = {
+    const subTypeSeviceMock = {
       getAll: jasmine.createSpy('getAll')
               .and.returnValue(of(subTypes))
     };
 
-    let userServiceMock = {
+    const userServiceMock = {
       getRole: jasmine.createSpy('getRole')
     };
 
@@ -151,7 +151,7 @@ describe('MapPageComponent', () => {
 
   });
 
-  it('should load subtypes on loadSubType', async ()=>{
+  it('should load subtypes on loadSubType', async () => {
     component.loadSubTypes(1);
 
     expect(subTypeService.getAll).toHaveBeenCalledWith(1);
@@ -168,9 +168,9 @@ describe('MapPageComponent', () => {
     expect(component.subTypes[1].type.name).toBe('tip1');
   });
 
-  it('should filter cultural offer on applyFilter', async()=>{
-    let filterReq = {
-      request:{
+  it('should filter cultural offer on applyFilter', async () => {
+    const filterReq = {
+      request: {
         subTypeName: 'podtip',
         typeName: 'tip1'
       },
@@ -189,8 +189,8 @@ describe('MapPageComponent', () => {
     expect(component.culturalOfferLocations[0].location.longitude).toBe(20.0);
   });
 
-  it('should reset filter form', async()=>{
-    component.resetFilter("RESET");
+  it('should reset filter form', async () => {
+    component.resetFilter('RESET');
 
     expect(culturalOfferService.getLocations).toHaveBeenCalledWith();
     expect(component.culturalOfferLocations.length).toBe(1);

@@ -11,7 +11,7 @@ describe('SnackBarComponent', () => {
   beforeEach(async () => {
     const snackbarMock = {
       open: jasmine.createSpy('open')
-    }
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ SnackBarComponent ],
@@ -31,8 +31,8 @@ describe('SnackBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should open snackbar', async () =>{
-    component.openSnackBar("","","");
+  it('should open snackbar', async () => {
+    component.openSnackBar('', '', '');
     expect(snackbar.open).toHaveBeenCalled();
 
   });

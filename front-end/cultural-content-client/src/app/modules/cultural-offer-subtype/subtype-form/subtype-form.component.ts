@@ -22,7 +22,7 @@ export class SubtypeFormComponent implements OnInit {
   ) {
     this.form = new FormGroup({
       id: new FormControl(''),
-      name: new FormControl('', [Validators.required,Validators.minLength(4)])
+      name: new FormControl('', [Validators.required, Validators.minLength(4)])
     });
   }
 
@@ -35,14 +35,14 @@ export class SubtypeFormComponent implements OnInit {
   }
 
   onSaveClick(): void{
-    let newSubType: CulturalOfferSubType = {
+    const newSubType: CulturalOfferSubType = {
       id: this.form.value.id,
       name: this.form.value.name,
       type: {
         id: this.data.subType.type.id,
         name: ''
       }
-    }
+    };
     // console.log(newSubType)
     this.dialogRef.close(newSubType);
   }

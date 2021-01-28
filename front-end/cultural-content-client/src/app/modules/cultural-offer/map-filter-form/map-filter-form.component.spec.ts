@@ -23,7 +23,7 @@ describe('MapFilterFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit getSubTypesEvent on onSelectChange',async () =>{
+  it('should emit getSubTypesEvent on onSelectChange', async () => {
     spyOn(component.getSubTypesEvent, 'emit');
     component.onSelectChange({value: 'value'});
     fixture.detectChanges();
@@ -31,19 +31,19 @@ describe('MapFilterFormComponent', () => {
     expect(component.disabled).toBeFalse();
   });
 
-  it('should reset filter', async ()=>{
+  it('should reset filter', async () => {
     spyOn(component.resetFilterEvent, 'emit');
     component.resetFilter();
 
     expect(component.filterForm.value).toEqual({type: '', subType: '', searchLocation: ''});
     expect(component.disabled).toBeTruthy();
     expect(component.resetFilterEvent.emit).toHaveBeenCalled();
-    expect(component.resetFilterEvent.emit).toHaveBeenCalledWith("RESET");
+    expect(component.resetFilterEvent.emit).toHaveBeenCalledWith('RESET');
   });
 
-  it('should emit filter event with filterForm data on onSubmit', async ()=>{
+  it('should emit filter event with filterForm data on onSubmit', async () => {
     spyOn(component.applyFilterEvent, 'emit');
-    let formObj = {
+    const formObj = {
       type: {
         name: 'tip1'
       },
@@ -51,14 +51,14 @@ describe('MapFilterFormComponent', () => {
         name: 'podtip1'
       },
       searchLocation: 'lokacija'
-    }
-    let emitObj = {
+    };
+    const emitObj = {
       request: {
         subTypeName: formObj.subType.name,
         typeName: formObj.type.name
       },
       location: formObj.searchLocation
-    }
+    };
     component.filterForm.setValue(formObj);
 
     component.onSubmit();

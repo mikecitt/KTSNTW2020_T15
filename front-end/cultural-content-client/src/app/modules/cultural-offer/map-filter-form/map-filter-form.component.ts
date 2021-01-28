@@ -26,28 +26,28 @@ export class MapFilterFormComponent implements OnInit {
   culturalOfferSubTypes: CulturalOfferSubType[] = [];
 
   filterForm = new FormGroup({
-    type:new FormControl(''),
+    type: new FormControl(''),
     subType: new FormControl(''),
     searchLocation: new FormControl('')
   });
 
   selectedType: CulturalOfferType;
   selectedSubType: CulturalOfferSubType;
-  disabled: boolean = true;
+  disabled = true;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  onSubmit():void{
+  onSubmit(): void{
     let filterReq: FilterRequest;
 
     filterReq = {
-      subTypeName: this.filterForm.value.subType.name == undefined ? "" : this.filterForm.value.subType.name,
-      typeName: this.filterForm.value.type.name == undefined ? "" : this.filterForm.value.type.name,
-    }
-    this.applyFilterEvent.emit({ "request": filterReq, "location": this.filterForm.value.searchLocation});
+      subTypeName: this.filterForm.value.subType.name == undefined ? '' : this.filterForm.value.subType.name,
+      typeName: this.filterForm.value.type.name == undefined ? '' : this.filterForm.value.type.name,
+    };
+    this.applyFilterEvent.emit({ request: filterReq, location: this.filterForm.value.searchLocation});
   }
 
   onSelectChange(newSelected: any): void{
@@ -58,7 +58,7 @@ export class MapFilterFormComponent implements OnInit {
   resetFilter(): void{
     this.filterForm.reset({type: '', subType: '', searchLocation: ''});
     this.disabled = true;
-    this.resetFilterEvent.emit("RESET");
+    this.resetFilterEvent.emit('RESET');
   }
 
 }

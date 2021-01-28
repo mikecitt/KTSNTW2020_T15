@@ -30,7 +30,7 @@ export class NewsFormComponent implements OnInit {
             Validators.maxLength(256),
           ]),
         ],
-        images: ['',]
+        images: ['', ]
       });
     }
 
@@ -38,40 +38,40 @@ export class NewsFormComponent implements OnInit {
   }
 
   update(): void{
-    this.dialogRef.close({operation: 'update'})
+    this.dialogRef.close({operation: 'update'});
   }
 
   add(): void{
-    this.dialogRef.close({operation: 'add'})
+    this.dialogRef.close({operation: 'add'});
   }
 
   cancelAdd(): void{
-    this.dialogRef.close({operation: 'cancelAdd'})
+    this.dialogRef.close({operation: 'cancelAdd'});
   }
 
   cancelUpdate(): void{
-    this.dialogRef.close({operation: 'cancelUpdate'})
+    this.dialogRef.close({operation: 'cancelUpdate'});
   }
 
   filesChanged(): void{
-    var self = this;
+    const self = this;
     this.data.news.images = [];
     // let files= element.target.files;
-    let files = this.form.getRawValue().images;
+    const files = this.form.getRawValue().images;
     Array.from(files).forEach(function(file){
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = function() {
         self.data.news.images.push(reader.result as string);
-        
-      }
+
+      };
       reader.readAsDataURL(file as Blob);
-      
-    })
+
+    });
   }
 
 }
 
 export interface NewsFormData {
-  type: string,
-  news: News
+  type: string;
+  news: News;
 }

@@ -20,25 +20,25 @@ describe('SubtypeListComponent', () => {
   beforeEach(async () => {
     const snackbarMock = {
       openSnackBar: jasmine.createSpy('openSnackBar')
-    }
+    };
 
     const dialogMock = {
       close: jasmine.createSpy('close'),
       open : jasmine.createSpy('open').and.returnValue({
         afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({
-          id: 1 , name: '', type: {id: 1, name:''}
+          id: 1 , name: '', type: {id: 1, name: ''}
         }) ), close: null
        })
-    }
+    };
 
-    let serviceMock = {
+    const serviceMock = {
       deleteSubType: jasmine.createSpy('deleteSubType')
             .and.returnValue(of({})),
       createSubType: jasmine.createSpy('createSubType')
-            .and.returnValue(of({ id: 0, name:""})),
+            .and.returnValue(of({ id: 0, name: ''})),
       updateSubType: jasmine.createSpy('updateSubType')
             .and.returnValue(of({}))
-    }
+    };
 
     await TestBed.configureTestingModule({
       declarations: [ SubtypeListComponent ],
@@ -63,19 +63,19 @@ describe('SubtypeListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should assign subtype list to dataSource', async()=>{
+  it('should assign subtype list to dataSource', async () => {
     component.ngOnInit();
     expect(component.dataSource).toBeDefined();
   });
 
-  it('should assign subtype list to dataSource on changes', async()=>{
+  it('should assign subtype list to dataSource on changes', async () => {
     component.ngOnChanges();
     expect(component.dataSource).toBeDefined();
   });
 
-  it('should create dialog', async() =>{
-    let data: SubTypeDialogData = {
-      subType: {id: 1 , name: '', type: {id: 1, name:''}},
+  it('should create dialog', async () => {
+    const data: SubTypeDialogData = {
+      subType: {id: 1 , name: '', type: {id: 1, name: ''}},
       formType: 'UPDATE'
     };
     component.createDialog(data);
@@ -83,31 +83,31 @@ describe('SubtypeListComponent', () => {
     expect(dialog.open).toHaveBeenCalled();
   });
 
-  it('should create subtype', async()=>{
-    spyOn(component.refreshDataEvent,'emit');
+  it('should create subtype', async () => {
+    spyOn(component.refreshDataEvent, 'emit');
     component.createSubType();
     expect(dialog.open).toHaveBeenCalled();
 
 
-    fixture.whenStable().then(()=>{
+    fixture.whenStable().then(() => {
       fixture.detectChanges();
       try {
-        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+        const elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
         expect(elements.length).toBe(1);
       } catch (error) {
-        
+
       }
-      
-    })
+
+    });
     fixture.detectChanges();
     expect(subtypeService.createSubType).toHaveBeenCalled();
     expect(snackbar.openSnackBar).toHaveBeenCalled();
     expect(component.refreshDataEvent.emit).toHaveBeenCalled();
   });
 
-  it('should delete subtype', async() =>{
-    let data: CulturalOfferSubType = {
-      id: 1 , name: '', type: {id: 1, name:''}
+  it('should delete subtype', async () => {
+    const data: CulturalOfferSubType = {
+      id: 1 , name: '', type: {id: 1, name: ''}
     };
     component.deleteSubType(data);
     fixture.detectChanges();
@@ -116,7 +116,7 @@ describe('SubtypeListComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       try {
-        let elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
+        const elements: DebugElement[] = fixture.debugElement.query(el => el.name === '.mat-dialog-container').nativeElement;
         expect(elements.length).toBe(1);
       } catch (error) {}
     });
@@ -124,10 +124,10 @@ describe('SubtypeListComponent', () => {
     expect(snackbar.openSnackBar).toHaveBeenCalled();
   });
 
-  it('should update subtype', async()=>{
-    spyOn(component.refreshDataEvent,'emit');
-    let data: CulturalOfferSubType = {
-      id: 1 , name: '', type: {id: 1, name:''}
+  it('should update subtype', async () => {
+    spyOn(component.refreshDataEvent, 'emit');
+    const data: CulturalOfferSubType = {
+      id: 1 , name: '', type: {id: 1, name: ''}
     };
     component.updateSubType(data);
     fixture.detectChanges();

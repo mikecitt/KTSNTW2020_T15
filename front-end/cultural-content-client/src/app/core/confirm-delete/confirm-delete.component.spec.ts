@@ -26,7 +26,7 @@ describe('ConfirmDeleteComponent', () => {
     fixture = TestBed.createComponent(ConfirmDeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    dialogRef = TestBed.inject(MatDialogRef)
+    dialogRef = TestBed.inject(MatDialogRef);
   });
 
   it('should create', () => {

@@ -11,12 +11,12 @@ export class CulturalOfferSubTypeService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
-  getAll(typeId:any): Observable<CulturalOfferSubType[]>{
-    return this.http.get<CulturalOfferSubType[]>(environment.api_url + "/sub-types/all?typeId=" + typeId);
+  getAll(typeId: any): Observable<CulturalOfferSubType[]>{
+    return this.http.get<CulturalOfferSubType[]>(environment.api_url + '/sub-types/all?typeId=' + typeId);
   }
 
   getAllPaginated(pageIndex: number, pageSize: number, typeId: number): Observable<SubTypePage>{
-    let url = `/sub-types?typeId=${typeId}&page=${pageIndex}&size=${pageSize}`;
+    const url = `/sub-types?typeId=${typeId}&page=${pageIndex}&size=${pageSize}`;
     return this.http.get<SubTypePage>(environment.api_url + url);
   }
 
@@ -30,7 +30,7 @@ export class CulturalOfferSubTypeService {
       .append('typeId', req.type.id);
 
     return this.http.put<CulturalOfferSubType>
-      (environment.api_url + `/sub-types/${req.id}`, req, {params: params});
+      (environment.api_url + `/sub-types/${req.id}`, req, {params});
   }
 
   deleteSubType(subType: CulturalOfferSubType): Observable<void>{
@@ -38,7 +38,7 @@ export class CulturalOfferSubTypeService {
         .append('typeId', subType.type.id);
 
     return this.http.delete<void>
-      (environment.api_url + `/sub-types/${subType.id}`, {params: params});
+      (environment.api_url + `/sub-types/${subType.id}`, {params});
   }
 
 }

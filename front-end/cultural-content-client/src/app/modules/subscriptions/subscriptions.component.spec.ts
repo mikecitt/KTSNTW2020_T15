@@ -15,14 +15,14 @@ describe('SubscriptionsComponent', () => {
     close: jasmine.createSpy('close'),
       open : jasmine.createSpy('open').and.returnValue({
         afterClosed : jasmine.createSpy('afterClosed').and.returnValue( of({
-          id: 1 , name: '', type: {id: 1, name:''}
+          id: 1 , name: '', type: {id: 1, name: ''}
         }) ), close: null
        })
-  }
+  };
 
   const serviceMock = {
     getAll : jasmine.createSpy('getAll').and.returnValue(of({})),
-  }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,7 +48,7 @@ describe('SubscriptionsComponent', () => {
   });
 
   it('should get next page and load subsciptions', async () => {
-    spyOn(component, 'loadSubscriptions')
+    spyOn(component, 'loadSubscriptions');
     component.currentPage = 0;
     component.getNextPage();
     expect(component.loadSubscriptions).toHaveBeenCalled();
@@ -56,7 +56,7 @@ describe('SubscriptionsComponent', () => {
   });
 
   it('should get prev page and load subsciptions', async () => {
-    spyOn(component, 'loadSubscriptions')
+    spyOn(component, 'loadSubscriptions');
     component.currentPage = 1;
     component.getPreviousPage();
     expect(component.loadSubscriptions).toHaveBeenCalled();

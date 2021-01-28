@@ -8,16 +8,16 @@ describe('SubtypeFormComponent', () => {
   let component: SubtypeFormComponent;
   let fixture: ComponentFixture<SubtypeFormComponent>;
   let dialogRef: MatDialogRef<SubtypeFormComponent>;
-  let dialogDataMock = {
-    subType: {id: 1, name: "elem.name", type: {id: 1, name:""}},
+  const dialogDataMock = {
+    subType: {id: 1, name: 'elem.name', type: {id: 1, name: ''}},
     formType: 'ADD'
 
-  }
+  };
 
   beforeEach(async () => {
     const dialogMock = {
       close: jasmine.createSpy('close')
-    }
+    };
     await TestBed.configureTestingModule({
       declarations: [ SubtypeFormComponent ],
       providers: [ {provide: MatDialogRef, useValue: dialogMock},
@@ -32,7 +32,7 @@ describe('SubtypeFormComponent', () => {
     component.data = dialogDataMock;
     fixture.detectChanges();
     dialogRef = TestBed.inject(MatDialogRef);
-    
+
   });
 
   it('should create', () => {
@@ -45,12 +45,12 @@ describe('SubtypeFormComponent', () => {
   });
 
   it('should click SAVE and close dialog', async () => {
-    component.form.setValue({name : "podtip1", id: ""});
+    component.form.setValue({name : 'podtip1', id: ''});
     component.onSaveClick();
 
     expect(component.form.valid).toBeTruthy();
     expect(dialogRef.close).toHaveBeenCalledWith({ id: '', name: 'podtip1', type: { id: 1, name: '' } });
   });
 
-  
+
 });

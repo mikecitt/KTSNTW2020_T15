@@ -23,18 +23,18 @@ export class UserService {
   }
 
   getRole() {
-    var role = null;
-    if(this.currentUser) {
-      role = this.currentUser['role'];
+    let role = null;
+    if (this.currentUser) {
+      role = this.currentUser.role;
     }
 
     return role;
   }
 
   getEmail() {
-    var email = null;
-    if(this.currentUser) {
-      email = this.currentUser['email'];
+    let email = null;
+    if (this.currentUser) {
+      email = this.currentUser.email;
     }
 
     return email;
