@@ -1,30 +1,33 @@
+.root {
+  width: 320px;
+}
+
 ::ng-deep.mat-tab-label,
 ::ng-deep.mat-tab-label-active {
   min-width: 0 !important;
-  padding: 3px !important;
-  margin: 3px !important;
-  min-height: 0 !important;
-  height: 30px !important;
+  max-width: 87px !important;
   max-height: 30px !important;
 }
 
 .content {
   margin-top: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .headerContent {
   display: flex;
   flex-direction: row;
-  align-items: center;
   margin-top: 5px;
 }
 
 .headerInfo {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
 }
 
 .contentItem {
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -32,11 +35,13 @@
 
 .contentTitle {
   margin-right: 5px;
+  width: 45px;
   font-weight: bold;
 }
 
 .contentValue {
-  max-width: 100px;
+  max-width: 200px;
+  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -45,8 +50,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50px;
-  margin-left: 10px;
+}
+
+.contentFooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100px;
+}
+
+.descriptionArea {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .contentDescriptionHeader {
@@ -59,28 +75,14 @@
   border-radius: 7px;
   padding: 5px;
   flex-grow: 1;
-}
-
-.contentFooter {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 80px;
-}
-
-.descriptionArea {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 150px;
-}
-
-.descriptionText {
-  overflow: hidden;
+  max-height: 200px;
+  overflow: auto;
+  overflow-x: hidden;
+  max-width: 190px;
+  min-width: 190px;
 }
 
 .ratingArea {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-left: 5px;
+  min-width: 110px;
 }

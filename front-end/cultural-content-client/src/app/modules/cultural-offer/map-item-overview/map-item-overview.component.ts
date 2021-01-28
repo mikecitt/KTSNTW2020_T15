@@ -5,6 +5,7 @@ import { CulturalOfferResponse } from 'src/app/models/cultural-offer-response';
 import { CulturalOfferService, UserService } from 'src/app/services';
 import { EditCulturalOfferDialogComponent } from '../edit-cultural-offer-dialog/edit-cultural-offer-dialog.component';
 import { MapItemComponent } from '../map-item/map-item.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-map-item-overview',
@@ -15,7 +16,7 @@ export class MapItemOverviewComponent implements OnInit {
   public offer: CulturalOfferResponse;
 
   public page: MapItemComponent;
-
+  environment = environment;
   public starCount = 5;
   public starColor = 'primary';
   public starRating = 0;
@@ -28,11 +29,13 @@ export class MapItemOverviewComponent implements OnInit {
   ) {}
 
   get slides() {
-    return [
-      'https://mdbootstrap.com/img/Photos/Slides/img%20(130).jpg',
-      'https://gsr.dev/material2-carousel/assets/demo.png',
-      'https://gsr.dev/material2-carousel/assets/demo.png',
-    ];
+    var display = this.offer.images.map(
+      (image) => environment.uploads_url + image
+    );
+    console.log(display);
+    return display.length === 0
+      ? ['https://www.meissl.com/media/images/8f24db1f/schweiz.jpg']
+      : display;
   }
 
   onRatingChanged(rating: number) {
