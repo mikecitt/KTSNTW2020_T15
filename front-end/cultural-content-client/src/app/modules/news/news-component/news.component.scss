@@ -21,7 +21,7 @@ mat-card-header {
 }
 
 .title {
-  font-size: large;
+  font-size: 30px;
   flex-grow: 1;
 }
 
@@ -34,10 +34,6 @@ mat-card-header {
   position: absolute;
   top: 10px;
   right: 0;
-}
-
-.title {
-  font-size: 30px;
 }
 
 .column {

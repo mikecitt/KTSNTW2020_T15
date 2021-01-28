@@ -9,8 +9,20 @@ mat-card-header {
   margin-bottom: 10px;
 }
 
-.row {
-  display: table;
+.root {
+  height: 320px;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+}
+
+.title {
+  font-size: 30px;
+  flex-grow: 1;
 }
 
 .right {
@@ -44,7 +56,15 @@ mat-card-header {
   box-shadow: 5px 5px #e9e9e9;
 }
 
+.starUser {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .date {
+  flex-grow: 1;
   font-weight: lighter;
   font-style: italic;
 }

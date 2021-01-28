@@ -32,7 +32,6 @@ export class MapItemOverviewComponent implements OnInit {
     var display = this.offer.images.map(
       (image) => environment.uploads_url + image
     );
-    console.log(display);
     return display.length === 0
       ? ['https://www.meissl.com/media/images/8f24db1f/schweiz.jpg']
       : display;
