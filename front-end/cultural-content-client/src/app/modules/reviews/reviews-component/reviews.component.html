@@ -6,29 +6,30 @@
         </button>
     </div>
 
-    <div *ngIf="reviewPage">
-        <div class="drop-shadow" *ngFor="let element of reviewPage.content">
+    <div *ngIf="reviewPage" >
+        <div >
+            <div class="drop-shadow" *ngFor="let element of reviewPage.content">
 
-            <div class="row">
-                <span id="review-text">{{element.comment}}</span>
+                <div class="row">
+                    <span id="review-text">{{element.comment}}</span>
+                </div>
+
+                <mat-carousel class="carousel" timings="250ms ease-in" color=primary [proportion]="40" [hideArrows]="false"
+                    [hideIndicators]="false" [maintainAspectRatio]="true" maxWidth="auto">
+                    <mat-carousel-slide #matCarouselSlide *ngFor="let image of element.images; let i = index"
+                        [image]="uploads_url + image" overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
+                </mat-carousel>
+                <div class="starUser">
+                    <span class="date">{{element.authorUsername}}</span>
+                    <mat-star-rating id="ratingId" [rating]="element.rating" [starCount]="5" [color]="'primary'">
+                    </mat-star-rating>
+                </div>
+
             </div>
-
-            <mat-carousel class="carousel" timings="250ms ease-in" color=primary [proportion]="40" [hideArrows]="false"
-                [hideIndicators]="false" [maintainAspectRatio]="true" maxWidth="auto">
-                <mat-carousel-slide #matCarouselSlide *ngFor="let image of element.images; let i = index"
-                    [image]="uploads_url + image" overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
-            </mat-carousel>
-            <div class="starUser">
-                <span class="date">{{element.authorUsername}}</span>
-                <mat-star-rating id="ratingId" [rating]="element.rating" [starCount]="5" [color]="'primary'">
-                </mat-star-rating>
-            </div>
-
         </div>
+
+        <app-pagination-bar class="centered" [hasPrev]="!reviewPage.first" [hasNext]="!reviewPage.last"
+            [currentPage]="currentPage" (navigatePrevEvent)="getPreviousPage()" (navigateNextEvent)="getNextPage()">
+        </app-pagination-bar>
     </div>
-
-    <app-pagination-bar class="centered" [hasPrev]="!reviewPage.first" [hasNext]="!reviewPage.last"
-        [currentPage]="currentPage" (navigatePrevEvent)="getPreviousPage()" (navigateNextEvent)="getNextPage()">
-    </app-pagination-bar>
-
 </div>
