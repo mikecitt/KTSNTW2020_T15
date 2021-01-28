@@ -1,52 +1,41 @@
-<mat-card >
-    <mat-card-header>
-        <button mat-raised-button *ngIf="isUser && !isSubscribed" id="sub-button" (click)="subscribe()">Subscribe</button>
-        <button mat-raised-button *ngIf="isUser && isSubscribed" id="unsub-button" (click)="unsubscribe()">Unubscribe</button>
+<div class="root">
+    <div class="titleArea">
+        <span class="title">News</span>
+        <button mat-raised-button *ngIf="isUser && !isSubscribed" id="sub-button"
+            (click)="subscribe()">Subscribe</button>
+        <button mat-raised-button *ngIf="isUser && isSubscribed" id="unsub-button"
+            (click)="unsubscribe()">Unubscribe</button>
         <button mat-mini-fab *ngIf="isAdmin" class="add-button" color="primary" (click)="openCreateNewsDialog()">
-            <mat-icon >add</mat-icon>
+            <mat-icon>add</mat-icon>
         </button>
-        
-        <mat-card-title class="title">News</mat-card-title>
+    </div>
 
-    </mat-card-header>
-    <mat-card-content *ngIf="newsPage">
-        <mat-card class="drop-shadow" *ngFor="let element of newsPage.content">
-            
-            <div class="row">
-                <p id="news-text">{{element.text}}</p>
-                <div class="column right">
-                    <button mat-icon-button color="warn" id="delete-news-button" *ngIf="element.id && isAdmin" (click)="deleteNews(element.id)">
-                        <mat-icon >delete</mat-icon>
-                    </button>
-                    <button mat-icon-button id="update-news-button" *ngIf="isAdmin" (click)="openUpdateNewsDialog(element)">
-                        <mat-icon >launch</mat-icon>
-                    </button>
-                </div>
+    <div class="drop-shadow" *ngFor="let element of newsPage.content">
+        <div class="cardContent">
+            <span id="news-text">{{element.text}}</span>
+            <div class="column right">
+
             </div>
+        </div>
 
-            <mat-carousel  class="carousel"          
-            timings="250ms ease-in"
-            color=primary
-            [proportion]="40"
-            [hideArrows]="false"
-            [hideIndicators]="false"
-            [maintainAspectRatio]="true"
-            maxWidth="auto"
-            >
-                <mat-carousel-slide
-                    
-                    #matCarouselSlide
-                    *ngFor="let image of element.images; let i = index"
-                    [image]="environment.uploads_url + image"
-                    overlayColor="#00000040"
-                    [hideOverlay]="false"
-                ></mat-carousel-slide>
-            </mat-carousel>
-            <p class="date">{{element.date | date: 'HH:mma dd.MM.YY'}}</p>  
-        </mat-card>
-        <app-pagination-bar class="centered" [hasPrev]="!newsPage.first" [hasNext]="!newsPage.last"
-          [currentPage]="currentNewsPage" (navigatePrevEvent)="getPreviousNews()" (navigateNextEvent)="getNextNews()">
-        </app-pagination-bar>
-    </mat-card-content>
-  </mat-card>
-  
+        <mat-carousel class="carousel" timings="250ms ease-in" color=primary [proportion]="40" [hideArrows]="false"
+            [hideIndicators]="false" [maintainAspectRatio]="true" maxWidth="auto">
+            <mat-carousel-slide #matCarouselSlide *ngFor="let image of element.images; let i = index"
+                [image]="environment.uploads_url + image" overlayColor="#00000040" [hideOverlay]="false">
+            </mat-carousel-slide>
+        </mat-carousel>
+        <div class="dateButtons">
+            <span class="date">{{element.date | date: 'HH:mma dd.MM.YY'}}</span>
+            <button mat-icon-button color="warn" id="delete-news-button" *ngIf="element.id && isAdmin"
+                (click)="deleteNews(element.id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button id="update-news-button" *ngIf="isAdmin" (click)="openUpdateNewsDialog(element)">
+                <mat-icon>create</mat-icon>
+            </button>
+        </div>
+    </div>
+    <app-pagination-bar class="centered" [hasPrev]="!newsPage.first" [hasNext]="!newsPage.last"
+        [currentPage]="currentNewsPage" (navigatePrevEvent)="getPreviousNews()" (navigateNextEvent)="getNextNews()">
+    </app-pagination-bar>
+</div>

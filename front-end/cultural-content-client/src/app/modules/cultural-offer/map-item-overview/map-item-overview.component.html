@@ -1,9 +1,9 @@
-<mat-tab-group headerPosition="below">
-  <mat-tab label="Overview">
+<mat-tab-group headerPosition="below" class="root">
+  <mat-tab label="Overview" class="overviewTab">
     <div class="content">
       <mat-carousel timings="250ms ease-in" color=primary [proportion]="40" [hideArrows]="true" [hideIndicators]="false"
         [maintainAspectRatio]="true" maxWidth="200">
-        <mat-carousel-slide #matCarouselSlide *ngFor="let slide of slides; let i = index" [image]="slide"
+        <mat-carousel-slide #matCarouselSlide *ngFor="let image of slides; let i = index" [image]="image"
           overlayColor="#00000040" [hideOverlay]="false"></mat-carousel-slide>
       </mat-carousel>
       <div class="headerContent">
@@ -46,7 +46,7 @@
     </div>
 
   </mat-tab>
-  <mat-tab label="News"> News
+  <mat-tab label="News">
     <app-news *ngIf="offer.id" [culturalOfferId]="offer.id"></app-news>
 
   </mat-tab>
