@@ -42,7 +42,9 @@ export class MapItemComponent implements OnInit, OnChanges {
         this.removeMarkers();
         this.updateMarkers();
       }
-      if (changes.location) { this.focusOnLocation(); }
+      if (changes.location) {
+        this.focusOnLocation();
+      }
     }
   }
 
@@ -73,7 +75,6 @@ export class MapItemComponent implements OnInit, OnChanges {
           x.page = this;
         }
       );
-      console.log(popupContent);
       const marker = new Mapboxgl.Marker({
         draggable: false,
       })
@@ -88,7 +89,10 @@ export class MapItemComponent implements OnInit, OnChanges {
 
   updateCulturalOffer(offer: CulturalOfferResponse) {
     const index = this.culturalOffers.findIndex((co) => co.id === offer.id);
+    this.culturalOffers[index].name = offer.name;
+    this.culturalOffers[index].description = offer.description;
     this.culturalOffers[index].location = offer.location;
+    this.culturalOffers[index].images = offer.images;
     this.removeMarkers();
     this.updateMarkers();
   }
@@ -117,15 +121,17 @@ export class MapItemComponent implements OnInit, OnChanges {
 
     // let response = this.httpClient.get<Geocoder>(api_url);
 
-    this.offerService.getMapboxLocations(this.location).subscribe((geo: Geocoder) => {
-      if (geo.features[0]) {
-        this.mapa.setCenter(geo.features[0].center as [number, number]);
-        this.mapa.setZoom(13.5);
-      } // mozda error staviti
-    });
+    this.offerService
+      .getMapboxLocations(this.location)
+      .subscribe((geo: Geocoder) => {
+        if (geo.features[0]) {
+          this.mapa.setCenter(geo.features[0].center as [number, number]);
+          this.mapa.setZoom(13.5);
+        } // mozda error staviti
+      });
   }
 
   capitalize = (s: string) => {
     return s.charAt(0).toUpperCase() + s.slice(1);
-  }
+  };
 }
