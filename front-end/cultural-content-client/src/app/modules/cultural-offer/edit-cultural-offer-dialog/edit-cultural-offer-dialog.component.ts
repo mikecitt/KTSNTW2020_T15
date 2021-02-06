@@ -75,7 +75,7 @@ export class EditCulturalOfferDialogComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
-    })
+    });
 
   locationRequired() {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -114,7 +114,6 @@ export class EditCulturalOfferDialogComponent implements OnInit {
       latitude: formObj.location.center[1],
     };
 
-    console.log(formObj);
     this.service.update(formObj, this.cultureOfferId).subscribe(
       (response: CulturalOfferResponse) => {
         this.dialogRef.close(response);
