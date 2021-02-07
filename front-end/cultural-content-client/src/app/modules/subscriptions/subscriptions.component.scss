@@ -9,8 +9,10 @@ mat-card-header {
   margin-bottom: 10px;
 }
 
-.row {
-  display: table;
+.root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
 }
 
 .right {
